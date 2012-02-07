@@ -1,7 +1,8 @@
-// note class
+// note proto
 
 silica Note := Object clone (
-
-  // stub
-  
+  scale := null
+  degree := null
+  duration := 1
+  register := 5
 )
