@@ -2,6 +2,8 @@
 // Jacob M. Peck
 // Note proto
 
+if(?REPL_DEBUG, writeln("  + Loading Note.io"))
+
 silica Note := Object clone do(
   scale ::=  nil                     // C-Major scale
   degree ::= 1                       // scale degree

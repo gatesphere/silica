@@ -2,6 +2,8 @@
 // Jacob M. Peck
 // Scale proto
 
+if(?REPL_DEBUG, writeln("  + Loading Scale.io"))
+
 silica Scale := Object clone do(
   name ::= nil
   intervals ::= nil
@@ -39,15 +41,8 @@ silica Scale := Object clone do(
   )
 )
 
-silica ScaleTable := Object clone do(
-  table := Map clone
-  
+silica ScaleTable := silica EntityTable clone do(
   clone := method(self)
-  
-  get := method(name,
-    self table at(name)
-  )
-  
   new := method(name, intervals, tonic,
     self table atIfAbsentPut(name, silica Scale with(name, intervals, tonic))
   )
