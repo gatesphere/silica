@@ -1,10 +1,11 @@
 #!/usr/bin/env io
 
-// the silica repl
+// silica programming language
+// Jacob M. Peck
+// silica runner
 
-REPL_DEBUG := true
+// load libraries
+doFile("lib/io-symbols.io")
 
-doRelativeFile("lang/common.io")
-doRelativeFile("repl/common.io")
-
-writeln("silica repl here")
+// run silica
+doFile("silica_main.io")

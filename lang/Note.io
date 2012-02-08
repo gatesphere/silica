@@ -10,7 +10,7 @@ silica Note := Object clone do(
   volume ::= 63                      // volume (0-127)
   tempo ::= 120                      // tempo in BPM
   instrument ::= nil                 // instrument
-  deltadegree ::= 0                  // did the note go up or down?
+  deltadegree ::= :same              // did the pitch raise or lower?
   
   clone := method(self)      // singleton
   
@@ -22,7 +22,7 @@ silica Note := Object clone do(
     self volume = 63
     self tempo = 120
     //self instrument = silica instrument("PIANO")
-    self deltadegree = 0
+    self deltadegree = :same
   )
   
   reset := method(self init; self)
@@ -31,16 +31,23 @@ silica Note := Object clone do(
     new := self degree + 1
     if(new == self scale size + 1, new = 1; self setRegister(self register + 1))
     self setDegree(new)
+    self setDeltadegree(:raise)
   )
   
   lp := method(
     new := self degree - 1
     if(new == 0, new = self scale size; self setRegister(self register - 1))
     self setDegree(new)
+    self setDeltadegree(:lower)
   )
   
   play := method(
-    "TBD"
+    out := ""
+    if(self deltadegree == :lower, out = out .. "\\ ")
+    if(self deltadegree == :raise, out = out .. "/ ")
+    self setDeltadegree(:same)
+    out = out .. self scale getNameForDegree(self degree) .. self duration
+    out
   )
   
   rest := method(
