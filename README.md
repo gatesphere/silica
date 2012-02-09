@@ -42,7 +42,7 @@ silica operates on the concept of a single note upon which various manipulations
     silica> fn_hat(x) = x rp x lp x
     --> -function home::FN_HAT(X) defined
     ## now, play it with a few different parameters
-    silica> fn_hat(p)
+    silica> fn_hat(play)
     --> C1 / D1 \ C1
     silica> fn_hat(pl)
     --> C2 / D2 \ C2
