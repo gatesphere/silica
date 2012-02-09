@@ -49,16 +49,18 @@ silica operates on the concept of a single note upon which various manipulations
     silica> fn_hat(hat)
     --> { C1 / D1 \ C1 } { / D1 / E1 \ D1 } { \ C1 / D1 \ C1 }
     silica> fn_hat(hat3)
-    --> { { C1 / D1 \ C1 } { / D1 / E1 \ D1 } { \ C1 / D1 \ C1 } } { { / D1 / E1 \ D1 } { / E1 / F1 \ E1 } { \ D1 / E1 \ D1 } } { { \ C1 / D1 \ C1 } { / D1 / E1 \ D1 } { \ C1 / D1 \ C1 } }
+    --> { { C1 / D1 \ C1 } { / D1 / E1 \ D1 } { \ C1 / D1 \ C1 } } { { / D1 
+    / E1 \ D1 } { / E1 / F1 \ E1 } { \ D1 / E1 \ D1 } } { { \ C1 / D1 \ C1 } 
+    { / D1 / E1 \ D1 } { \ C1 / D1 \ C1 } }
     
 I understand that this isn't exactly clear, but I hope to have more examples at a later date...
 
 ### silica-unique features
 There are a few things that differentiate silica from Clay.  Here's an extremely short list.
 
-    * Open source
-    * User-defined scales
-    * Functions
+  * Open source
+  * User-defined scales
+  * Functions
 
 ## Contributing
 This is a personal project.  If you have feedback, I'd love to hear it, but code will be mine.  You can contact me at [suschord@suspended-chord.info](mailto:suschord@suspended-chord.info).
