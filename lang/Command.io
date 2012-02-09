@@ -9,10 +9,3 @@ silica Command := silica Macro clone do(
     "{ " .. self value .. " }"
   )
 )
-
-silica CommandTable := silica EntityTable clone do(
-  clone := method(self)
-  new := method(name, value,
-    self table atIfAbsentPut(name, silica Command with(name, value))
-  )
-)

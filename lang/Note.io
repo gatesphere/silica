@@ -43,6 +43,10 @@ silica Note := Object clone do(
     self setDeltadegree(:lower)
   )
   
+  cp := method(
+    if(Random value > 0.5, self lp, self rp)
+  )
+  
   play := method(
     out := ""
     if(self deltadegree == :lower, out = out .. "\\ ")

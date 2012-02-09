@@ -21,6 +21,10 @@ silica command := method(name,
   silica CommandTable get(name)
 )
 
+silica function := method(name,
+  silica FunctionTable get(name)
+)
+
 // load lang files
 
 if(?REPL_DEBUG, writeln("Loading lang files..."))
@@ -35,6 +39,7 @@ Directory with("lang") filesWithExtension(".io") foreach(f,
 doFile("lang/EntityTable.io")
 doFile("lang/Macro.io")
 doFile("lang/Command.io")
+doFile("lang/Function.io")
 doFile("lang/Scale.io")
 doFile("lang/Note.io")
 

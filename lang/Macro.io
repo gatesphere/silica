@@ -8,6 +8,11 @@ silica Macro := Object clone do(
   value ::= nil
   name ::= nil
   
+  init := method(
+    self value = nil
+    self name = nil
+  )
+  
   expand := method(
     self value
   )
