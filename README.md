@@ -65,16 +65,17 @@ There are a few things that differentiate silica from Clay.  Here's an extremely
 ### To do:
 Here's a short list of things to do:
 
-  * Interpreter
-  * Error handling
-  * Scale switching
+  * TonalWorld
+  * Scale switching  
   * Meta commands
-  * Concurrent melodic lines
-  * Instruments
-  * Sonification
+  * Interpreter
   * Persistence
   * Scripting
   * Standard Modes/Scales
+  * Error handling
+  * Concurrent melodic lines
+  * Instruments
+  * Sonification
 
 ## Contributing
 This is a personal project.  If you have feedback, I'd love to hear it, but code will be mine.  You can contact me at [suschord@suspended-chord.info](mailto:suschord@suspended-chord.info).
