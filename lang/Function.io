@@ -33,10 +33,3 @@ silica Function := silica Macro clone do(
     val
   )
 )
-
-silica FunctionTable := silica EntityTable clone do(
-  clone := method(self)
-  new := method(name, value, params,
-    self table atIfAbsentPut(name, silica Function with(name, value, params))
-  )
-)

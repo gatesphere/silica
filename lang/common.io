@@ -51,5 +51,11 @@ if(?REPL_DEBUG, writeln("Initializing language features..."))
   silica ScaleTable new("C-MAJOR", silica mode("MAJOR"), "C");
   silica ScaleTable new("C-MINOR", silica mode("MINOR"), "C");
   
+  // initialize the PrimitiveTable
+  
+  // initialize the MetaTable
+  
+  // initialize the TokenTable
+  
   // initialize the Note
   silica Note reset

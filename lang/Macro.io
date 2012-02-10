@@ -21,10 +21,3 @@ silica Macro := Object clone do(
     self clone setName(name) setValue(value)
   )
 )
-
-silica MacroTable := silica EntityTable clone do(
-  clone := method(self)
-  new := method(name, value,
-    self table atIfAbsentPut(name, silica Macro with(name, value))
-  )
-)
