@@ -1,0 +1,29 @@
+// silica programming language
+// Jacob M. Peck
+// Mode proto
+
+if(?REPL_DEBUG, writeln("  + Loading Mode.io"))
+
+silica Mode := Object clone do(
+  intervals ::= nil
+  name ::= nil
+  
+  init := method(
+    self intervals = nil
+    self name = nil
+  )
+  
+  size := method( self intervals size )
+  
+  with := method(name, intervals,
+    self clone setName(name) setIntervals(intervals)
+  )
+)
+
+
+silica ModeTable := silica EntityTable clone do(
+  clone := method(self)
+  new := method(name, intervals,
+    self table atIfAbsentPut(name, silica Mode with(name, intervals))
+  )
+)

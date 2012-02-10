@@ -87,4 +87,5 @@ silica Note := Object clone do(
     out = out .. "\n  deltadegree = " .. self deltadegree
     out = out .. "\n>"
   )
+  
 )

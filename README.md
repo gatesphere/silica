@@ -59,14 +59,12 @@ I understand that this isn't exactly clear, but I hope to have more examples at 
 There are a few things that differentiate silica from Clay.  Here's an extremely short list.
 
   * Open source
-  * User-defined scales
+  * User-defined scales and modes
   * Functions
 
 ### To do:
 Here's a short list of things to do:
 
-  * Refactor scale -> introduce modes
-  * Token table
   * Namespaces/regions
   * Interpreter
   * Error handling
@@ -77,6 +75,7 @@ Here's a short list of things to do:
   * Sonification
   * Persistence
   * Scripting
+  * Standard Modes/Scales
 
 ## Contributing
 This is a personal project.  If you have feedback, I'd love to hear it, but code will be mine.  You can contact me at [suschord@suspended-chord.info](mailto:suschord@suspended-chord.info).

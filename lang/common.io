@@ -5,6 +5,10 @@
 silica := Object clone // namespace
 
 // lookup methods
+silica mode := method(name,
+  silica ModeTable get(name)
+)
+
 silica scale := method(name,
   silica ScaleTable get(name)
 )
@@ -13,16 +17,8 @@ silica instrument := method(name,
   silica InstrumentTable get(name)
 )
 
-silica macro := method(name,
-  silica MacroTable get(name)
-)
-
-silica command := method(name,
-  silica CommandTable get(name)
-)
-
-silica function := method(name,
-  silica FunctionTable get(name)
+silica token := method(namespace, name,
+  silica TokenTable get(namespace, name)
 )
 
 // load lang files
@@ -37,12 +33,23 @@ Directory with("lang") filesWithExtension(".io") foreach(f,
 */
 
 doFile("lang/EntityTable.io")
+doFile("lang/TokenTable.io")
 doFile("lang/Macro.io")
 doFile("lang/Command.io")
 doFile("lang/Function.io")
+doFile("lang/Mode.io")
 doFile("lang/Scale.io")
 doFile("lang/Note.io")
 
 // initialize everything
 if(?REPL_DEBUG, writeln("Initializing language features..."))
-silica Note reset
+  // initial modes
+  silica ModeTable new("MAJOR", list(2,2,1,2,2,2,1))
+  silica ModeTable new("MINOR", list(2,1,2,2,1,2,2))
+  
+  // initial scales
+  silica ScaleTable new("C-MAJOR", silica mode("MAJOR"), "C");
+  silica ScaleTable new("C-MINOR", silica mode("MINOR"), "C");
+  
+  // initialize the Note
+  silica Note reset
