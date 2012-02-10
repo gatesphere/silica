@@ -40,22 +40,26 @@ doFile("lang/Function.io")
 doFile("lang/Mode.io")
 doFile("lang/Scale.io")
 doFile("lang/Note.io")
+doFile("lang/TonalWorld.io")
 
 // initialize everything
 if(?REPL_DEBUG, writeln("Initializing language features..."))
   // initial modes
+  if(?REPL_DEBUG, writeln("  + Initializing default modes..."))
   silica ModeTable new("MAJOR", list(2,2,1,2,2,2,1))
   silica ModeTable new("MINOR", list(2,1,2,2,1,2,2))
   
   // initial scales
+  if(?REPL_DEBUG, writeln("  + Initializing default scales..."))
   silica ScaleTable new("C-MAJOR", silica mode("MAJOR"), "C");
   silica ScaleTable new("C-MINOR", silica mode("MINOR"), "C");
   
-  // initialize the PrimitiveTable
-  
-  // initialize the MetaTable
-  
   // initialize the TokenTable
+  if(?REPL_DEBUG, writeln("  + Initializing the token table..."))
   
   // initialize the Note
+  if(?REPL_DEBUG, writeln("  + Initializing the note..."))
   silica Note reset
+
+  // initialize the TonalWorld
+  if(?REPL_DEBUG, writeln("  + Initializing the tonal world..."))

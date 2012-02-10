@@ -65,7 +65,6 @@ There are a few things that differentiate silica from Clay.  Here's an extremely
 ### To do:
 Here's a short list of things to do:
 
-  * Namespaces/regions
   * Interpreter
   * Error handling
   * Scale switching
