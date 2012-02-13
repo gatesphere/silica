@@ -63,3 +63,5 @@ if(?REPL_DEBUG, writeln("Initializing language features..."))
 
   // initialize the TonalWorld
   if(?REPL_DEBUG, writeln("  + Initializing the tonal world..."))
+  
+if(?REPL_DEBUG, writeln)
