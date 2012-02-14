@@ -39,12 +39,38 @@ silica REPL REPL := Object clone do(
   )
   
   parse := method(in,
+    processed := self preprocess(in)
     out := list("-->")
-    in splitNoEmpties foreach(tok,
+    processed splitNoEmpties foreach(tok,
       ret := silica TonalWorld interpretToken(tok asMutable lowercase)
       if(ret != nil, out append(ret))
     )
     if(out size == 1, out append("okay")) 
     writeln(out join(" "))
+  )
+  
+  preprocess := method(in,
+    toks := in splitNoEmpties
+    
+    // the following is a stub
+    if(toks at(1) == ">>", writeln("macro"); return in)
+    if(toks at(1) == "=", writeln("command"); return in)
+    if(toks at(1) == ":=", writeln("function"); return in)
+    // end stub
+    
+    // repetition factors
+    out := list
+    toks foreach(tok,
+      if(tok asNumber isNan,
+        out append(tok)
+        ,
+        num := tok asNumber
+        info := tok afterSeq(num asString)
+        num repeat(
+          out append(info)
+        )
+      )
+    )
+    out join(" ")
   )
 )
