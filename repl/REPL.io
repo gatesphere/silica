@@ -31,7 +31,7 @@ silica REPL REPL := Object clone do(
       in := self rl readLine(self rl prompt);
       self rl addHistory(in);
       parse(in);
-      if(in == "exit", 
+      if(silica exit, 
         self saveHistory;
         break
       )
@@ -39,6 +39,12 @@ silica REPL REPL := Object clone do(
   )
   
   parse := method(in,
-    writeln("--> I received: " .. in)
+    out := list("-->")
+    in splitNoEmpties foreach(tok,
+      ret := silica TonalWorld interpretToken(tok asMutable lowercase)
+      if(ret != nil, out append(ret))
+    )
+    if(out size == 1, out append("okay")) 
+    writeln(out join(" "))
   )
 )

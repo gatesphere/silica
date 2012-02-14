@@ -19,22 +19,22 @@ silica TonalWorld := Object clone do(
     
     // function?
     if(itok isKindOf(silica Function),
-      self interepretFunction(itok, splits rest); return
+      return self interpretFunction(itok, splits rest)
     )
     
     // macro/command?
     if(itok isKindOf(silica Macro), // macros and commands
-      self interpretMacro(itok); return
+      return self interpretMacro(itok)
     )
     
     // primitive?
     if(itok isKindOf(silica Primitive),
-      self interepretPrimitive(itok); return
+      return self interpretPrimitive(itok)
     )
     
     // meta?
     if(itok isKindOf(silica MetaCommand),
-      self interpretMetaCommand(itok); return
+      return self interpretMetaCommand(itok)
     )
     
     // other things?
@@ -42,13 +42,13 @@ silica TonalWorld := Object clone do(
       return token
     )
     if(token == ">>",
-      self defineMacro(token); return
+      return self defineMacro(token)
     )
     if(token == "=",
-      self defineCommand(token); return
+      return self defineCommand(token)
     )
     if(token == ":=",
-      self defineFunction(token); return
+      return self defineFunction(token)
     )
     
     // uninterpretable
@@ -61,7 +61,10 @@ silica TonalWorld := Object clone do(
   
   interpretMacro := method(macro, macro expand)
   
-  interpretPrimative := method(x, x)
+  interpretPrimitive := method(primitive, 
+    out := primitive execute
+    out
+  )
   
   interpretMetaCommand := method(m, m)
 )

@@ -34,6 +34,7 @@ Directory with("lang") filesWithExtension(".io") foreach(f,
 
 doFile("lang/EntityTable.io")
 doFile("lang/TokenTable.io")
+doFile("lang/Primitive.io")
 doFile("lang/Macro.io")
 doFile("lang/Command.io")
 doFile("lang/Function.io")
@@ -51,17 +52,19 @@ if(?REPL_DEBUG, writeln("Initializing language features..."))
   
   // initial scales
   if(?REPL_DEBUG, writeln("  + Initializing default scales..."))
-  silica ScaleTable new("C-MAJOR", silica mode("MAJOR"), "C");
-  silica ScaleTable new("C-MINOR", silica mode("MINOR"), "C");
+  silica ScaleTable new("C-MAJOR", silica mode("MAJOR"), "C")
+  silica ScaleTable new("C-MINOR", silica mode("MINOR"), "C")
   
   // initialize the TokenTable
   if(?REPL_DEBUG, writeln("  + Initializing the token table..."))
+  silica TokenTable initialize
   
   // initialize the Note
   if(?REPL_DEBUG, writeln("  + Initializing the note..."))
   silica Note reset
 
   // initialize the TonalWorld
+  silica exit = false
   if(?REPL_DEBUG, writeln("  + Initializing the tonal world..."))
   
 if(?REPL_DEBUG, writeln)

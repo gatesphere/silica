@@ -34,6 +34,7 @@ silica Note := Object clone do(
     if(new == self scale size + 1, new = 1; self setRegister(self register + 1))
     self setDegree(new)
     self setDeltadegree(:raise)
+    nil
   )
   
   lp := method(
@@ -41,10 +42,12 @@ silica Note := Object clone do(
     if(new == 0, new = self scale size; self setRegister(self register - 1))
     self setDegree(new)
     self setDeltadegree(:lower)
+    nil
   )
   
   cp := method(
     if(Random value > 0.5, self lp, self rp)
+    nil
   )
   
   play := method(
@@ -62,10 +65,12 @@ silica Note := Object clone do(
   
   expand := method(factor,
     self setDuration(self duration * factor)
+    nil
   )
   
   shrink := method(factor,
     self setDuration(self duration / factor)
+    nil
   )
   
   x2 := method(self expand(2))
