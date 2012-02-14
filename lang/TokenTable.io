@@ -25,10 +25,11 @@ silica TokenTable := Object clone do(
   
   initialize := method(
     self add("home", "play", silica Primitive with("PLAY", block(silica Note play)))
+    self add("home", "rest", silica Primitive with("REST", block(silica Note rest)))
+    self add("home", "mute", silica Primitive with("MUTE", block(silica Note mute)))
     self add("home", "rp", silica Primitive with("RP", block(silica Note rp)))
     self add("home", "lp", silica Primitive with("LP", block(silica Note lp)))
     self add("home", "cp", silica Primitive with("CP", block(silica Note cp)))
-    self add("home", "rest", silica Primitive with("REST", block(silica Note rest)))
     self add("home", "x2", silica Primitive with("X2", block(silica Note x2)))
     self add("home", "x3", silica Primitive with("X3", block(silica Note x3)))
     self add("home", "x5", silica Primitive with("X5", block(silica Note x5)))

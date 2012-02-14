@@ -63,6 +63,10 @@ silica Note := Object clone do(
     "S" .. self duration
   )
   
+  mute := method(
+    "M" .. self duration
+  )
+  
   expand := method(factor,
     self setDuration(self duration * factor)
     nil
