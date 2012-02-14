@@ -60,7 +60,7 @@ silica Note := Object clone do(
   )
   
   rest := method(
-    "S:" .. self duration
+    "S" .. self duration
   )
   
   expand := method(factor,
