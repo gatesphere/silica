@@ -39,7 +39,6 @@ silica TokenTable := Object clone do(
     self add("home", "s5", silica Primitive with("S5", block(silica Note s5)))
     self add("home", "s7", silica Primitive with("S7", block(silica Note s7)))
     
-    // kludgy hack for now
-    self add("home", "exit", silica Primitive with("EXIT", block(silica exit = true; nil)))
+    self add("home", "exit", silica MetaCommand with("EXIT", block(silica exit = true; nil)))
   )
 )

@@ -2,6 +2,8 @@
 // Jacob M. Peck
 // Primitive proto
 
+if(?REPL_DEBUG, writeln("  + Loading Primitive.io"))
+
 silica Primitive := Object clone do(
   name ::= nil
   behavior ::= nil

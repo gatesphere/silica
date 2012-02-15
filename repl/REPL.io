@@ -7,6 +7,8 @@ if(?REPL_DEBUG, writeln("  + Loading REPL.io"))
 silica REPL REPL := Object clone do(
   rl := ReadLine
   
+  currentNamespace := "home"
+  
   clone := method(self)
   
   initialize := method(
@@ -47,7 +49,7 @@ silica REPL REPL := Object clone do(
     )
     if(?REPL_DEBUG, writeln("TRACE (parse) received: " .. processed))
     processed splitNoEmpties foreach(tok,
-      ret := silica TonalWorld interpretToken(tok asMutable lowercase)
+      ret := self interpretToken(tok asMutable lowercase, true)
       if(ret != nil, out append(ret))
     )
     if(out size == 1, out append("okay")) 
@@ -62,11 +64,11 @@ silica REPL REPL := Object clone do(
       name := out at(0)
       contents := out rest rest join(" ")
       m := silica Macro with(name uppercase, contents)
-      silica TokenTable add(silica TonalWorld currentNamespace, 
+      silica TokenTable add(self currentNamespace, 
                             name lowercase, 
                             m
       )
-      write("--> MACRO " .. silica TonalWorld currentNamespace .. "::" .. name uppercase .. " defined.")
+      write("--> MACRO " .. self currentNamespace .. "::" .. name uppercase .. " defined.")
       return nil
     )
     
@@ -75,21 +77,22 @@ silica REPL REPL := Object clone do(
       name := out at(0)
       contents := out rest rest join(" ")
       c := silica Command with(name uppercase, contents)
-      silica TokenTable add(silica TonalWorld currentNamespace, 
+      silica TokenTable add(self currentNamespace, 
                             name lowercase, 
                             c
       )
-      write("--> COMMAND " .. silica TonalWorld currentNamespace .. "::" .. name uppercase .. " defined.")
+      write("--> COMMAND " .. self currentNamespace .. "::" .. name uppercase .. " defined.")
       return nil
     )
     
     // function definition?
+    // stub
     if(out at(1) == ":=", writeln("function"); return )
     
     // repetition and grouping factors
     changed := true
     while(changed,
-      changed := false
+      changed = false
       in_2 := out join(" ")
       out := list
       toks := in_2 splitNoEmpties
@@ -117,7 +120,103 @@ silica REPL REPL := Object clone do(
       )
       if(?REPL_DEBUG, writeln("TRACE (preprocess) step: " .. out join(" ")))
     )
+    
+    // macro/command/fn expansions
+    changed := true
+    while(changed,
+      changed = false
+      in_2 := out join(" ")
+      out := list
+      toks := in_2 splitNoEmpties
+      toks foreach(tok,
+        ret := self interpretToken(tok asMutable lowercase, false)
+        if(ret asMutable lowercase != tok asMutable lowercase,
+          changed = true
+          out append(ret)
+          ,
+          out append(tok)
+        )
+      )
+      if(?REPL_DEBUG, writeln("TRACE (preprocess) step: " .. out join(" ")))
+    )
     if(?REPL_DEBUG, writeln("TRACE (preprocess) returning: " .. out join(" ")))
     out join(" ")
+  )
+  
+  interpretToken := method(token, final,
+    // find function, if it is one
+    splits := token split("(", ")", ",")
+    tokenName := splits at(0)
+    
+    // get token
+    itok := silica token(self currentNamespace, tokenName)
+    
+    // function?
+    if(itok isKindOf(silica Function),
+      return self interpretFunction(itok, splits rest)
+    )
+    
+    // macro/command?
+    if(itok isKindOf(silica Macro), // macros and commands
+      return self interpretMacro(itok)
+    )
+    
+        
+    // meta?
+    if(itok isKindOf(silica MetaCommand),
+      if(final,
+        return self interpretMetaCommand(itok)
+        ,
+        return token
+      )
+    )
+    
+    // primitive?
+    if(itok isKindOf(silica Primitive),
+      if(final,
+        return self interpretPrimitive(itok)
+        ,
+        return token
+      )
+    )
+    
+    // other things?
+    if(token == "{" or token == "}",
+      return token
+    )
+    if(token == ">>",
+      return self defineMacro(token)
+    )
+    if(token == "=",
+      return self defineCommand(token)
+    )
+    if(token == ":=",
+      return self defineFunction(token)
+    )
+    
+    // uninterpretable
+    return nil
+  )
+  
+  interpretFunction := method(fn, params,
+    if(?REPL_DEBUG, writeln("TRACE (interpretToken): Function found: " .. fn))
+    fn expand(params)
+  )
+  
+  interpretMacro := method(macro, 
+    if(?REPL_DEBUG, writeln("TRACE (interpretToken): Macro found: " .. macro))
+    macro expand
+  )
+  
+  interpretPrimitive := method(primitive, 
+    if(?REPL_DEBUG, writeln("TRACE (interpretToken): Primitive found: " .. primitive))
+    out := primitive execute
+    out
+  )
+  
+  interpretMetaCommand := method(meta, 
+    if(?REPL_DEBUG, writeln("TRACE (interpretToken): MetaCommand found: " .. meta))
+    out := meta execute
+    out
   )
 )

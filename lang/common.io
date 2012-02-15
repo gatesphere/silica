@@ -35,13 +35,13 @@ Directory with("lang") filesWithExtension(".io") foreach(f,
 doFile("lang/EntityTable.io")
 doFile("lang/TokenTable.io")
 doFile("lang/Primitive.io")
+doFile("lang/MetaCommand.io")
 doFile("lang/Macro.io")
 doFile("lang/Command.io")
 doFile("lang/Function.io")
 doFile("lang/Mode.io")
 doFile("lang/Scale.io")
 doFile("lang/Note.io")
-doFile("lang/TonalWorld.io")
 
 // initialize everything
 if(?REPL_DEBUG, writeln("Initializing language features..."))
@@ -62,9 +62,5 @@ if(?REPL_DEBUG, writeln("Initializing language features..."))
   // initialize the Note
   if(?REPL_DEBUG, writeln("  + Initializing the note..."))
   silica Note reset
-
-  // initialize the TonalWorld
-  silica exit = false
-  if(?REPL_DEBUG, writeln("  + Initializing the tonal world..."))
   
 if(?REPL_DEBUG, writeln)

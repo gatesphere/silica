@@ -67,8 +67,6 @@ There are a few things that differentiate silica from Clay.  Here's an extremely
 Here's a short list of things to do:
 
   * Transforms
-  * Repetition factors
-  * TonalWorld
   * Scale switching  
   * Meta commands
   * Interpreter

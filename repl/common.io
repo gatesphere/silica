@@ -26,4 +26,5 @@ if(?REPL_DEBUG, writeln("Initializing REPL..."))
   silica REPL REPL loadHistory
 
   if(?REPL_DEBUG, writeln("  + Starting REPL..."))
+  silica exit := false
   silica REPL REPL run
