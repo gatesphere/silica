@@ -41,6 +41,11 @@ silica REPL REPL := Object clone do(
   parse := method(in,
     processed := self preprocess(in)
     out := list("-->")
+    if(processed == nil,
+      writeln
+      return
+    )
+    if(?REPL_DEBUG, writeln("TRACE (parse) received: " .. processed))
     processed splitNoEmpties foreach(tok,
       ret := silica TonalWorld interpretToken(tok asMutable lowercase)
       if(ret != nil, out append(ret))
@@ -50,27 +55,68 @@ silica REPL REPL := Object clone do(
   )
   
   preprocess := method(in,
-    toks := in splitNoEmpties
+    out := in splitNoEmpties
     
-    // the following is a stub
-    if(toks at(1) == ">>", writeln("macro"); return in)
-    if(toks at(1) == "=", writeln("command"); return in)
-    if(toks at(1) == ":=", writeln("function"); return in)
-    // end stub
+    // macro definition?
+    if(out at(1) == ">>",
+      name := out at(0)
+      contents := out rest rest join(" ")
+      m := silica Macro with(name uppercase, contents)
+      silica TokenTable add(silica TonalWorld currentNamespace, 
+                            name lowercase, 
+                            m
+      )
+      write("--> MACRO " .. silica TonalWorld currentNamespace .. "::" .. name uppercase .. " defined.")
+      return nil
+    )
     
-    // repetition factors
-    out := list
-    toks foreach(tok,
-      if(tok asNumber isNan,
-        out append(tok)
-        ,
-        num := tok asNumber
-        info := tok afterSeq(num asString)
-        num repeat(
-          out append(info)
+    // command definition?
+    if(out at(1) == "=", 
+      name := out at(0)
+      contents := out rest rest join(" ")
+      c := silica Command with(name uppercase, contents)
+      silica TokenTable add(silica TonalWorld currentNamespace, 
+                            name lowercase, 
+                            c
+      )
+      write("--> COMMAND " .. silica TonalWorld currentNamespace .. "::" .. name uppercase .. " defined.")
+      return nil
+    )
+    
+    // function definition?
+    if(out at(1) == ":=", writeln("function"); return )
+    
+    // repetition and grouping factors
+    changed := true
+    while(changed,
+      changed := false
+      in_2 := out join(" ")
+      out := list
+      toks := in_2 splitNoEmpties
+      toks foreach(tok,
+        if(tok asNumber isNan,
+          // not a repetition factor
+          if(tok containsSeq("+"),
+            // grouping factor
+            changed = true
+            out append(tok beforeSeq("+"))
+            out append(tok afterSeq("+"))
+            ,
+            // not a grouping factor or repetition factor
+            out append(tok)
+          )
+          ,
+          // repetition factor
+          changed = true
+          num := tok asNumber
+          info := tok afterSeq(num asString)
+          num repeat(
+            out append(info)
+          )
         )
       )
     )
+    if(?REPL_DEBUG, writeln("TRACE (preprocess) returning: " .. out join(" ")))
     out join(" ")
   )
 )

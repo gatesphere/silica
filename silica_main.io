@@ -3,7 +3,7 @@
 // the silica repl
 
 SILICA_VERSION := "February 2012"
-//REPL_DEBUG := true
+REPL_DEBUG := true
 
 // welcome message
 writeln("Welcome to silica!")
