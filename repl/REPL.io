@@ -115,6 +115,7 @@ silica REPL REPL := Object clone do(
           )
         )
       )
+      if(?REPL_DEBUG, writeln("TRACE (preprocess) step: " .. out join(" ")))
     )
     if(?REPL_DEBUG, writeln("TRACE (preprocess) returning: " .. out join(" ")))
     out join(" ")
