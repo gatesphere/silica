@@ -32,4 +32,8 @@ silica Function := silica Macro clone do(
     )
     val
   )
+  
+  asString := method(
+    "< FUNCTION " .. self name uppercase .. " >"
+  )
 )

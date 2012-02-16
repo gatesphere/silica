@@ -8,4 +8,8 @@ silica Command := silica Macro clone do(
   expand := method(
     "{ " .. self value .. " }"
   )
+  
+  asString := method(
+    "< COMMAND " .. self name uppercase .. " >"
+  )
 )

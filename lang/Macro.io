@@ -20,4 +20,8 @@ silica Macro := Object clone do(
   with := method(name, value,
     self clone setName(name) setValue(value)
   )
+  
+  asString := method(
+    "< MACRO " .. self name uppercase .. " >"
+  )
 )

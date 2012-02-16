@@ -14,4 +14,8 @@ silica EntityTable := Object clone do(
   get := method(name,
     self table at(name)
   )
+  
+  asString := method(
+    "< ENTITYTABLE >"
+  )
 )

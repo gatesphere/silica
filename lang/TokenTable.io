@@ -19,7 +19,7 @@ silica TokenTable := Object clone do(
     
   add := method(namespace, name, token,
     token_table := self namespace_table atIfAbsentPut(namespace, Map clone)
-    token_table atIfAbsentPut(name, token)
+    token_table atPut(name, token)
     self
   )
   
@@ -45,5 +45,9 @@ silica TokenTable := Object clone do(
     self add("home", "-state", silica MetaCommand with("-STATE", block("-STATE\n" .. silica Note asString)))
     self add("home", "-reset", silica MetaCommand with("-RESET", block("-RESET\n" .. silica Note reset asString)))
     self add("home", "-@?" , silica MetaCommand with("-@?", block("-@?\nCurrently in namespace \"" .. silica REPL REPL currentNamespace .. "\"")))
+  )
+  
+  asString := method(
+    "< TOKENTABLE >"
   )
 )

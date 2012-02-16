@@ -18,6 +18,10 @@ silica Mode := Object clone do(
   with := method(name, intervals,
     self clone setName(name) setIntervals(intervals)
   )
+  
+  asString := method(
+    "< MODE " .. self name uppercase .. " >"
+  )
 )
 
 
@@ -25,5 +29,9 @@ silica ModeTable := silica EntityTable clone do(
   clone := method(self)
   new := method(name, intervals,
     self table atIfAbsentPut(name, silica Mode with(name, intervals))
+  )
+  
+  asString := method(
+    "< MODETABLE >"
   )
 )

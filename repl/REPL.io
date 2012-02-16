@@ -106,7 +106,19 @@ silica REPL REPL := Object clone do(
             out append(tok afterSeq("+"))
             ,
             // not a grouping factor or repetition factor
-            out append(tok)
+            ret := self interpretToken(tok asMutable lowercase, false)
+            if(ret == nil,
+              writeln("--> ERROR: cannot recognize token \"" .. tok asMutable uppercase .. "\" within namespace \"" .. self currentNamespace .. "\".")
+              break
+            )
+            // macro/fn/cmd
+            if(ret asMutable lowercase != tok asMutable lowercase,
+              changed = true
+              out append(ret)
+              ,
+              // must be a primitive
+              out append(tok)
+            )
           )
           ,
           // repetition factor
@@ -118,30 +130,7 @@ silica REPL REPL := Object clone do(
           )
         )
       )
-      if(?REPL_DEBUG, writeln("TRACE (preprocess) repetition/grouping step: " .. out join(" ")))
-    )
-    
-    // macro/command/fn expansions
-    changed := true
-    while(changed,
-      changed = false
-      in_2 := out join(" ")
-      out := list
-      toks := in_2 splitNoEmpties
-      toks foreach(tok,
-        ret := self interpretToken(tok asMutable lowercase, false)
-        if(ret == nil, 
-          writeln("--> ERROR: cannot recognize token \"" .. tok asMutable uppercase .. "\" within namespace \"" .. self currentNamespace .. "\".")
-          break
-        )
-        if(ret asMutable lowercase != tok asMutable lowercase,
-          changed = true
-          out append(ret)
-          ,
-          out append(tok)
-        )
-      )
-      if(?REPL_DEBUG, writeln("TRACE (preprocess) expansion step: " .. out join(" ")))
+      if(?REPL_DEBUG, writeln("TRACE (preprocess) step: " .. out join(" ")))
     )
     if(?REPL_DEBUG, writeln("TRACE (preprocess) returning: " .. out join(" ")))
     out join(" ")
