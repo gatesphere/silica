@@ -44,7 +44,19 @@ silica TokenTable := Object clone do(
     self add("home", "-exit", silica MetaCommand with("-EXIT", block(silica exit = true; "-EXIT")))
     self add("home", "-state", silica MetaCommand with("-STATE", block("-STATE\n" .. silica Note asString)))
     self add("home", "-reset", silica MetaCommand with("-RESET", block("-RESET\n" .. silica Note reset asString)))
-    self add("home", "-@?" , silica MetaCommand with("-@?", block("-@?\nCurrently in namespace \"" .. silica REPL REPL currentNamespace .. "\"")))
+    self add("home", "-@?" , silica MetaCommand with("-@?", 
+        block("-@?\nCurrently in namespace \"" .. silica REPL REPL currentNamespace .. "\"")
+    ))
+    self add("home", "-debug", silica MetaCommand with("-DEBUG", 
+        block(
+          if(Lobby ?REPL_DEBUG, 
+            Lobby REPL_DEBUG := false
+            ,
+            Lobby REPL_DEBUG := true
+          )
+          "-DEBUG"
+        )
+    ))
   )
   
   asString := method(

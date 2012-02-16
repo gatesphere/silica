@@ -13,7 +13,7 @@ silica Function := silica Macro clone do(
     self name = nil
   )
   
-  with := method(name, value, params
+  with := method(name, value, params,
     self clone setName(name) setValue(value) setParams(params)
   )
   
@@ -21,7 +21,7 @@ silica Function := silica Macro clone do(
     val := self value split
     new := list
     self params foreach(i, paramname,
-      self val foreach(argname,
+      val foreach(argname,
         if(argname == paramname,
           new append(inargs at(i)),
           new append(argname)
@@ -30,7 +30,7 @@ silica Function := silica Macro clone do(
       val = new;
       new = list
     )
-    val
+    val join (" ")
   )
   
   asString := method(

@@ -37,7 +37,7 @@ silica Scale := Object clone do(
   getNameForDegree := method(degree, self pitchnames at(degree - 1))
   
   asString := method(
-    "SCALE< " .. self name uppercase .. " >"
+    "SCALE< " .. self name asMutable uppercase .. " >"
   )
 )
 

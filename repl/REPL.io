@@ -16,18 +16,21 @@ silica REPL REPL := Object clone do(
     self
   )
   
+  // loads the history
   loadHistory := method(
     try (
       self rl loadHistory(".silica_history")
     )
   )
   
+  // saves the history
   saveHistory := method(
     try (
       self rl saveHistory(".silica_history")
     )
   )
   
+  // runs the whole thing
   run := method(
     loop(
       in := self rl readLine(self rl prompt);
@@ -40,6 +43,7 @@ silica REPL REPL := Object clone do(
     )
   )
   
+  // parsing tokens, one by one
   parse := method(in,
     processed := self preprocess(in)
     out := list("-->")
@@ -56,6 +60,7 @@ silica REPL REPL := Object clone do(
     writeln(out join(" "))
   )
   
+  // get the input to be all primitives
   preprocess := method(in,
     out := in splitNoEmpties
     
@@ -88,16 +93,19 @@ silica REPL REPL := Object clone do(
     // function definition?
     // stub
     if(out at(1) == ":=", 
-      compound := out at(0) split("(",",",")")
+      compound := out at(0) splitNoEmpties("(",",",")")
+      writeln(compound)
       name := compound at(0)
       params := compound rest
+      writeln(params)
       contents := out rest rest join(" ")
       f := silica Function with(name uppercase, contents, params)
       silica TokenTable add(self currentNamespace,
                             name lowercase,
                             f
       )
-      write("--> FUNCTION " .. self currentNamespace .. "::" .. name uppercase .. " defined.")
+      writeln("--> FUNCTION " .. self currentNamespace .. "::" .. name uppercase .. " defined.")
+      writeln(f params)
       return nil
     )
     
@@ -150,7 +158,7 @@ silica REPL REPL := Object clone do(
   
   interpretToken := method(token, final,
     // find function, if it is one
-    splits := token split("(", ")", ",")
+    splits := token splitNoEmpties("(", ")", ",")
     tokenName := splits at(0)
     
     // get token
