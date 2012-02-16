@@ -87,7 +87,19 @@ silica REPL REPL := Object clone do(
     
     // function definition?
     // stub
-    if(out at(1) == ":=", writeln("function"); return )
+    if(out at(1) == ":=", 
+      compound := out at(0) split("(",",",")")
+      name := compound at(0)
+      params := compound rest
+      contents := out rest rest join(" ")
+      f := silica Function with(name uppercase, contents, params)
+      silica TokenTable add(self currentNamespace,
+                            name lowercase,
+                            f
+      )
+      write("--> FUNCTION " .. self currentNamespace .. "::" .. name uppercase .. " defined.")
+      return nil
+    )
     
     // repetition and grouping factors
     changed := true
