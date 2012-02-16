@@ -118,7 +118,7 @@ silica REPL REPL := Object clone do(
           )
         )
       )
-      if(?REPL_DEBUG, writeln("TRACE (preprocess) step: " .. out join(" ")))
+      if(?REPL_DEBUG, writeln("TRACE (preprocess) repetition/grouping step: " .. out join(" ")))
     )
     
     // macro/command/fn expansions
@@ -130,6 +130,10 @@ silica REPL REPL := Object clone do(
       toks := in_2 splitNoEmpties
       toks foreach(tok,
         ret := self interpretToken(tok asMutable lowercase, false)
+        if(ret == nil, 
+          writeln("--> ERROR: cannot recognize token \"" .. tok asMutable uppercase .. "\" within namespace \"" .. self currentNamespace .. "\".")
+          break
+        )
         if(ret asMutable lowercase != tok asMutable lowercase,
           changed = true
           out append(ret)
@@ -137,7 +141,7 @@ silica REPL REPL := Object clone do(
           out append(tok)
         )
       )
-      if(?REPL_DEBUG, writeln("TRACE (preprocess) step: " .. out join(" ")))
+      if(?REPL_DEBUG, writeln("TRACE (preprocess) expansion step: " .. out join(" ")))
     )
     if(?REPL_DEBUG, writeln("TRACE (preprocess) returning: " .. out join(" ")))
     out join(" ")
@@ -217,6 +221,6 @@ silica REPL REPL := Object clone do(
   interpretMetaCommand := method(meta, 
     if(?REPL_DEBUG, writeln("TRACE (interpretToken): MetaCommand found: " .. meta))
     out := meta execute
-    out
+    "META> " .. out
   )
 )
