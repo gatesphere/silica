@@ -91,21 +91,17 @@ silica REPL REPL := Object clone do(
     )
     
     // function definition?
-    // stub
     if(out at(1) == ":=", 
       compound := out at(0) splitNoEmpties("(",",",")")
-      writeln(compound)
       name := compound at(0)
       params := compound rest
-      writeln(params)
       contents := out rest rest join(" ")
       f := silica Function with(name uppercase, contents, params)
       silica TokenTable add(self currentNamespace,
                             name lowercase,
                             f
       )
-      writeln("--> FUNCTION " .. self currentNamespace .. "::" .. name uppercase .. " defined.")
-      writeln(f params)
+      write("--> FUNCTION " .. self currentNamespace .. "::" .. name uppercase .. " defined.")
       return nil
     )
     
@@ -158,15 +154,14 @@ silica REPL REPL := Object clone do(
   
   interpretToken := method(token, final,
     // find function, if it is one
-    splits := token splitNoEmpties("(", ")", ",")
-    tokenName := splits at(0)
+    tokenName := token beforeSeq("(")
     
     // get token
     itok := silica token(self currentNamespace, tokenName)
     
     // function?
     if(itok isKindOf(silica Function),
-      return self interpretFunction(itok, splits rest)
+      return self interpretFunction(itok, token afterSeq("(") removeLast)
     )
     
     // macro/command?
@@ -197,16 +192,7 @@ silica REPL REPL := Object clone do(
     if(token == "{" or token == "}",
       return token
     )
-    if(token == ">>",
-      return self defineMacro(token)
-    )
-    if(token == "=",
-      return self defineCommand(token)
-    )
-    if(token == ":=",
-      return self defineFunction(token)
-    )
-    
+        
     // uninterpretable
     return nil
   )
