@@ -52,7 +52,8 @@ silica Function := silica Macro clone do(
   )
   
   expand := method(in,
-    inargs := in splitNoEmpties(",")
+    inargs := list
+    if(in != nil, inargs = in splitNoEmpties(","), return self value)
     in = list
     curr := ""
     parencount := 0
@@ -82,7 +83,7 @@ silica Function := silica Macro clone do(
     new := list
     self params foreach(i, paramname,
       val foreach(argname,
-        if(argname == paramname,
+        if(argname == paramname and in at(i) != nil,
           new append(in at(i)),
           new append(argname)
         )

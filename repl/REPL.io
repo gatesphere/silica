@@ -161,7 +161,9 @@ silica REPL REPL := Object clone do(
     
     // function?
     if(itok isKindOf(silica Function),
-      return self interpretFunction(itok, token afterSeq("(") removeLast)
+      params := token afterSeq("(")
+      if(params != nil, params = params removeLast)
+      return self interpretFunction(itok, params)
     )
     
     // macro/command?
