@@ -13,8 +13,14 @@ silica scale := method(name,
   silica ScaleTable get(name)
 )
 
+/*
 silica instrument := method(name,
   silica InstrumentTable get(name)
+)
+*/
+
+silica namespace := method(name,
+  silica NamespaceTable get(name)
 )
 
 silica token := method(namespace, name,
@@ -33,6 +39,7 @@ Directory with("lang") filesWithExtension(".io") foreach(f,
 */
 
 doFile("lang/EntityTable.io")
+doFile("lang/Namespace.io")
 doFile("lang/TokenTable.io")
 doFile("lang/Primitive.io")
 doFile("lang/MetaCommand.io")

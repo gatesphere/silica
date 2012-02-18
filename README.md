@@ -66,7 +66,7 @@ There are a few things that differentiate silica from Clay.  Here's an extremely
 ### To do:
 Here's a short list of things to do:
 
-  * Nested functions
+  * Rewrite MetaCommand to take a single parameter
   * Transforms
   * Scale switching  
   * Meta commands
