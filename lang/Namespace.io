@@ -7,10 +7,17 @@ if(?REPL_DEBUG, writeln("  + Loading Namespace.io"))
 silica Namespace := Object clone do(
   name ::= nil
   parent ::= nil
+  children ::= nil
   
   init := method(
     self name = nil
     self parent = nil
+    self children = list
+  )
+  
+  addChild := method(child,
+    self children append(child)
+    self
   )
   
   with := method(name, parent,

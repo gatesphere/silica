@@ -1,0 +1,4 @@
+hat >> play rp play lp play
+hat3 = hat rp hat lp hat
+fn_do3(x) := 3x
+fn_do3(hat3)

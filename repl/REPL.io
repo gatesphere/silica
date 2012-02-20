@@ -31,14 +31,33 @@ silica REPL REPL := Object clone do(
   )
   
   // runs the whole thing
-  run := method(
-    loop(
-      in := self rl readLine(self rl prompt);
-      self rl addHistory(in);
-      parse(in);
-      if(silica exit, 
-        self saveHistory;
-        break
+  run := method(script,
+    if(script != nil,
+      // scripting mode
+      file := File with(script) openForReading
+      writeln("Running script \"" .. file path .. "\".\n\n")
+      loop(
+        in := file readLine
+        if(in == nil,
+          silica exit = true;
+          break
+        )
+        if(in strip == "",
+          continue
+        )
+        parse(in)
+      )
+      file close
+      ,
+      // interactive mode
+      loop(
+        in := self rl readLine(self rl prompt);
+        self rl addHistory(in);
+        parse(in);
+        if(silica exit, 
+          self saveHistory;
+          break
+        )
       )
     )
   )
@@ -53,7 +72,7 @@ silica REPL REPL := Object clone do(
     )
     if(?REPL_DEBUG, writeln("TRACE (parse) received: " .. processed))
     processed splitNoEmpties foreach(tok,
-      ret := self interpretToken(tok asMutable lowercase, true)
+      ret := self interpretToken(tok asMutable lowercase, true, self currentNamespace)
       if(ret != nil, out append(ret))
     )
     if(out size == 1, out append("okay")) 
@@ -122,7 +141,7 @@ silica REPL REPL := Object clone do(
             out append(tok afterSeq("+"))
             ,
             // not a grouping factor or repetition factor
-            ret := self interpretToken(tok asMutable lowercase, false)
+            ret := self interpretToken(tok asMutable lowercase, false, self currentNamespace)
             if(ret == nil,
               writeln("--> ERROR: cannot recognize token \"" .. tok asMutable uppercase .. "\" within namespace \"" .. self currentNamespace name .. "\".")
               break
@@ -152,12 +171,12 @@ silica REPL REPL := Object clone do(
     out join(" ")
   )
   
-  interpretToken := method(token, final,
+  interpretToken := method(token, final, namespace,
     // find function, if it is one
     tokenName := token beforeSeq("(")
     
     // get token
-    itok := silica token(self currentNamespace, tokenName)
+    itok := silica token(namespace, tokenName)
     
     // function?
     if(itok isKindOf(silica Function),
@@ -175,7 +194,9 @@ silica REPL REPL := Object clone do(
     // meta?
     if(itok isKindOf(silica MetaCommand),
       if(final,
-        return self interpretMetaCommand(itok)
+        param := token afterSeq("(")
+        if(param != nil, param = param beforeSeq(")"))
+        return self interpretMetaCommand(itok, param)
         ,
         return token
       )
@@ -195,8 +216,12 @@ silica REPL REPL := Object clone do(
       return token
     )
         
-    // uninterpretable
-    return nil
+    // uninterpretable.. jump up a namespace
+    if(namespace parent != nil,
+      self interpretToken(token, final, namespace parent)
+      ,
+      return nil
+    )
   )
   
   interpretFunction := method(fn, params,
@@ -215,9 +240,9 @@ silica REPL REPL := Object clone do(
     out
   )
   
-  interpretMetaCommand := method(meta, 
+  interpretMetaCommand := method(meta, param, 
     if(?REPL_DEBUG, writeln("TRACE (interpretToken): MetaCommand found: " .. meta))
-    out := meta execute
+    out := meta execute(param)
     "META> " .. out
   )
 )

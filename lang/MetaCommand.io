@@ -5,6 +5,11 @@
 if(?REPL_DEBUG, writeln("  + Loading MetaCommand.io"))
 
 silica MetaCommand := silica Primitive clone do(
+  execute := method(params,
+    out := self behavior call(params)
+    out
+  )
+  
   asString := method(
     "< METACOMMAND " .. self name .. " >"
   )

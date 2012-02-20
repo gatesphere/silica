@@ -47,7 +47,24 @@ silica TokenTable := Object clone do(
     self add(home, "-state", silica MetaCommand with("-STATE", block("-STATE\n" .. silica Note asString)))
     self add(home, "-reset", silica MetaCommand with("-RESET", block("-RESET\n" .. silica Note reset asString)))
     self add(home, "-@?" , silica MetaCommand with("-@?", 
-        block("-@?\nCurrently in namespace \"" .. silica REPL REPL currentNamespace name .. "\"")
+        block(
+          ns := silica REPL REPL currentNamespace
+          out := "-@?\nCurrently in namespace \"" .. ns name .. "\"\n"
+          if(ns parent == nil,
+            out = out .. "This namespace is the root, and has no parent.\n"
+            ,
+            out = out .. "This namespace's parent is \"" .. ns parent name .. "\"\n"
+          )
+          if(ns children size == 0,
+            out = out .. "This namespace contains no children."
+            ,
+            out = out .. "This namespace's children are:"
+            ns children foreach(child,
+              out = out .. "\n" .. "  " .. child name
+            )
+          )
+          out
+        )
     ))
     self add(home, "-debug", silica MetaCommand with("-DEBUG", 
         block(
@@ -71,9 +88,23 @@ silica TokenTable := Object clone do(
           out
         )
     ))
-        
-      
-    
+    self add(home, "-enter", silica MetaCommand with("-ENTER",
+        block(ns,
+          out := "-ENTER\n"
+          namespace := silica namespace(ns)
+          if(namespace == nil,
+            silica NamespaceTable new(ns, silica REPL REPL currentNamespace)
+            writeln(ns)
+            namespace := silica namespace(ns)
+            writeln(namespace)
+            silica REPL REPL currentNamespace addChild(namespace)
+            writeln(silica REPL REPL currentNamespace children)
+          )
+          silica REPL REPL currentNamespace = namespace
+          out = out .. "Entering namespace \"" .. namespace name .. "\""
+          out
+        )
+    ))   
   )
   
   asString := method(
