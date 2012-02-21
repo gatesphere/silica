@@ -87,12 +87,16 @@ silica REPL REPL := Object clone do(
     if(out at(1) == ">>",
       name := out at(0)
       contents := out rest rest join(" ")
-      m := silica Macro with(name uppercase, contents)
-      silica TokenTable add(self currentNamespace, 
-                            name lowercase, 
-                            m
+      if(name asNumber isNan,
+        m := silica Macro with(name uppercase, contents)
+        silica TokenTable add(self currentNamespace, 
+                              name lowercase, 
+                              m
+        )
+        write("--> MACRO " .. self currentNamespace constructName .. "::" .. name uppercase .. " defined.")
+        ,
+        write("--> MACRO names cannot begin with numbers.")
       )
-      write("--> MACRO " .. self currentNamespace constructName .. "::" .. name uppercase .. " defined.")
       return nil
     )
     
@@ -100,12 +104,16 @@ silica REPL REPL := Object clone do(
     if(out at(1) == "=", 
       name := out at(0)
       contents := out rest rest join(" ")
-      c := silica Command with(name uppercase, contents)
-      silica TokenTable add(self currentNamespace, 
-                            name lowercase, 
-                            c
+      if(name asNumber isNan,
+        c := silica Command with(name uppercase, contents)
+        silica TokenTable add(self currentNamespace, 
+                              name lowercase, 
+                              c
+        )
+        write("--> COMMAND " .. self currentNamespace constructName .. "::" .. name uppercase .. " defined.")
+        ,
+        write("--> COMMAND names cannot begin with numbers.")
       )
-      write("--> COMMAND " .. self currentNamespace constructName .. "::" .. name uppercase .. " defined.")
       return nil
     )
     
@@ -115,12 +123,16 @@ silica REPL REPL := Object clone do(
       name := compound at(0)
       params := compound rest
       contents := out rest rest join(" ")
-      f := silica Function with(name uppercase, contents, params)
-      silica TokenTable add(self currentNamespace,
-                            name lowercase,
-                            f
+      if(name asNumber isNan,
+        f := silica Function with(name uppercase, contents, params)
+        silica TokenTable add(self currentNamespace,
+                              name lowercase,
+                              f
+        )
+        write("--> FUNCTION " .. self currentNamespace constructName .. "::" .. name uppercase .. " defined.")
+        ,
+        write("--> FUNCTION names cannot begin with numbers.")
       )
-      write("--> FUNCTION " .. self currentNamespace constructName .. "::" .. name uppercase .. " defined.")
       return nil
     )
     
