@@ -10,7 +10,7 @@ silica TokenTable := Object clone do(
   clone := method(self)
 
   get := method(namespace, name,
-    token_table := self namespace_table at(namespace name)
+    token_table := self namespace_table at(namespace constructName)
     if(token_table != nil,
       return token_table at(name),
       return nil
@@ -18,7 +18,7 @@ silica TokenTable := Object clone do(
   )
     
   add := method(namespace, name, token,
-    token_table := self namespace_table atIfAbsentPut(namespace name, Map clone)
+    token_table := self namespace_table atIfAbsentPut(namespace constructName, Map clone)
     token_table atPut(name, token)
     self
   )
@@ -49,18 +49,18 @@ silica TokenTable := Object clone do(
     self add(home, "-@?" , silica MetaCommand with("-@?", 
         block(
           ns := silica REPL REPL currentNamespace
-          out := "-@?\nCurrently in namespace \"" .. ns name .. "\"\n"
+          out := "-@?\nCurrently in namespace \"" .. ns constructName .. "\"\n"
           if(ns parent == nil,
             out = out .. "This namespace is the root, and has no parent.\n"
             ,
-            out = out .. "This namespace's parent is \"" .. ns parent name .. "\"\n"
+            out = out .. "This namespace's parent is \"" .. ns parent constructName .. "\"\n"
           )
           if(ns children size == 0,
             out = out .. "This namespace contains no children."
             ,
             out = out .. "This namespace's children are:"
             ns children foreach(child,
-              out = out .. "\n" .. "  " .. child name
+              out = out .. "\n" .. "  " .. child constructName
             )
           )
           out
@@ -81,9 +81,9 @@ silica TokenTable := Object clone do(
           out := "-LEAVE\n"
           if(silica REPL REPL currentNamespace parent != nil,
             silica REPL REPL currentNamespace = silica REPL REPL currentNamespace parent
-            out = out .. "Backing up, entering namespace \"" .. silica REPL REPL currentNamespace name .. "\"."
+            out = out .. "Backing up, entering namespace \"" .. silica REPL REPL currentNamespace constructName .. "\"."
             ,
-            out = out .. "Nowhere to go.  Remaining in namespace \"" .. silica REPL REPL currentNamespace name .. "\"."
+            out = out .. "Nowhere to go.  Remaining in namespace \"" .. silica REPL REPL currentNamespace constructName .. "\"."
           )
           out
         )
@@ -91,17 +91,18 @@ silica TokenTable := Object clone do(
     self add(home, "-enter", silica MetaCommand with("-ENTER",
         block(ns,
           out := "-ENTER\n"
-          namespace := silica namespace(ns)
+          scns := silica REPL REPL currentNamespace
+          namespace := silica namespace(scns constructName .. "::" .. ns)
           if(namespace == nil,
-            silica NamespaceTable new(ns, silica REPL REPL currentNamespace)
-            writeln(ns)
-            namespace := silica namespace(ns)
-            writeln(namespace)
-            silica REPL REPL currentNamespace addChild(namespace)
-            writeln(silica REPL REPL currentNamespace children)
+            silica NamespaceTable new(ns, scns)
+            //writeln(ns)
+            namespace := silica namespace(scns constructName .. "::" .. ns)
+            //writeln(namespace)
+            scns addChild(namespace)
+            //writeln(scns children)
           )
           silica REPL REPL currentNamespace = namespace
-          out = out .. "Entering namespace \"" .. namespace name .. "\""
+          out = out .. "Entering namespace \"" .. namespace constructName .. "\""
           out
         )
     ))   

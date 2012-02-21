@@ -1,0 +1,18 @@
+-enter(foo)
+-enter(bar)
+-enter(baz)
+-leave
+-enter(foo)
+pl >> x2 play s2
+pl
+-leave
+pl
+-enter(baz)
+pl
+-leave
+-leave
+pl
+-leave
+pl
+-leave
+pl

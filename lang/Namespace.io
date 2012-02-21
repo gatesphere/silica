@@ -25,14 +25,26 @@ silica Namespace := Object clone do(
   )
   
   asString := method(
-    "< NAMESPACE " .. self name asMutable uppercase .. " >"
+    "< NAMESPACE " .. self constructName asMutable uppercase .. " >"
+  )
+  
+  constructName := method(
+    if(self parent != nil,
+      self parent constructName .. "::" .. self name
+      ,
+      self name
+    )
   )
 )
 
 silica NamespaceTable := silica EntityTable clone do(
   clone := method(self)
   new := method(name, parent,
-    self table atIfAbsentPut(name, silica Namespace with(name, parent))
+    if(parent != nil,
+      self table atIfAbsentPut(parent constructName .. "::" .. name, silica Namespace with(name, parent))
+      ,
+      self table atIfAbsentPut(name, silica Namespace with(name, parent))
+    )
   )
 )
 

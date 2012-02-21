@@ -92,7 +92,7 @@ silica REPL REPL := Object clone do(
                             name lowercase, 
                             m
       )
-      write("--> MACRO " .. self currentNamespace name .. "::" .. name uppercase .. " defined.")
+      write("--> MACRO " .. self currentNamespace constructName .. "::" .. name uppercase .. " defined.")
       return nil
     )
     
@@ -105,7 +105,7 @@ silica REPL REPL := Object clone do(
                             name lowercase, 
                             c
       )
-      write("--> COMMAND " .. self currentNamespace name .. "::" .. name uppercase .. " defined.")
+      write("--> COMMAND " .. self currentNamespace constructName .. "::" .. name uppercase .. " defined.")
       return nil
     )
     
@@ -120,7 +120,7 @@ silica REPL REPL := Object clone do(
                             name lowercase,
                             f
       )
-      write("--> FUNCTION " .. self currentNamespace name .. "::" .. name uppercase .. " defined.")
+      write("--> FUNCTION " .. self currentNamespace constructName .. "::" .. name uppercase .. " defined.")
       return nil
     )
     
@@ -143,7 +143,7 @@ silica REPL REPL := Object clone do(
             // not a grouping factor or repetition factor
             ret := self interpretToken(tok asMutable lowercase, false, self currentNamespace)
             if(ret == nil,
-              writeln("--> ERROR: cannot recognize token \"" .. tok asMutable uppercase .. "\" within namespace \"" .. self currentNamespace name .. "\".")
+              writeln("--> ERROR: cannot recognize token \"" .. tok asMutable uppercase .. "\" within namespace \"" .. self currentNamespace constructName .. "\".")
               break
             )
             // macro/fn/cmd
