@@ -105,7 +105,26 @@ silica TokenTable := Object clone do(
           out = out .. "Entering namespace \"" .. namespace constructName .. "\""
           out
         )
-    ))   
+    ))
+    self add(home, "-import", silica MetaCommand with("-IMPORT",
+        block(filename,
+          file := File with(filename) openForReading
+          writeln("Running script \"" .. file path .. "\".")
+          loop(
+            in := file readLine
+            if(in == nil,
+              break;
+            )
+            if(in strip == "",
+              continue;
+            )
+            silica REPL REPL parse(in)
+          )
+          file close
+          writeln("--> DONE running script \"" .. file path .. "\".")
+          "-IMPORT"
+        )
+    ))
   )
   
   asString := method(
