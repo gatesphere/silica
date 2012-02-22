@@ -125,6 +125,76 @@ silica TokenTable := Object clone do(
           "-IMPORT"
         )
     ))
+    self add(home, "-s?", silica MetaCommand with("-S?",
+        block(
+          out := "-S?"
+          ns := silica REPL REPL currentNamespace
+          token_table := self namespace_table at(ns constructName)
+          if(token_table == nil or token_table values size == 0,
+            out = out .. "\nThis namespace doesn't contain any token definitions."
+            ,
+            token_table values foreach(tok,
+              if(tok isKindOf(silica MetaCommand),
+                out = out .. "\n" .. tok name .. " : meta command"
+                ,
+                if(tok isKindOf(silica Primitive),
+                  out = out .. "\n" .. tok name .. " : primitive"
+                  ,
+                  if(tok isKindOf(silica Function),
+                    out = out .. "\n" .. tok name .. " : function"
+                    ,
+                    if(tok isKindOf(silica Command),
+                      out = out .. "\n" .. tok name .. " : command"
+                      ,
+                      if(tok isKindOf(silica Macro),
+                        out = out .. "\n" .. tok name .. " : macro"
+                        ,
+                        out = out .. "\n" .. tok name .. " : unknown"
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+          out
+        )
+    ))
+    self add(home, "-s??", silica MetaCommand with("-S??",
+        block(
+          out := "-S??"
+          ns := silica REPL REPL currentNamespace
+          token_table := self namespace_table at(ns constructName)
+          if(token_table == nil or token_table values size == 0,
+            out = out .. "\nThis namespace doesn't contain any token definitions."
+            ,
+            token_table values foreach(tok,
+              if(tok isKindOf(silica MetaCommand),
+                out = out .. "\n" .. tok name .. " : meta command"
+                ,
+                if(tok isKindOf(silica Primitive),
+                  out = out .. "\n" .. tok name .. " : primitive"
+                  ,
+                  if(tok isKindOf(silica Function),
+                    out = out .. "\n" .. tok name .. "(" .. tok params join(",") .. ") := " .. tok value
+                    ,
+                    if(tok isKindOf(silica Command),
+                      out = out .. "\n" .. tok name .. " = " .. tok value
+                      ,
+                      if(tok isKindOf(silica Macro),
+                        out = out .. "\n" .. tok name .. " >> " .. tok value
+                        ,
+                        out = out .. "\n" .. tok name .. " : unknown"
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+          out
+        )
+    ))
   )
   
   asString := method(

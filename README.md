@@ -65,12 +65,11 @@ There are a few things that differentiate silica from Clay.  Here's an extremely
 
 ### To do:
 Here's a short list of things to do:
-
+  
   * Transforms
   * Scale switching  
   * Meta commands
   * Interpreter
-  * Persistence
   * Standard Modes/Scales
   * Error handling
   * Concurrent melodic lines
