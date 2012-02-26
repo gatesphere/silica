@@ -42,6 +42,29 @@ silica TokenTable := Object clone do(
     self add(home, "s5", silica Primitive with("S5", block(silica Note s5)))
     self add(home, "s7", silica Primitive with("S7", block(silica Note s7)))
     
+    silica ScaleTable table values foreach(scale,
+      name := scale name
+      ctx := Object clone
+      ctx x := scale
+      self add(
+        home, 
+        (name .. "$") asMutable lowercase, 
+        silica Primitive with(name .. "$" asMutable uppercase, 
+            block(
+              silica Note changeScale(x)
+            ) setScope(ctx)
+      ))
+      self add(
+        home, 
+        name asMutable lowercase, 
+        silica Primitive with(name asMutable uppercase, 
+            block(
+              silica Note changeScaleRelative(x)
+            ) setScope(ctx)
+      ))
+    )
+    
+    
     // metas
     self add(home, "-exit", silica MetaCommand with("-EXIT", block(silica exit = true; "-EXIT")))
     self add(home, "-state", silica MetaCommand with("-STATE", block("-STATE\n" .. silica Note asString)))

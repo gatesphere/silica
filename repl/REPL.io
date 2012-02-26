@@ -186,9 +186,10 @@ silica REPL REPL := Object clone do(
   interpretToken := method(token, final, namespace,
     // find function, if it is one
     tokenName := token beforeSeq("(")
-    
+    //writeln(tokenName)
     // get token
     itok := silica token(namespace, tokenName)
+    //writeln(itok)
     
     // function?
     if(itok isKindOf(silica Function),

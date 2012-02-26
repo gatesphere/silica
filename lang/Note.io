@@ -87,6 +87,19 @@ silica Note := Object clone do(
   s5 := method(self shrink(5))
   s7 := method(self shrink(7))
   
+  changeScale := method(scale,
+    //writeln("Changing to scale " .. scale name .. " " .. scale)
+    self setDegree(1)
+    self setScale(scale)
+    self setDeltadegree(:same)
+    nil
+  )
+  
+  changeScaleRelative := method(scale,
+    self changeScale(scale)
+    nil
+  )
+  
   
   asString := method(
     out := "NOTE < \n" .. "  scale = " .. self scale
