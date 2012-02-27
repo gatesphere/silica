@@ -136,6 +136,48 @@ silica REPL REPL := Object clone do(
       return nil
     )
     
+    // mode definition?
+    if(out at(1) == "!!",
+      name := out at(0)
+      intervals := out rest rest map(x, x asNumber)
+      if(intervals sum != 12,
+        write("--> Cannot define mode " .. name asMutable uppercase .. ": intervals must sum to 12.")
+        return nil
+      )
+      //writeln(intervals)
+      silica ModeTable new(name uppercase, intervals);
+      ns := silica namespace("home")
+      m := silica mode(name uppercase)
+      //writeln(m intervals)
+      silica PitchNames foreach(tonic,
+        ctx := Object clone
+        ctx sname := tonic .. "-" .. m name
+        silica ScaleTable new(ctx sname, m, tonic)
+        ctx scale := silica scale(ctx sname)
+        //writeln(ctx scale mode)
+        silica TokenTable add(
+          ns, 
+          ctx sname asMutable lowercase, 
+          silica Primitive with(
+            ctx sname asMutable uppercase,
+            block(
+              silica Note changeScaleRelative(scale)
+            ) setScope(ctx)
+        ))
+        silica TokenTable add(
+          ns, 
+          (ctx sname .. "$") asMutable lowercase, 
+          silica Primitive with(
+            (ctx sname .. "$") asMutable uppercase,
+            block(
+              silica Note changeScale(scale)
+            ) setScope(ctx)
+        ))
+      )
+      write("--> MODE " .. name uppercase .. " defined.")
+      return nil
+    )
+    
     // repetition and grouping factors
     changed := true
     while(changed,

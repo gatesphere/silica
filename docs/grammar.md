@@ -11,8 +11,6 @@
     functiondefn -> functionname '(' params ')' ':=' expr
     functionname -> token
     params -> token | token ',' params
-    scaledefn -> scalename '@' tonic '!' modename
-    scalename -> token
     tonic -> 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'V' | 'W' | 'X' | 'Y' | 'Z'
     modename -> token
     modedefn -> modename '!!' intervals

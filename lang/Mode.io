@@ -20,7 +20,7 @@ silica Mode := Object clone do(
   )
   
   asString := method(
-    "< MODE " .. self name uppercase .. " >"
+    "< MODE " .. self name asMutable uppercase .. " >"
   )
 )
 
