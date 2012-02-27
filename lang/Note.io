@@ -13,6 +13,7 @@ silica Note := Object clone do(
   tempo ::= 120                      // tempo in BPM
   instrument ::= nil                 // instrument
   deltadegree ::= :same              // did the pitch raise or lower?
+  statestack ::= nil
   
   clone := method(self)      // singleton
   
@@ -25,6 +26,7 @@ silica Note := Object clone do(
     self tempo = 120
     //self instrument = silica instrument("PIANO")
     self deltadegree = :same
+    self statestack = list
   )
   
   reset := method(self init; self)
@@ -135,6 +137,50 @@ silica Note := Object clone do(
         self setDegree(new_degree)
       )
     )
+    nil
+  )
+  
+  pushstate := method(
+    state := list(
+      self scale, 
+      self degree, 
+      self duration, 
+      self register, 
+      self volume, 
+      self tempo, 
+      self instrument, 
+      self deltadegree
+    )
+    self statestack push(state)
+    nil
+  )
+  
+  popstate := method(
+    if(self statestack size != 0,
+      self applystate(self statestack pop)
+    )
+    nil
+  )
+  
+  applystate := method(state,
+    n_scale := state at(0)
+    n_degree := state at(1)
+    n_duration := state at(2)
+    n_register := state at(3)
+    n_volume := state at(4)
+    n_tempo := state at(5)
+    n_instrument := state at(6)
+    n_deltadegree := state at(7)
+    
+    self setScale(n_scale)
+    self setDegree(n_degree)
+    self setDuration(n_duration)
+    self setRegister(n_register)
+    self setVolume(n_volume)
+    self setTempo(n_tempo)
+    self setInstrument(n_instrument)
+    self setDeltadegree(n_deltadegree)
+    
     nil
   )
   
