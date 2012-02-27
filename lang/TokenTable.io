@@ -25,8 +25,8 @@ silica TokenTable := Object clone do(
   
   initialize := method(
     home := silica namespace("home")
-    // primitives
     
+    // primitives
     self add(home, "play", silica Primitive with("PLAY", block(silica Note play)))
     self add(home, "rest", silica Primitive with("REST", block(silica Note rest)))
     self add(home, "mute", silica Primitive with("MUTE", block(silica Note mute)))
@@ -44,6 +44,7 @@ silica TokenTable := Object clone do(
     self add(home, "popalphabet", silica Primitive with("POPALPHABET", block(silica Note popalphabetRelative)))
     self add(home, "popalphabet$", silica Primitive with("POPALPHABET$", block(silica Note popalphabet)))
     
+    // scales
     silica ScaleTable table values foreach(scale,
       name := scale name
       ctx := Object clone
@@ -65,6 +66,12 @@ silica TokenTable := Object clone do(
             ) setScope(ctx)
       ))
     )
+    self add(home, "chromatic", silica Primitive with("CHROMATIC",
+        block(
+          tonic := silica Note scale last getNameForDegree(silica Note degree)
+          silica Note changeScaleRelative(silica scale(tonic .. "-CHROMATIC"))
+        )
+    ))
     
     
     // metas

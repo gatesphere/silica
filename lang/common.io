@@ -56,10 +56,12 @@ if(?REPL_DEBUG, writeln("Initializing language features..."))
   if(?REPL_DEBUG, writeln("  + Initializing default modes..."))
   silica ModeTable new("MAJOR", list(2,2,1,2,2,2,1))
   silica ModeTable new("MINOR", list(2,1,2,2,1,2,2))
+  silica ModeTable new("HARMONICMINOR", list(2,1,2,2,1,3,1))
   silica ModeTable new("CHROMATIC", list(1,1,1,1,1,1,1,1,1,1,1,1))
   silica ModeTable new("WHOLETONE", list(2,2,2,2,2,2))
   silica ModeTable new("PENTAMAJOR", list(2,2,3,2,3))
   silica ModeTable new("PENTAMINOR", list(3,3,1,3,2))
+  silica ModeTable new("BLUES", list(3,2,1,1,3,2))
   
   // initial scales
   if(?REPL_DEBUG, writeln("  + Initializing default scales..."))
