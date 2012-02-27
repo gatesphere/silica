@@ -5,7 +5,7 @@
 if(?REPL_DEBUG, writeln("  + Loading Note.io"))
 
 silica Note := Object clone do(
-  scale ::=  nil                     // C-Major scale
+  scale ::= nil                      // C-Major scale
   degree ::= 1                       // scale degree
   duration ::= 1                     // 1 = quarter note
   register ::= 5                     // octave
@@ -17,7 +17,7 @@ silica Note := Object clone do(
   clone := method(self)      // singleton
   
   init := method(
-    self scale = silica scale("C-MAJOR")
+    self scale = list(silica scale("C-MAJOR"))
     self degree = 1
     self duration = 1
     self register = 5
@@ -31,7 +31,7 @@ silica Note := Object clone do(
   
   rp := method(
     new := self degree + 1
-    if(new == self scale size + 1, new = 1; self setRegister(self register + 1))
+    if(new == self scale last size + 1, new = 1; self setRegister(self register + 1))
     self setDegree(new)
     self setDeltadegree(:raise)
     nil
@@ -39,7 +39,7 @@ silica Note := Object clone do(
   
   lp := method(
     new := self degree - 1
-    if(new == 0, new = self scale size; self setRegister(self register - 1))
+    if(new == 0, new = self scale last size; self setRegister(self register - 1))
     self setDegree(new)
     self setDeltadegree(:lower)
     nil
@@ -55,7 +55,7 @@ silica Note := Object clone do(
     if(self deltadegree == :lower, out = out .. "\\ ")
     if(self deltadegree == :raise, out = out .. "/ ")
     self setDeltadegree(:same)
-    out = out .. self scale getNameForDegree(self degree) .. self duration
+    out = out .. self scale last getNameForDegree(self degree) .. self duration
     out
   )
   
@@ -87,22 +87,59 @@ silica Note := Object clone do(
   s5 := method(self shrink(5))
   s7 := method(self shrink(7))
   
-  changeScale := method(scale,
-    //writeln("Changing to scale " .. scale name .. " " .. scale)
+  changeScale := method(new_scale,
+    if(?REPL_DEBUG, writeln("TRACE: Changing to scale " .. new_scale name .. " (absolute mode)"))
     self setDegree(1)
-    self setScale(scale)
+    self scale push(new_scale)
     self setDeltadegree(:same)
     nil
   )
   
-  changeScaleRelative := method(scale,
-    self changeScale(scale)
+  changeScaleRelative := method(new_scale,
+    if(?REPL_DEBUG, writeln("TRACE: Changing to scale " .. new_scale name .. " (relative mode)"))
+    pitch := self scale last getNameForDegree(self degree)
+    new_degree := new_scale getDegreeForName(pitch)
+    if(new_degree == nil,
+      writeln("--> Cannot change to scale " .. new_scale name .. " relatively: pitch " .. pitch .. " not in scale.")
+      ,
+      self setDegree(new_degree)
+      self scale push(new_scale)
+    )
     nil
   )
   
+  popalphabet := method(
+    if(?REPL_DEBUG, writeln("TRACE: Popping scale (absolute mode)."))
+    if(self scale size == 1,
+      writeln("--> Cannot pop alphabet: must leave one in stack.")
+      ,
+      self scale pop
+      self setDegree(1)
+      self setDeltadegree(:same)
+    )
+    nil
+  )
+  
+  popalphabetRelative := method(
+    if(?REPL_DEBUG, writeln("TRACE: Popping scale (relative mode)."))
+    if(self scale size == 1,
+      writeln("--> Cannot pop alphabet: must leave one in stack.")
+      ,
+      pitch := self scale last getNameForDegree(self degree)
+      new_scale := self scale at(self scale size - 2)
+      new_degree := new_scale getDegreeForName(pitch)
+      if(new_degree == nil,
+        writeln("--> Cannot pop to scale " .. new_scale name .. " relatively: pitch " .. pitch .. " not in scale.")
+        ,
+        self scale pop
+        self setDegree(new_degree)
+      )
+    )
+    nil
+  )
   
   asString := method(
-    out := "NOTE < \n" .. "  scale = " .. self scale
+    out := "NOTE < \n" .. "  scalestack = " .. self scale
     out = out .. "\n  degree = " .. self degree
     out = out .. "\n  register = " .. self register
     out = out .. "\n  duration = " .. self duration

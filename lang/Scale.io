@@ -35,6 +35,7 @@ silica Scale := Object clone do(
   
   size := method(self mode size)
   getNameForDegree := method(degree, self pitchnames at(degree - 1))
+  getDegreeForName := method(name, pos := self pitchnames indexOf(name); if(pos != nil, pos = pos + 1); pos)
   
   asString := method(
     "< SCALE " .. self name asMutable uppercase .. " >"

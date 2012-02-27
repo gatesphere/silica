@@ -1,0 +1,27 @@
+3rp play
+-state
+d-chromatic
+play
+-state
+a-pentaminor$
+play
+-state
+a-chromatic
+rp
+c-major
+-state
+popalphabet$
+play
+-state
+popalphabet
+play
+-state
+rp play
+-state
+popalphabet
+-state
+popalphabet$
+popalphabet$
+popalphabet
+play
+-state
