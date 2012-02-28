@@ -194,7 +194,8 @@ silica REPL REPL := Object clone do(
           out append("pushstate")
           out append(tok beforeSeq("^"))
           out append("popstate")
-          out append("][")
+          out append("]")
+          out append("[")
           out append(tok afterSeq("^"))
           out append("]")
           continue
@@ -281,7 +282,7 @@ silica REPL REPL := Object clone do(
     )
     
     // other things?
-    if(token == "{" or token == "}" or token == "[" or token == "]" or token == "][",
+    if(token == "{" or token == "}" or token == "[" or token == "]",
       return token
     )
         
