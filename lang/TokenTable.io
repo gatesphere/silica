@@ -43,6 +43,7 @@ silica TokenTable := Object clone do(
     self add(home, "s7", silica Primitive with("S7", block(silica Note s7)))
     self add(home, "pushstate", silica Primitive with("PUSHSTATE", block(silica Note pushstate)))
     self add(home, "popstate", silica Primitive with("POPSTATE", block(silica Note popstate)))
+    self add(home, "removestate", silica Primitive with("REMOVESTATE", block(silica Note removestate)))
     self add(home, "popalphabet", silica Primitive with("POPALPHABET", block(silica Note popalphabetRelative)))
     self add(home, "popalphabet$", silica Primitive with("POPALPHABET$", block(silica Note popalphabet)))
     

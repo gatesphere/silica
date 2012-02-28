@@ -162,6 +162,13 @@ silica Note := Object clone do(
     nil
   )
   
+  removestate := method(
+    if(self statestack size != 0,
+      self statestack pop
+    )
+    nil
+  )
+  
   applystate := method(state,
     n_scale := state at(0)
     n_degree := state at(1)

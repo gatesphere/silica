@@ -73,7 +73,7 @@ silica REPL REPL := Object clone do(
     if(?REPL_DEBUG, writeln("TRACE (parse) received: " .. processed))
     processed splitNoEmpties foreach(tok,
       ret := self interpretToken(tok asMutable lowercase, true, self currentNamespace)
-      if(ret != nil, out append(ret))
+      if(ret first != nil, out append(ret first))
     )
     if(out size == 1, out append("okay")) 
     writeln(out join(" "))
@@ -180,7 +180,10 @@ silica REPL REPL := Object clone do(
     
     // repetition and grouping factors, and concurrent lines
     changed := true
-    while(changed,
+    valid := true
+    depth := 0
+    while(changed and valid and (depth < REPL_MAX_RECURSIVE_DEPTH),
+      depth = depth + 1
       changed = false
       in_2 := out join(" ")
       out := list
@@ -212,14 +215,15 @@ silica REPL REPL := Object clone do(
             ,
             // not a grouping factor or repetition factor
             ret := self interpretToken(tok asMutable lowercase, false, self currentNamespace)
-            if(ret == nil,
+            if(ret first == nil,
               writeln("--> ERROR: cannot recognize token \"" .. tok asMutable uppercase .. "\" within namespace \"" .. self currentNamespace constructName .. "\".")
+              valid = false
               break
             )
             // macro/fn/cmd
-            if(ret asMutable lowercase != tok asMutable lowercase,
+            if(ret second,
               changed = true
-              out append(ret)
+              out append(ret first)
               ,
               // must be a primitive
               out append(tok)
@@ -234,6 +238,11 @@ silica REPL REPL := Object clone do(
             out append(info)
           )
         )
+      )
+      if(valid not, out = list)
+      if(depth >= REPL_MAX_RECURSIVE_DEPTH,
+        writeln("--> ERROR: infinite loop detected.  Bailing out.")
+        out = list
       )
       if(?REPL_DEBUG, writeln("TRACE (preprocess) step: " .. out join(" ")))
     )
@@ -268,7 +277,7 @@ silica REPL REPL := Object clone do(
         if(param != nil, param = param beforeSeq(")"))
         return self interpretMetaCommand(itok, param)
         ,
-        return token
+        return list(token, false)
       )
     )
     
@@ -277,42 +286,42 @@ silica REPL REPL := Object clone do(
       if(final,
         return self interpretPrimitive(itok)
         ,
-        return token
+        return list(token, false)
       )
     )
     
     // other things?
     if(token == "{" or token == "}" or token == "[" or token == "]",
-      return token
+      return list(token, false)
     )
         
     // uninterpretable.. jump up a namespace
     if(namespace parent != nil,
       self interpretToken(token, final, namespace parent)
       ,
-      return nil
+      return list(nil, false)
     )
   )
   
   interpretFunction := method(fn, params,
     if(?REPL_DEBUG, writeln("TRACE (interpretToken): Function found: " .. fn))
-    fn expand(params)
+    list(fn expand(params), true)
   )
   
   interpretMacro := method(macro, 
     if(?REPL_DEBUG, writeln("TRACE (interpretToken): Macro found: " .. macro))
-    macro expand
+    list(macro expand, true)
   )
   
   interpretPrimitive := method(primitive, 
     if(?REPL_DEBUG, writeln("TRACE (interpretToken): Primitive found: " .. primitive))
     out := primitive execute
-    out
+    list(out, true)
   )
   
   interpretMetaCommand := method(meta, param, 
     if(?REPL_DEBUG, writeln("TRACE (interpretToken): MetaCommand found: " .. meta))
     out := meta execute(param)
-    "META> " .. out
+    list("META> " .. out, true)
   )
 )

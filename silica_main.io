@@ -3,6 +3,7 @@
 // the silica repl
 
 SILICA_VERSION := "February 2012"
+REPL_MAX_RECURSIVE_DEPTH := 2000
 //REPL_DEBUG := true
 
 // welcome message
