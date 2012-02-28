@@ -49,6 +49,7 @@ doFile("lang/Function.io")
 doFile("lang/Mode.io")
 doFile("lang/Scale.io")
 doFile("lang/Note.io")
+doFile("lang/Transform.io")
 
 // initialize everything
 if(?REPL_DEBUG, writeln("Initializing language features..."))
