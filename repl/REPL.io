@@ -178,7 +178,7 @@ silica REPL REPL := Object clone do(
       return nil
     )
     
-    // repetition and grouping factors
+    // repetition and grouping factors, and concurrent lines
     changed := true
     while(changed,
       changed = false
@@ -186,6 +186,21 @@ silica REPL REPL := Object clone do(
       out := list
       toks := in_2 splitNoEmpties
       toks foreach(tok,
+        
+        // concurrent lines
+        if(tok containsSeq("^"),
+          changed = true
+          out append("[")
+          out append("pushstate")
+          out append(tok beforeSeq("^"))
+          out append("popstate")
+          out append("][")
+          out append(tok afterSeq("^"))
+          out append("]")
+          continue
+        )
+        
+        // repetition/grouping factors
         if(tok asNumber isNan,
           // not a repetition factor
           if(tok containsSeq("+"),
@@ -244,7 +259,6 @@ silica REPL REPL := Object clone do(
     if(itok isKindOf(silica Macro), // macros and commands
       return self interpretMacro(itok)
     )
-    
         
     // meta?
     if(itok isKindOf(silica MetaCommand),
@@ -267,7 +281,7 @@ silica REPL REPL := Object clone do(
     )
     
     // other things?
-    if(token == "{" or token == "}",
+    if(token == "{" or token == "}" or token == "[" or token == "]" or token == "][",
       return token
     )
         

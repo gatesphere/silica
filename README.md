@@ -84,7 +84,6 @@ Here's a short list of things to do:
   * Meta commands
   * Standard Modes/Scales
   * Error handling
-  * Concurrent melodic lines
   * Instruments
   * Tempos
   * Percussion instruments

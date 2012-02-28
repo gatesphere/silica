@@ -1,0 +1,8 @@
+-debug
+hat >> play rp play lp play
+parta >> 3lp hat
+partb >> 3rp hat
+parta^partb
+-state
+play
+-exit
