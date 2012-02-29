@@ -264,6 +264,21 @@ silica TokenTable := Object clone do(
           in_l join(" ")
         )
     ))
+    self add(home, ":invert", silica Transform with(":INVERT", // contour invert
+        block(in, scale,
+          in splitNoEmpties map(tok,
+            if(tok == "rp",
+              "lp"
+              ,
+              if(tok == "lp",
+              "rp"
+                ,
+                tok
+              )
+            )
+          ) join(" ")
+        )
+    ))
   )
   
   
