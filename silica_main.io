@@ -2,8 +2,10 @@
 // Jacob M. Peck
 // the silica repl
 
+// globals
 SILICA_VERSION := "February 2012"
 REPL_MAX_RECURSIVE_DEPTH := 2000
+REPL_RELOAD := true
 //REPL_DEBUG := true
 
 // welcome message
@@ -12,5 +14,9 @@ writeln("This is version: " .. SILICA_VERSION)
 
 if(?REPL_DEBUG, writeln)
 
-doRelativeFile("lang/common.io")
-doRelativeFile("repl/common.io")
+while(REPL_RELOAD,
+  REPL_RELOAD = false
+  doRelativeFile("lang/common.io")
+  doRelativeFile("repl/common.io")
+  if(?REPL_DEBUG, writeln("DEBUG: Done exiting.  REPL_RELOAD: " .. REPL_RELOAD))
+)

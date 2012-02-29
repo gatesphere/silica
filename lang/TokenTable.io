@@ -111,6 +111,13 @@ silica TokenTable := Object clone do(
           "-DEBUG"
         )
     ))
+    self add(home, "-reloadlang", silica MetaCommand with("-RELOADLANG",
+        block(
+          Lobby REPL_RELOAD = true
+          silica exit = true
+          "-RELOADLANG"
+        )
+    ))
     self add(home, "-leave", silica MetaCommand with("-LEAVE", 
         block(
           out := "-LEAVE\n"

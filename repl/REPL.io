@@ -34,6 +34,12 @@ silica REPL REPL := Object clone do(
   run := method(script,
     if(script != nil,
       // scripting mode
+      file := File with(script)
+      if(file exists not,
+        writeln("Cannot run script \"" .. file path .. "\".  No such file.")
+        silica exit = true;
+        break
+      )
       file := File with(script) openForReading
       writeln("Running script \"" .. file path .. "\".\n\n")
       loop(

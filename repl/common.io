@@ -28,3 +28,4 @@ if(?REPL_DEBUG, writeln("Initializing REPL..."))
   if(?REPL_DEBUG, writeln("  + Starting REPL..."))
   silica exit := false
   silica REPL REPL run(SCRIPT_FILE)
+  if(?REPL_DEBUG, writeln("  + Exiting..."))
