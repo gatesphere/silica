@@ -80,14 +80,22 @@ There are a few things that differentiate silica from Clay.  Here's an extremely
 ### To do:
 Here's a short list of things to do:
   
-  * Transforms 
-  * Meta commands
+  * Transforms (definitions)
+  * Meta commands (definitions)
   * Standard Modes/Scales
   * Error handling
   * Instruments
   * Tempos
   * Percussion instruments
   * Sonic/Graphical rendering
+
+### Known bugs:
+
+  * macro/command/function names can override the name of a primitive
+  * macro/command names with ()'s are allowed, and prevent redefinition as a function (easy fix, disallow it)
+  * macro/command/function names starting with -'s are allowed, overriding meta commands
+  * -reloadlang causes the history file to grow exponentially
+  * meta commands allowed intermixed with other symbols in the same line
 
 ## Contributing
 This is a personal project.  If you have feedback, I'd love to hear it, but code will be mine.  You can contact me at [suschord@suspended-chord.info](mailto:suschord@suspended-chord.info).

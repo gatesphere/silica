@@ -130,41 +130,85 @@ silica TokenTable := Object clone do(
           out
         )
     ))
+    self add(home, "-home", silica MetaCommand with("-HOME",
+        block(
+          out := "-HOME\n"
+          silica REPL REPL currentNamespace = home
+          out = out .. "Entering namespace \"" .. home constructName .. "\""
+          out
+        )
+    ))
     self add(home, "-enter", silica MetaCommand with("-ENTER",
         block(ns,
           out := "-ENTER\n"
-          scns := silica REPL REPL currentNamespace
-          namespace := silica namespace(scns constructName .. "::" .. ns)
-          if(namespace == nil,
-            silica NamespaceTable new(ns, scns)
-            //writeln(ns)
+          if(ns == nil,
+            out = out .. "No namespace name provided."
+            ,
+            scns := silica REPL REPL currentNamespace
             namespace := silica namespace(scns constructName .. "::" .. ns)
-            //writeln(namespace)
-            scns addChild(namespace)
-            //writeln(scns children)
+            if(namespace == nil,
+              silica NamespaceTable new(ns, scns)
+              //writeln(ns)
+              namespace := silica namespace(scns constructName .. "::" .. ns)
+              //writeln(namespace)
+              scns addChild(namespace)
+              //writeln(scns children)
+            )
+            silica REPL REPL currentNamespace = namespace
+            out = out .. "Entering namespace \"" .. namespace constructName .. "\""
           )
-          silica REPL REPL currentNamespace = namespace
-          out = out .. "Entering namespace \"" .. namespace constructName .. "\""
           out
         )
     ))
     self add(home, "-import", silica MetaCommand with("-IMPORT",
         block(filename,
-          file := File with(filename) openForReading
-          writeln("Running script \"" .. file path .. "\".")
-          loop(
-            in := file readLine
-            if(in == nil,
-              break;
+          if(filename != nil,
+            file := File with(filename) openForReading
+            writeln("Running script \"" .. file path .. "\".")
+            loop(
+              in := file readLine
+              if(in == nil,
+                break;
+              )
+              if(in strip == "",
+                continue;
+              )
+              silica REPL REPL parse(in)
             )
-            if(in strip == "",
-              continue;
-            )
-            silica REPL REPL parse(in)
+            file close
+            writeln("--> DONE running script \"" .. file path .. "\".")
+            "-IMPORT"
+            ,
+            "-IMPORT\nNo filename provided."
           )
-          file close
-          writeln("--> DONE running script \"" .. file path .. "\".")
-          "-IMPORT"
+        )
+    ))
+    self add(home, "-display", silica MetaCommand with("-DISPLAY",
+        block(tok,
+          out := "-DISPLAY\n"
+          if(tok == nil,
+            out = out .. "No symbol name provided."
+            ,
+            symbol := silica token(silica REPL REPL currentNamespace, tok)
+            if(symbol == nil,
+              out = out .. "No such symbol \"" .. tok .. "\" within namespace \"" .. silica REPL REPL currentNamespace constructName .. "\"."
+              ,
+              if(symbol isKindOf(silica Function),
+                out = out .. symbol name.. "(" .. symbol params join(",") .. ") := " .. symbol value
+                ,
+                if(symbol isKindOf(silica Command),
+                  out = out .. symbol name .. " = " .. symbol value
+                  ,
+                  if(symbol isKindOf(silica Macro),
+                    out = out .. symbol name .. " >> " .. symbol value
+                    ,
+                    out = out .. "No such symbol \"" .. tok .. "\" within namespace \"" .. silica REPL REPL currentNamespace constructName .. "\"."
+                  )
+                )
+              )
+            )
+          )
+          out
         )
     ))
     self add(home, "-s?", silica MetaCommand with("-S?",
@@ -172,36 +216,27 @@ silica TokenTable := Object clone do(
           out := "-S?"
           ns := silica REPL REPL currentNamespace
           token_table := self namespace_table at(ns constructName)
-          if(token_table == nil or token_table values size == 0,
-            out = out .. "\nThis namespace doesn't contain any token definitions."
-            ,
-            token_table values foreach(tok,
-              if(tok isKindOf(silica MetaCommand),
-                out = out .. "\n" .. tok name .. " : meta command"
-                ,
-                if(tok isKindOf(silica Primitive),
-                  out = out .. "\n" .. tok name .. " : primitive"
+          if(token_table != nil,
+            symbols := token_table values select(tok, tok isKindOf(silica Macro))
+            if(symbols size == 0,
+              out = out .. "\nThis namespace doesn't contain any token definitions."
+              ,
+              symbols foreach(tok,
+                if(tok isKindOf(silica Function),
+                  out = out .. "\n" .. tok name .. " : function"
                   ,
-                  if(tok isKindOf(silica Function),
-                    out = out .. "\n" .. tok name .. " : function"
+                  if(tok isKindOf(silica Command),
+                    out = out .. "\n" .. tok name .. " : command"
                     ,
-                    if(tok isKindOf(silica Command),
-                      out = out .. "\n" .. tok name .. " : command"
-                      ,
-                      if(tok isKindOf(silica Macro),
-                        out = out .. "\n" .. tok name .. " : macro"
-                        ,
-                        if(tok isKindOf(silica Transform),
-                          out = out .. "\n" .. tok name .. " : transform"
-                          ,
-                          out = out .. "\n" .. tok name .. " : unknown" // shouldn't ever see this
-                        )
-                      )
+                    if(tok isKindOf(silica Macro),
+                      out = out .. "\n" .. tok name .. " : macro"
                     )
                   )
                 )
               )
             )
+            ,
+            out = out .. "\nThis namespace doesn't contain any token definitions."
           )
           out
         )
@@ -211,41 +246,100 @@ silica TokenTable := Object clone do(
           out := "-S??"
           ns := silica REPL REPL currentNamespace
           token_table := self namespace_table at(ns constructName)
-          if(token_table == nil or token_table values size == 0,
-            out = out .. "\nThis namespace doesn't contain any token definitions."
-            ,
-            token_table values foreach(tok,
-              if(tok isKindOf(silica MetaCommand),
-                out = out .. "\n" .. tok name .. " : meta command"
-                ,
-                if(tok isKindOf(silica Primitive),
-                  out = out .. "\n" .. tok name .. " : primitive"
+          if(token_table != nil,
+            symbols := token_table values select(tok, tok isKindOf(silica Macro))
+            if(symbols size == 0,
+              out = out .. "\nThis namespace doesn't contain any token definitions."
+              ,
+              symbols foreach(tok,
+                if(tok isKindOf(silica Function),
+                  out = out .. "\n" .. tok name .. "(" .. tok params join(",") .. ") := " .. tok value
                   ,
-                  if(tok isKindOf(silica Function),
-                    out = out .. "\n" .. tok name .. "(" .. tok params join(",") .. ") := " .. tok value
+                  if(tok isKindOf(silica Command),
+                    out = out .. "\n" .. tok name .. " = " .. tok value
                     ,
-                    if(tok isKindOf(silica Command),
-                      out = out .. "\n" .. tok name .. " = " .. tok value
-                      ,
-                      if(tok isKindOf(silica Macro),
-                        out = out .. "\n" .. tok name .. " >> " .. tok value
-                        ,
-                        if(tok isKindOf(silica Transform),
-                          out = out .. "\n" .. tok name .. " : transform"
-                          ,
-                          out = out .. "\n" .. tok name .. " : unknown" // shouldn't ever see this
-                        )
-                      )
+                    if(tok isKindOf(silica Macro),
+                      out = out .. "\n" .. tok name .. " >> " .. tok value
                     )
                   )
                 )
               )
             )
+            ,
+            out = out .. "\nThis namespace doesn't contain any token definitions."
           )
           out
         )
     ))
-    
+    self add(home, "-p?", silica MetaCommand with("-P?",
+        block(
+          out := "-P?"
+          ns := silica REPL REPL currentNamespace
+          token_table := self namespace_table at(ns constructName)
+          if(token_table != nil,
+            symbols := token_table values select(tok, tok isKindOf(silica Primitive) and tok isKindOf(silica MetaCommand) not)
+            if(symbols size == 0,
+              out = out .. "\nThis namespace doesn't contain any primitive definitions.\nCheck in the \"home\" namespace."
+              ,
+              symbols foreach(tok,
+                out = out .. "\n" .. tok name
+              )
+            )
+            ,
+            out = out .. "\nThis namespace doesn't contain any primitive definitions.\nCheck in the \"home\" namespace."
+          )
+          out
+        )
+    ))
+    self add(home, "-mc?", silica MetaCommand with("-MC?",
+        block(
+          out := "-MC?"
+          ns := silica REPL REPL currentNamespace
+          token_table := self namespace_table at(ns constructName)
+          if(token_table != nil,
+            symbols := token_table values select(tok, tok isKindOf(silica MetaCommand))
+            if(symbols size == 0,
+              out = out .. "\nThis namespace doesn't contain any meta command definitions.\nCheck in the \"home\" namespace."
+              ,
+              symbols foreach(tok,
+                out = out .. "\n" .. tok name
+              )
+            )
+            ,
+            out = out .. "\nThis namespace doesn't contain any meta command definitions.\nCheck in the \"home\" namespace."
+          )
+          out
+        )
+    ))
+    self add(home, "-t?", silica MetaCommand with("-T?",
+        block(
+          out := "-T?"
+          ns := silica REPL REPL currentNamespace
+          token_table := self namespace_table at(ns constructName)
+          if(token_table != nil,
+            symbols := token_table values select(tok, tok isKindOf(silica Transform))
+            if(symbols size == 0,
+              out = out .. "\nThis namespace doesn't contain any transform definitions.\nCheck in the \"home\" namespace."
+              ,
+              symbols foreach(tok,
+                out = out .. "\n" .. tok name
+              )
+            )
+            ,
+            out = out .. "\nThis namespace doesn't contain any transform definitions.\nCheck in the \"home\" namespace."
+          )
+          out
+        )
+    ))
+    self add(home, "-about", silica MetaCommand with("-ABOUT",
+        block(
+          out := "-ABOUT\n"
+          out = out .. "silica, copyright Jacob Peck, 2012.\nThis is version: " .. SILICA_VERSION .. "\n"
+          out = out .. "For more information, please visit http://silica.suspended-chord.info/"
+          out
+        )
+    ))
+        
     // transforms
     self add(home, ":drop", silica Transform with(":DROP",
         block(in, scale,
