@@ -191,7 +191,11 @@ silica TokenTable := Object clone do(
                       if(tok isKindOf(silica Macro),
                         out = out .. "\n" .. tok name .. " : macro"
                         ,
-                        out = out .. "\n" .. tok name .. " : unknown"
+                        if(tok isKindOf(silica Transform),
+                          out = out .. "\n" .. tok name .. " : transform"
+                          ,
+                          out = out .. "\n" .. tok name .. " : unknown" // shouldn't ever see this
+                        )
                       )
                     )
                   )
@@ -226,7 +230,11 @@ silica TokenTable := Object clone do(
                       if(tok isKindOf(silica Macro),
                         out = out .. "\n" .. tok name .. " >> " .. tok value
                         ,
-                        out = out .. "\n" .. tok name .. " : unknown"
+                        if(tok isKindOf(silica Transform),
+                          out = out .. "\n" .. tok name .. " : transform"
+                          ,
+                          out = out .. "\n" .. tok name .. " : unknown" // shouldn't ever see this
+                        )
                       )
                     )
                   )
@@ -237,7 +245,28 @@ silica TokenTable := Object clone do(
           out
         )
     ))
+    
+    // transforms
+    self add(home, ":drop", silica Transform with(":DROP",
+        block(in, scale,
+          in_l := in splitNoEmpties
+          pos := in_l size - 1
+          loop(
+            if(pos < 0, break)
+            tok := in_l at(pos)
+            if(tok == "play" or tok == "mute" or tok == "rest",
+              in_l removeAt(pos)
+              break
+              ,
+              pos = pos - 1
+            )
+          )
+          in_l join(" ")
+        )
+    ))
   )
+  
+  
   
   asString := method(
     "< TOKENTABLE >"

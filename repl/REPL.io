@@ -19,14 +19,22 @@ silica REPL REPL := Object clone do(
   // loads the history
   loadHistory := method(
     try (
-      self rl loadHistory(".silica_history")
+      if(SILICA_DIR != nil,
+        self rl loadHistory(Path with(SILICA_DIR, ".silica_history"))
+        ,
+        self rl loadHistory(".silica_history")
+      )
     )
   )
   
   // saves the history
   saveHistory := method(
     try (
-      self rl saveHistory(".silica_history")
+      if(SILICA_DIR != nil,
+        self rl saveHistory(Path with(SILICA_DIR, ".silica_history"))
+        ,
+        self rl saveHistory(".silica_history")
+      )
     )
   )
   
@@ -77,7 +85,8 @@ silica REPL REPL := Object clone do(
       return
     )
     if(?REPL_DEBUG, writeln("TRACE (parse) received: " .. processed))
-    processed splitNoEmpties foreach(tok,
+    transformed := self applyTransforms(processed)
+    transformed splitNoEmpties foreach(tok,
       ret := self interpretToken(tok asMutable lowercase, true, self currentNamespace)
       if(ret first != nil, out append(ret first))
     )
@@ -210,6 +219,24 @@ silica REPL REPL := Object clone do(
           continue
         )
         
+        // transform
+        if(tok containsSeq(":") and tok != ":" and silica token(currentNamespace, tok lowercase) == nil,
+          writeln(tok)
+          // not quite right yet... need to do rightmost decomposition
+          changed = true
+          pos := tok size - 1
+          while(tok exSlice(pos, pos+1) != ":",
+            pos = pos - 1
+          )
+          before := tok exSlice(0, pos)
+          after := tok exSlice(pos)
+          out append("**")
+          out append(before)
+          out append("*")
+          out append(after)
+          continue
+        )
+        
         // repetition/grouping factors
         if(tok asNumber isNan,
           // not a repetition factor
@@ -223,6 +250,7 @@ silica REPL REPL := Object clone do(
             ret := self interpretToken(tok asMutable lowercase, false, self currentNamespace)
             if(ret first == nil,
               writeln("--> ERROR: cannot recognize token \"" .. tok asMutable uppercase .. "\" within namespace \"" .. self currentNamespace constructName .. "\".")
+              if(?REPL_DEBUG, writeln("TRACE (preprocess) breaking with: " .. out join(" ")))
               valid = false
               break
             )
@@ -296,8 +324,13 @@ silica REPL REPL := Object clone do(
       )
     )
     
+    // transform?
+    if(itok isKindOf(silica Transform),
+      return list(token, false)
+    )
+    
     // other things?
-    if(token == "{" or token == "}" or token == "[" or token == "]",
+    if(token == "{" or token == "}" or token == "[" or token == "]" or token == "*" or token == "**",
       return list(token, false)
     )
         
@@ -329,5 +362,58 @@ silica REPL REPL := Object clone do(
     if(?REPL_DEBUG, writeln("TRACE (interpretToken): MetaCommand found: " .. meta))
     out := meta execute(param)
     list("META> " .. out, true)
+  )
+  
+  applyTransforms := method(in,
+    if(in containsSeq(":") not, 
+      if(?REPL_DEBUG, writeln("TRACE (applyTransforms): Nothing to do."))
+      return in
+    ) // nothing to do if no transforms present
+    
+    
+    in_l := in splitNoEmpties
+    t_count := 0
+    out := list
+    current := list
+    in_l foreach(i, tok,
+      if(tok == "**",
+        t_count = t_count + 1
+        continue
+      )
+      if(tok == "*",
+        t_count = t_count - 1
+        continue
+      )
+      if(current size == 0 and t_count == 0,
+        out append(tok)
+        ,
+        if(silica token(self currentNamespace, tok lowercase) isKindOf(silica Transform),
+          current = self applyTransform(silica token(self currentNamespace, tok lowercase), current)
+          ,
+          if(t_count > 0,
+            current append(tok)
+            ,
+            current foreach(tok2,
+              out append(tok2)
+            )
+            current = list
+            out append(tok)
+          )
+        )
+      )
+    )
+    
+    if(current size != 0,
+      current foreach(tok2,
+        out append(tok2)
+      )
+    )
+    if(?REPL_DEBUG, writeln("TRACE (applyTransforms): Returning: " .. out join(" ")))
+    out join(" ")
+  )
+  
+  applyTransform := method(trans, input,
+    if(?REPL_DEBUG, writeln("TRACE (applyTransform): Applying transform " .. trans name .. " on input " .. input))
+    trans execute(input join(" "), silica Note scale last) splitNoEmpties
   )
 )
