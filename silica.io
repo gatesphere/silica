@@ -7,8 +7,19 @@
 // if run as a script, this will not be nil, but a file
 SCRIPT_FILE := System args at(1)
 
-// load libraries
-doFile("lib/io-symbols.io")
+// if run from outside the silica directory, this is important
+SILICA_DIR := nil
+if(System getEnvironmentVariable("SILICA_DIR") == nil,
+  writeln("WARNING: Environment variable SILICA_DIR not set.\nSane behavior cannot be guaranteed.\n")
+  ,
+  SILICA_DIR = Path absolute(System getEnvironmentVariable("SILICA_DIR"))
+)
 
-// run silica
-doFile("silica_main.io")
+
+if(SILICA_DIR != nil,
+  doFile(Path with(SILICA_DIR, "lib/io-symbols.io"))
+  doFile(Path with(SILICA_DIR, "silica_main.io"))
+  ,
+  doFile("lib/io-symbols.io")
+  doFile("silica_main.io")
+)

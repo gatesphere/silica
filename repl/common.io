@@ -15,7 +15,7 @@ Directory with("repl") filesWithExtension(".io") foreach(f,
 )
 */
 
-doFile("repl/REPL.io");
+doRelativeFile("REPL.io");
 
 // initialize everything
 if(?REPL_DEBUG, writeln("Initializing REPL..."))
