@@ -340,9 +340,9 @@ silica TokenTable := Object clone do(
           out
         )
     ))
-    self add(home, "-remove", silica MetaCommand with("-REMOVE",
+    self add(home, "-delete", silica MetaCommand with("-DELETE",
         block(tok,
-          out := "-REMOVE\n"
+          out := "-DELETE\n"
           if(tok == nil,
             out = out .. "No symbol name provided."
             ,
