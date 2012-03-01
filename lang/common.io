@@ -27,6 +27,14 @@ silica token := method(namespace, name,
   silica TokenTable get(namespace, name)
 )
 
+silica initializeScales := method(
+  silica ModeTable table values foreach(mode,
+    silica PitchNames foreach(tonic,
+      silica ScaleTable new(tonic .. "-" .. mode name, mode, tonic)
+    )
+  )
+)
+
 // load lang files
 
 if(?REPL_DEBUG, writeln("Loading lang files..."))
@@ -68,11 +76,8 @@ if(?REPL_DEBUG, writeln("Initializing language features..."))
   
   // initial scales
   if(?REPL_DEBUG, writeln("  + Initializing default scales..."))
-  silica ModeTable table values foreach(mode,
-    silica PitchNames foreach(tonic,
-      silica ScaleTable new(tonic .. "-" .. mode name, mode, tonic)
-    )
-  )
+  silica initializeScales
+
   
   // initialize the TokenTable
   if(?REPL_DEBUG, writeln("  + Initializing the token table..."))
