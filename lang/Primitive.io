@@ -4,8 +4,7 @@
 
 if(?REPL_DEBUG, writeln("  + Loading Primitive.io"))
 
-silica Primitive := Object clone do(
-  name ::= nil
+silica Primitive := silica Entity clone do(
   behavior ::= nil
   
   init := method(
@@ -13,8 +12,8 @@ silica Primitive := Object clone do(
     self behavior = nil
   )
   
-  with := method(name, behavior,
-    self clone setName(name) setBehavior(behavior)
+  with := method(name, description, behavior,
+    self clone setName(name) setDescription(description) setBehavior(behavior)
   )
   
   execute := method(

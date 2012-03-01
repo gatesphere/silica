@@ -4,8 +4,7 @@
 
 if(?REPL_DEBUG, writeln("  + Loading Scale.io"))
 
-silica Scale := Object clone do(
-  name ::= nil
+silica Scale := silica Entity clone do(
   mode ::= nil
   tonic ::= nil
   pitchnames ::= nil

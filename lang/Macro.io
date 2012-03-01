@@ -4,9 +4,8 @@
 
 if(?REPL_DEBUG, writeln("  + Loading Macro.io"))
 
-silica Macro := Object clone do(
+silica Macro := silica Entity clone do(
   value ::= nil
-  name ::= nil
   
   init := method(
     self value = nil

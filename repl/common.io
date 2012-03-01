@@ -4,18 +4,16 @@
 
 silica REPL := Object clone // namespace
 
-// load lang files
+// load REPL files
 if(?REPL_DEBUG, writeln("Loading REPL files..."))
 
-/*
-Directory with("repl") filesWithExtension(".io") foreach(f,
-  if(f name == "common.io", continue)
-  if(?REPL_DEBUG, writeln("  + Loading " .. f name))
-  doFile(f path)
+silica replFileList := list(
+  "REPL.io"
 )
-*/
 
-doRelativeFile("REPL.io");
+silica replFileList foreach(f,
+  doRelativeFile(f)
+)
 
 // initialize everything
 if(?REPL_DEBUG, writeln("Initializing REPL..."))

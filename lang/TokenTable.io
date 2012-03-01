@@ -33,25 +33,25 @@ silica TokenTable := Object clone do(
     home := silica namespace("home")
     
     // primitives
-    self add(home, "play", silica Primitive with("PLAY", block(silica Note play)))
-    self add(home, "rest", silica Primitive with("REST", block(silica Note rest)))
-    self add(home, "mute", silica Primitive with("MUTE", block(silica Note mute)))
-    self add(home, "rp", silica Primitive with("RP", block(silica Note rp)))
-    self add(home, "lp", silica Primitive with("LP", block(silica Note lp)))
-    self add(home, "cp", silica Primitive with("CP", block(silica Note cp)))
-    self add(home, "x2", silica Primitive with("X2", block(silica Note x2)))
-    self add(home, "x3", silica Primitive with("X3", block(silica Note x3)))
-    self add(home, "x5", silica Primitive with("X5", block(silica Note x5)))
-    self add(home, "x7", silica Primitive with("X7", block(silica Note x7)))
-    self add(home, "s2", silica Primitive with("S2", block(silica Note s2)))
-    self add(home, "s3", silica Primitive with("S3", block(silica Note s3)))
-    self add(home, "s5", silica Primitive with("S5", block(silica Note s5)))
-    self add(home, "s7", silica Primitive with("S7", block(silica Note s7)))
-    self add(home, "pushstate", silica Primitive with("PUSHSTATE", block(silica Note pushstate)))
-    self add(home, "popstate", silica Primitive with("POPSTATE", block(silica Note popstate)))
-    self add(home, "removestate", silica Primitive with("REMOVESTATE", block(silica Note removestate)))
-    self add(home, "popalphabet", silica Primitive with("POPALPHABET", block(silica Note popalphabetRelative)))
-    self add(home, "popalphabet$", silica Primitive with("POPALPHABET$", block(silica Note popalphabet)))
+    self add(home, "play", silica Primitive with("PLAY", "Plays the note with the current state.", block(silica Note play)))
+    self add(home, "rest", silica Primitive with("REST", "Rests the note for the current duration.", block(silica Note rest)))
+    self add(home, "mute", silica Primitive with("MUTE", "Plays a muted note for the current duration.", block(silica Note mute)))
+    self add(home, "rp", silica Primitive with("RP", "Raises the pitch of the note by one scale degree.", block(silica Note rp)))
+    self add(home, "lp", silica Primitive with("LP", "Lowers the pitch of the note by one scale degree.", block(silica Note lp)))
+    self add(home, "cp", silica Primitive with("CP", "Stochastically applies either RP or LP.", block(silica Note cp)))
+    self add(home, "x2", silica Primitive with("X2", "Expands the current duration by a factor of 2", block(silica Note x2)))
+    self add(home, "x3", silica Primitive with("X3", "Expands the current duration by a factor of 3", block(silica Note x3)))
+    self add(home, "x5", silica Primitive with("X5", "Expands the current duration by a factor of 5", block(silica Note x5)))
+    self add(home, "x7", silica Primitive with("X7", "Expands the current duration by a factor of 7", block(silica Note x7)))
+    self add(home, "s2", silica Primitive with("S2", "Shrinks the current duration by a factor of 2", block(silica Note s2)))
+    self add(home, "s3", silica Primitive with("S3", "Shrinks the current duration by a factor of 3", block(silica Note s3)))
+    self add(home, "s5", silica Primitive with("S5", "Shrinks the current duration by a factor of 5", block(silica Note s5)))
+    self add(home, "s7", silica Primitive with("S7", "Shrinks the current duration by a factor of 7", block(silica Note s7)))
+    self add(home, "pushstate", silica Primitive with("PUSHSTATE", "Pushes the current state of the note onto the statestack.", block(silica Note pushstate)))
+    self add(home, "popstate", silica Primitive with("POPSTATE", "Pops the top state of the statestack off and applies it to the note.", block(silica Note popstate)))
+    self add(home, "removestate", silica Primitive with("REMOVESTATE", "Removes the top state of the statestack without applying it to the note.", block(silica Note removestate)))
+    self add(home, "popalphabet", silica Primitive with("POPALPHABET", "Attempts to relatively pop and apply the top alphabet from the scalestack.", block(silica Note popalphabetRelative)))
+    self add(home, "popalphabet$", silica Primitive with("POPALPHABET$", "Absolutely pops the top alphabet from the scalestack.", block(silica Note popalphabet)))
     
     // scales
     silica ScaleTable table values foreach(scale,
@@ -61,7 +61,8 @@ silica TokenTable := Object clone do(
       self add(
         home, 
         (name .. "$") asMutable lowercase, 
-        silica Primitive with(name .. "$" asMutable uppercase, 
+        silica ScaleChanger with(name .. "$" asMutable uppercase, 
+        "Attempts to relatively push the scale " .. name .. " onto the scalestack.", 
             block(
               silica Note changeScale(x)
             ) setScope(ctx)
@@ -69,13 +70,15 @@ silica TokenTable := Object clone do(
       self add(
         home, 
         name asMutable lowercase, 
-        silica Primitive with(name asMutable uppercase, 
+        silica ScaleChanger with(name asMutable uppercase, 
+        "Absolutely pushes the scale " .. name .. " onto the scalestack.", 
             block(
               silica Note changeScaleRelative(x)
             ) setScope(ctx)
       ))
     )
     self add(home, "chromatic", silica Primitive with("CHROMATIC",
+        "Relatively pushes the chromatic scale matching the note's current pitch class onto the scalestack.",
         block(
           tonic := silica Note scale last getNameForDegree(silica Note degree)
           silica Note changeScaleRelative(silica scale(tonic .. "-CHROMATIC"))
@@ -84,10 +87,10 @@ silica TokenTable := Object clone do(
     
     
     // metas
-    self add(home, "-exit", silica MetaCommand with("-EXIT", block(silica exit = true; "-EXIT")))
-    self add(home, "-state", silica MetaCommand with("-STATE", block("-STATE\n" .. silica Note asString)))
-    self add(home, "-reset", silica MetaCommand with("-RESET", block("-RESET\n" .. silica Note reset asString)))
-    self add(home, "-@?" , silica MetaCommand with("-@?", 
+    self add(home, "-exit", silica MetaCommand with("-EXIT", "Exit silica.", block(silica exit = true; "-EXIT")))
+    self add(home, "-state", silica MetaCommand with("-STATE", "Print the state of the note.", block("-STATE\n" .. silica Note asString)))
+    self add(home, "-reset", silica MetaCommand with("-RESET", "Reset the state of the note.", block("-RESET\n" .. silica Note reset asString)))
+    self add(home, "-@?" , silica MetaCommand with("-@?", "Display information about the current namespace.",
         block(
           ns := silica REPL REPL currentNamespace
           out := "-@?\nCurrently in namespace \"" .. ns constructName .. "\"\n"
@@ -107,7 +110,7 @@ silica TokenTable := Object clone do(
           out
         )
     ))
-    self add(home, "-debug", silica MetaCommand with("-DEBUG", 
+    self add(home, "-debug", silica MetaCommand with("-DEBUG", "Toggle debugging output.",
         block(
           out := "-DEBUG\n"
           if(Lobby ?REPL_DEBUG, 
@@ -120,14 +123,14 @@ silica TokenTable := Object clone do(
           out
         )
     ))
-    self add(home, "-reloadlang", silica MetaCommand with("-RELOADLANG",
+    self add(home, "-reloadlang", silica MetaCommand with("-RELOADLANG", "Reload the silica language files.",
         block(
           Lobby REPL_RELOAD = true
           silica exit = true
           "-RELOADLANG"
         )
     ))
-    self add(home, "-leave", silica MetaCommand with("-LEAVE", 
+    self add(home, "-leave", silica MetaCommand with("-LEAVE", "Leave the current namespace, retreating one level up.",
         block(
           out := "-LEAVE\n"
           if(silica REPL REPL currentNamespace parent != nil,
@@ -139,7 +142,7 @@ silica TokenTable := Object clone do(
           out
         )
     ))
-    self add(home, "-home", silica MetaCommand with("-HOME",
+    self add(home, "-home", silica MetaCommand with("-HOME", "Return to the \"home\" namespace.", 
         block(
           out := "-HOME\n"
           silica REPL REPL currentNamespace = home
@@ -147,7 +150,7 @@ silica TokenTable := Object clone do(
           out
         )
     ))
-    self add(home, "-enter", silica MetaCommand with("-ENTER",
+    self add(home, "-enter", silica MetaCommand with("-ENTER", "Enter the given namespace, automatically created if absent.",
         block(ns,
           out := "-ENTER\n"
           if(ns == nil,
@@ -169,7 +172,7 @@ silica TokenTable := Object clone do(
           out
         )
     ))
-    self add(home, "-import", silica MetaCommand with("-IMPORT",
+    self add(home, "-import", silica MetaCommand with("-IMPORT", "Run a file of silica instructions within the current namespace.",
         block(filename,
           if(filename != nil,
             file := File with(filename) openForReading
@@ -192,7 +195,7 @@ silica TokenTable := Object clone do(
           )
         )
     ))
-    self add(home, "-display", silica MetaCommand with("-DISPLAY",
+    self add(home, "-display", silica MetaCommand with("-DISPLAY", "Display the definition of a macro, command, or function.",
         block(tok,
           out := "-DISPLAY\n"
           if(tok == nil,
@@ -220,13 +223,13 @@ silica TokenTable := Object clone do(
           out
         )
     ))
-    self add(home, "-s?", silica MetaCommand with("-S?",
+    self add(home, "-s?", silica MetaCommand with("-S?", "Display the names and types of all macros, commands, and functions within the current namespace.",
         block(
           out := "-S?"
           ns := silica REPL REPL currentNamespace
           token_table := self namespace_table at(ns constructName)
           if(token_table != nil,
-            symbols := token_table values select(tok, tok isKindOf(silica Macro))
+            symbols := token_table values select(tok, tok isKindOf(silica Macro)) sortBy(block(a , b, a name < b name))
             if(symbols size == 0,
               out = out .. "\nThis namespace doesn't contain any token definitions."
               ,
@@ -250,13 +253,13 @@ silica TokenTable := Object clone do(
           out
         )
     ))
-    self add(home, "-s??", silica MetaCommand with("-S??",
+    self add(home, "-s??", silica MetaCommand with("-S??", "Display the names and definitions of any macros, commands, and functions in the current namespace.",
         block(
           out := "-S??"
           ns := silica REPL REPL currentNamespace
           token_table := self namespace_table at(ns constructName)
           if(token_table != nil,
-            symbols := token_table values select(tok, tok isKindOf(silica Macro))
+            symbols := token_table values select(tok, tok isKindOf(silica Macro)) sortBy(block(a , b, a name < b name))
             if(symbols size == 0,
               out = out .. "\nThis namespace doesn't contain any token definitions."
               ,
@@ -280,13 +283,13 @@ silica TokenTable := Object clone do(
           out
         )
     ))
-    self add(home, "-p?", silica MetaCommand with("-P?",
+    self add(home, "-p?", silica MetaCommand with("-P?", "Display the names of any primitives in the current namespace.",
         block(
           out := "-P?"
           ns := silica REPL REPL currentNamespace
           token_table := self namespace_table at(ns constructName)
           if(token_table != nil,
-            symbols := token_table values select(tok, tok isKindOf(silica Primitive) and tok isKindOf(silica MetaCommand) not)
+            symbols := token_table values select(tok, tok isKindOf(silica Primitive) and tok isKindOf(silica MetaCommand) not and tok isKindOf(silica ScaleChanger) not) sortBy(block(a , b, a name < b name))
             if(symbols size == 0,
               out = out .. "\nThis namespace doesn't contain any primitive definitions.\nCheck in the \"home\" namespace."
               ,
@@ -300,13 +303,73 @@ silica TokenTable := Object clone do(
           out
         )
     ))
-    self add(home, "-mc?", silica MetaCommand with("-MC?",
+    self add(home, "-p??", silica MetaCommand with("-P??", "Display the names and descriptions of any primitives in the current namespace.",
+        block(
+          out := "-P??"
+          ns := silica REPL REPL currentNamespace
+          token_table := self namespace_table at(ns constructName)
+          if(token_table != nil,
+            symbols := token_table values select(tok, tok isKindOf(silica Primitive) and tok isKindOf(silica MetaCommand) not and tok isKindOf(silica ScaleChanger) not) sortBy(block(a , b, a name < b name))
+            if(symbols size == 0,
+              out = out .. "\nThis namespace doesn't contain any primitive definitions.\nCheck in the \"home\" namespace."
+              ,
+              symbols foreach(tok,
+                out = out .. "\n" .. tok name .. " => " .. tok description
+              )
+            )
+            ,
+            out = out .. "\nThis namespace doesn't contain any primitive definitions.\nCheck in the \"home\" namespace."
+          )
+          out
+        )
+    ))
+    self add(home, "-scales?", silica MetaCommand with("-SCALES?", "Display the names of any scales in the current namespace.",
+        block(
+          out := "-SCALES?"
+          ns := silica REPL REPL currentNamespace
+          token_table := self namespace_table at(ns constructName)
+          if(token_table != nil,
+            symbols := token_table values select(tok, tok isKindOf(silica ScaleChanger)) sortBy(block(a , b, a name < b name))
+            if(symbols size == 0,
+              out = out .. "\nThis namespace doesn't contain any scale definitions.\nCheck in the \"home\" namespace."
+              ,
+              symbols foreach(tok,
+                out = out .. "\n" .. tok name
+              )
+            )
+            ,
+            out = out .. "\nThis namespace doesn't contain any scale definitions.\nCheck in the \"home\" namespace."
+          )
+          out
+        )
+    ))
+    self add(home, "-scales??", silica MetaCommand with("-SCALES??", "Display the names and descriptions of any scales in the current namespace.",
+        block(
+          out := "-SCALES??"
+          ns := silica REPL REPL currentNamespace
+          token_table := self namespace_table at(ns constructName)
+          if(token_table != nil,
+            symbols := token_table values select(tok, tok isKindOf(silica ScaleChanger)) sortBy(block(a , b, a name < b name))
+            if(symbols size == 0,
+              out = out .. "\nThis namespace doesn't contain any scale definitions.\nCheck in the \"home\" namespace."
+              ,
+              symbols foreach(tok,
+                out = out .. "\n" .. tok name .. " => " .. tok description
+              )
+            )
+            ,
+            out = out .. "\nThis namespace doesn't contain any scale definitions.\nCheck in the \"home\" namespace."
+          )
+          out
+        )
+    ))
+    self add(home, "-mc?", silica MetaCommand with("-MC?", "Display the names of any meta commands in the current namespace.",
         block(
           out := "-MC?"
           ns := silica REPL REPL currentNamespace
           token_table := self namespace_table at(ns constructName)
           if(token_table != nil,
-            symbols := token_table values select(tok, tok isKindOf(silica MetaCommand))
+            symbols := token_table values select(tok, tok isKindOf(silica MetaCommand)) sortBy(block(a , b, a name < b name))
             if(symbols size == 0,
               out = out .. "\nThis namespace doesn't contain any meta command definitions.\nCheck in the \"home\" namespace."
               ,
@@ -320,13 +383,33 @@ silica TokenTable := Object clone do(
           out
         )
     ))
-    self add(home, "-t?", silica MetaCommand with("-T?",
+    self add(home, "-mc??", silica MetaCommand with("-MC??", "Display the names and descriptions of any meta commands in the current namespace.",
+        block(
+          out := "-MC??"
+          ns := silica REPL REPL currentNamespace
+          token_table := self namespace_table at(ns constructName)
+          if(token_table != nil,
+            symbols := token_table values select(tok, tok isKindOf(silica MetaCommand)) sortBy(block(a , b, a name < b name))
+            if(symbols size == 0,
+              out = out .. "\nThis namespace doesn't contain any meta command definitions.\nCheck in the \"home\" namespace."
+              ,
+              symbols foreach(tok,
+                out = out .. "\n" .. tok name .. " => " .. tok description
+              )
+            )
+            ,
+            out = out .. "\nThis namespace doesn't contain any meta command definitions.\nCheck in the \"home\" namespace."
+          )
+          out
+        )
+    ))
+    self add(home, "-t?", silica MetaCommand with("-T?", "Display the names of any transforms in the current namespace.",
         block(
           out := "-T?"
           ns := silica REPL REPL currentNamespace
           token_table := self namespace_table at(ns constructName)
           if(token_table != nil,
-            symbols := token_table values select(tok, tok isKindOf(silica Transform))
+            symbols := token_table values select(tok, tok isKindOf(silica Transform)) sortBy(block(a , b, a name < b name))
             if(symbols size == 0,
               out = out .. "\nThis namespace doesn't contain any transform definitions.\nCheck in the \"home\" namespace."
               ,
@@ -340,7 +423,27 @@ silica TokenTable := Object clone do(
           out
         )
     ))
-    self add(home, "-delete", silica MetaCommand with("-DELETE",
+    self add(home, "-t??", silica MetaCommand with("-T??", "Display the names and definitions of any transforms in the current namespace.",
+        block(
+          out := "-T??"
+          ns := silica REPL REPL currentNamespace
+          token_table := self namespace_table at(ns constructName)
+          if(token_table != nil,
+            symbols := token_table values select(tok, tok isKindOf(silica Transform)) sortBy(block(a , b, a name < b name))
+            if(symbols size == 0,
+              out = out .. "\nThis namespace doesn't contain any transform definitions.\nCheck in the \"home\" namespace."
+              ,
+              symbols foreach(tok,
+                out = out .. "\n" .. tok name .. " => " .. tok description
+              )
+            )
+            ,
+            out = out .. "\nThis namespace doesn't contain any transform definitions.\nCheck in the \"home\" namespace."
+          )
+          out
+        )
+    ))
+    self add(home, "-delete", silica MetaCommand with("-DELETE", "Delete the definition of the given symbol within the current namespace.",
         block(tok,
           out := "-DELETE\n"
           if(tok == nil,
@@ -361,7 +464,7 @@ silica TokenTable := Object clone do(
           )
         )
     ))
-    self add(home, "-invariant", silica MetaCommand with("-INVARIANT",
+    self add(home, "-invariant", silica MetaCommand with("-INVARIANT", "Toggle auto-invariant mode.",
         block(
           out := "-INVARIANT\n"
           if(Lobby ?REPL_AUTOINVARIANT, 
@@ -374,7 +477,7 @@ silica TokenTable := Object clone do(
           out
         )
     ))
-    self add(home, "-about", silica MetaCommand with("-ABOUT",
+    self add(home, "-about", silica MetaCommand with("-ABOUT", "Display information about silica.",
         block(
           out := "-ABOUT\n"
           out = out .. "silica, copyright Jacob Peck, 2012.\nThis is version: " .. SILICA_VERSION .. "\n"
@@ -384,7 +487,7 @@ silica TokenTable := Object clone do(
     ))
         
     // transforms
-    self add(home, ":drop", silica Transform with(":DROP", // drops the last note
+    self add(home, ":drop", silica Transform with(":DROP", "Removes the last note of whatever it is applied to.",
         block(in, scale,
           in_l := in splitNoEmpties
           pos := in_l size - 1
@@ -401,7 +504,7 @@ silica TokenTable := Object clone do(
           in_l join(" ")
         )
     ))
-    self add(home, ":double", silica Transform with(":DOUBLE", // doubles the last note
+    self add(home, ":double", silica Transform with(":DOUBLE", "Doubles the last note of whatever it is applied to.",
         block(in, scale,
           in_l := in splitNoEmpties
           pos := in_l size - 1
@@ -418,7 +521,7 @@ silica TokenTable := Object clone do(
           in_l join(" ")
         )
     ))
-    self add(home, ":invert", silica Transform with(":INVERT", // contour invert
+    self add(home, ":invert", silica Transform with(":INVERT", "Inverts the contour of whatever it is applied to.",
         block(in, scale,
           in splitNoEmpties map(tok,
             if(tok == "rp",
@@ -433,7 +536,7 @@ silica TokenTable := Object clone do(
           ) join(" ")
         )
     ))
-    self add(home, ":retrograde", silica Transform with(":RETROGRADE", // reverse
+    self add(home, ":retrograde", silica Transform with(":RETROGRADE", "Reverses the order of whatever it is applied to.",
         block(in, scale, 
           // gather information
           contours := list

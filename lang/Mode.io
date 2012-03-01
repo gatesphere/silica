@@ -4,9 +4,8 @@
 
 if(?REPL_DEBUG, writeln("  + Loading Mode.io"))
 
-silica Mode := Object clone do(
+silica Mode := silica Entity clone do(
   intervals ::= nil
-  name ::= nil
   
   init := method(
     self intervals = nil

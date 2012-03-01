@@ -38,14 +38,29 @@ silica initializeScales := method(
 // load lang files
 
 if(?REPL_DEBUG, writeln("Loading lang files..."))
-/* fix this later
-Directory with("lang") filesWithExtension(".io") foreach(f,
-  if(f name == "common.io", continue)
-  if(?REPL_DEBUG, writeln("  + Loading " .. f name))
-  doFile(f path)
-)
-*/
 
+silica langFileList := list(
+  "Entity.io",
+  "EntityTable.io", 
+  "Namespace.io",
+  "TokenTable.io",
+  "Primitive.io",
+  "ScaleChanger.io",
+  "MetaCommand.io",
+  "Macro.io",
+  "Command.io",
+  "Function.io",
+  "Mode.io",
+  "Scale.io",
+  "Note.io",
+  "Transform.io"
+)
+
+silica langFileList foreach(f,
+  doRelativeFile(f)
+)
+
+/*
 doRelativeFile("EntityTable.io")
 doRelativeFile("Namespace.io")
 doRelativeFile("TokenTable.io")
@@ -58,6 +73,7 @@ doRelativeFile("Mode.io")
 doRelativeFile("Scale.io")
 doRelativeFile("Note.io")
 doRelativeFile("Transform.io")
+*/
 
 // initialize everything
 if(?REPL_DEBUG, writeln("Initializing language features..."))

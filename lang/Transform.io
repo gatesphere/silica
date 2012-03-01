@@ -3,8 +3,7 @@
 
 if(?REPL_DEBUG, writeln("  + Loading Transform.io"))
 
-silica Transform := Object clone do(
-  name ::= nil
+silica Transform := silica Entity clone do(
   behavior ::= nil
   
   init := method(
@@ -12,8 +11,8 @@ silica Transform := Object clone do(
     self behavior = nil
   )
   
-  with := method(name, behavior,
-    self clone setName(name) setBehavior(behavior)
+  with := method(name, description, behavior,
+    self clone setName(name) setDescription(description) setBehavior(behavior)
   )
   
   execute := method(instring, scale,

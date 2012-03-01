@@ -196,8 +196,9 @@ silica REPL REPL := Object clone do(
         silica TokenTable add(
           ns, 
           ctx sname asMutable lowercase, 
-          silica Primitive with(
+          silica ScaleChanger with(
             ctx sname asMutable uppercase,
+            "(USER DEFINED) Attempts to relatively push the scale " .. ctx sname asMutable uppercase .. " onto the scalestack.",
             block(
               silica Note changeScaleRelative(scale)
             ) setScope(ctx)
@@ -205,8 +206,9 @@ silica REPL REPL := Object clone do(
         silica TokenTable add(
           ns, 
           (ctx sname .. "$") asMutable lowercase, 
-          silica Primitive with(
+          silica ScaleChanger with(
             (ctx sname .. "$") asMutable uppercase,
+            "(USER DEFINED) Absolutely pushes the scale " .. (ctx sname .. "$") asMutable uppercase .. " onto the scalestack.", 
             block(
               silica Note changeScale(scale)
             ) setScope(ctx)
