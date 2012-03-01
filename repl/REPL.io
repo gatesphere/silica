@@ -215,6 +215,12 @@ silica REPL REPL := Object clone do(
       write("--> MODE " .. name uppercase .. " defined.")
       return nil
     )
+
+    // auto invariance mode?
+    if(Lobby ?REPL_AUTOINVARIANT,
+      out prepend("pushstate")
+      out append("popstate")
+    )
     
     // repetition and grouping factors, and concurrent lines
     changed := true

@@ -109,12 +109,15 @@ silica TokenTable := Object clone do(
     ))
     self add(home, "-debug", silica MetaCommand with("-DEBUG", 
         block(
+          out := "-DEBUG\n"
           if(Lobby ?REPL_DEBUG, 
             Lobby REPL_DEBUG := false
+            out = out .. "Debug mode deactivated."
             ,
             Lobby REPL_DEBUG := true
+            out = out .. "Debug mode activated."
           )
-          "-DEBUG"
+          out
         )
     ))
     self add(home, "-reloadlang", silica MetaCommand with("-RELOADLANG",
@@ -356,6 +359,19 @@ silica TokenTable := Object clone do(
             )
             out
           )
+        )
+    ))
+    self add(home, "-invariant", silica MetaCommand with("-INVARIANT",
+        block(
+          out := "-INVARIANT\n"
+          if(Lobby ?REPL_AUTOINVARIANT, 
+            Lobby REPL_AUTOINVARIANT := false
+            out = out .. "Auto-invariance mode deactivated."
+            ,
+            Lobby REPL_AUTOINVARIANT := true
+            out = out .. "Auto-invariance mode activated."
+          )
+          out
         )
     ))
     self add(home, "-about", silica MetaCommand with("-ABOUT",
