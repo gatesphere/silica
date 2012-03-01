@@ -94,6 +94,17 @@ silica REPL REPL := Object clone do(
     writeln(out join(" "))
   )
   
+  validName := method(name,
+    out := true
+    if(name findSeqs(list("(",")",":","=","+", "-",",")) != nil, out = false)
+    symbol := silica token(silica namespace("home"), name lowercase)
+    if(symbol isKindOf(silica Primitive) or symbol isKindOf(silica MetaCommand) or symbol isKindOf(silica Transform),
+      out := false
+    )
+    out
+  )
+    
+  
   // get the input to be all primitives
   preprocess := method(in,
     out := in splitNoEmpties
@@ -101,16 +112,20 @@ silica REPL REPL := Object clone do(
     // macro definition?
     if(out at(1) == ">>",
       name := out at(0)
-      contents := out rest rest join(" ")
-      if(name asNumber isNan,
-        m := silica Macro with(name uppercase, contents)
-        silica TokenTable add(self currentNamespace, 
-                              name lowercase, 
-                              m
-        )
-        write("--> MACRO " .. self currentNamespace constructName .. "::" .. name uppercase .. " defined.")
+      if(self validName(name) not,
+        write("--> MACRO name is invalid.")
         ,
-        write("--> MACRO names cannot begin with numbers.")
+        contents := out rest rest join(" ")
+        if(name asNumber isNan,
+          m := silica Macro with(name uppercase, contents)
+          silica TokenTable add(self currentNamespace, 
+                                name lowercase, 
+                                m
+          )
+          write("--> MACRO " .. self currentNamespace constructName .. "::" .. name uppercase .. " defined.")
+          ,
+          write("--> MACRO names cannot begin with numbers.")
+        )
       )
       return nil
     )
@@ -118,16 +133,20 @@ silica REPL REPL := Object clone do(
     // command definition?
     if(out at(1) == "=", 
       name := out at(0)
-      contents := out rest rest join(" ")
-      if(name asNumber isNan,
-        c := silica Command with(name uppercase, contents)
-        silica TokenTable add(self currentNamespace, 
-                              name lowercase, 
-                              c
-        )
-        write("--> COMMAND " .. self currentNamespace constructName .. "::" .. name uppercase .. " defined.")
+      if(self validName(name) not,
+        write("--> COMMAND name is invalid.")
         ,
-        write("--> COMMAND names cannot begin with numbers.")
+        contents := out rest rest join(" ")
+        if(name asNumber isNan,
+          c := silica Command with(name uppercase, contents)
+          silica TokenTable add(self currentNamespace, 
+                                name lowercase, 
+                                c
+          )
+          write("--> COMMAND " .. self currentNamespace constructName .. "::" .. name uppercase .. " defined.")
+          ,
+          write("--> COMMAND names cannot begin with numbers.")
+        )
       )
       return nil
     )
@@ -136,17 +155,21 @@ silica REPL REPL := Object clone do(
     if(out at(1) == ":=", 
       compound := out at(0) splitNoEmpties("(",",",")")
       name := compound at(0)
-      params := compound rest
-      contents := out rest rest join(" ")
-      if(name asNumber isNan,
-        f := silica Function with(name uppercase, contents, params)
-        silica TokenTable add(self currentNamespace,
-                              name lowercase,
-                              f
-        )
-        write("--> FUNCTION " .. self currentNamespace constructName .. "::" .. name uppercase .. " defined.")
+      if(self validName(name) not,
+        write("--> FUNCTION name is invalid.")
         ,
-        write("--> FUNCTION names cannot begin with numbers.")
+        params := compound rest
+        contents := out rest rest join(" ")
+        if(name asNumber isNan,
+          f := silica Function with(name uppercase, contents, params)
+          silica TokenTable add(self currentNamespace,
+                                name lowercase,
+                                f
+          )
+          write("--> FUNCTION " .. self currentNamespace constructName .. "::" .. name uppercase .. " defined.")
+          ,
+          write("--> FUNCTION names cannot begin with numbers.")
+        )
       )
       return nil
     )
@@ -220,8 +243,7 @@ silica REPL REPL := Object clone do(
         )
         
         // transform
-        if(tok containsSeq(":") and tok != ":" and silica token(currentNamespace, tok lowercase) == nil,
-          writeln(tok)
+        if(tok containsSeq(":") and tok beginsWithSeq(":") not and silica token(currentNamespace, tok lowercase) == nil,
           // not quite right yet... need to do rightmost decomposition
           changed = true
           pos := tok size - 1

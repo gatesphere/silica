@@ -91,10 +91,6 @@ Here's a short list of things to do:
 
 ### Known bugs:
 
-  * macro/command/function names can override the name of a primitive
-  * macro/command names with ()'s are allowed, and prevent redefinition as a function (easy fix, disallow it)
-  * macro/command/function names starting with -'s are allowed, overriding meta commands
-  * -reloadlang causes the history file to grow exponentially
   * meta commands allowed intermixed with other symbols in the same line
 
 ## Contributing

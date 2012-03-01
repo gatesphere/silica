@@ -23,6 +23,12 @@ silica TokenTable := Object clone do(
     self
   )
   
+  remove := method(namespace, name,
+    token_table := self namespace_table atIfAbsentPut(namespace constructName, Map clone)
+    token_table removeAt(name)
+    self
+  )
+  
   initialize := method(
     home := silica namespace("home")
     
@@ -168,10 +174,10 @@ silica TokenTable := Object clone do(
             loop(
               in := file readLine
               if(in == nil,
-                break;
+                break
               )
               if(in strip == "",
-                continue;
+                continue
               )
               silica REPL REPL parse(in)
             )
@@ -329,6 +335,27 @@ silica TokenTable := Object clone do(
             out = out .. "\nThis namespace doesn't contain any transform definitions.\nCheck in the \"home\" namespace."
           )
           out
+        )
+    ))
+    self add(home, "-remove", silica MetaCommand with("-REMOVE",
+        block(tok,
+          out := "-REMOVE\n"
+          if(tok == nil,
+            out = out .. "No symbol name provided."
+            ,
+            symbol := silica token(silica REPL REPL currentNamespace, tok lowercase)
+            if(symbol == nil,
+              out = out .. "No symbol \"" .. tok .. "\" defined in namespace \"" .. silica REPL REPL currentNamespace constructName .. "\"."
+              ,
+              if(symbol isKindOf(silica MetaCommand),
+                silica TokenTable remove(silica REPL REPL currentNamespace, tok lowercase)
+                out = out .. "Removing symbol \"" .. tok .. "\" from namespace \"" .. silica REPL REPL currentNamespace constructName .. "\"."
+                ,
+                out = out .. "Cannot remove symbol \"" .. tok .. "\": silica foundation feature."
+              )
+            )
+            out
+          )
         )
     ))
     self add(home, "-about", silica MetaCommand with("-ABOUT",

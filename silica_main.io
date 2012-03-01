@@ -6,6 +6,7 @@
 SILICA_VERSION := "February 2012"
 REPL_MAX_RECURSIVE_DEPTH := 2000
 REPL_RELOAD := true
+REPL_LOAD_HISTORY := true
 //REPL_DEBUG := true
 
 // welcome message
