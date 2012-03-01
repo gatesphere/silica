@@ -79,8 +79,7 @@ There are a few things that differentiate silica from Clay.  Here's an extremely
 
 ### To do:
 Here's a short list of things to do:
-  
-  * Transforms (definitions)
+
   * Meta commands (definitions)
   * Standard Modes/Scales
   * Error handling
