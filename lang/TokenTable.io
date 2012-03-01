@@ -203,7 +203,7 @@ silica TokenTable := Object clone do(
               out = out .. "No such symbol \"" .. tok .. "\" within namespace \"" .. silica REPL REPL currentNamespace constructName .. "\"."
               ,
               if(symbol isKindOf(silica Function),
-                out = out .. symbol name.. "(" .. symbol params join(",") .. ") := " .. symbol value
+                out = out .. symbol name .. "(" .. symbol params join(",") .. ") := " .. symbol value
                 ,
                 if(symbol isKindOf(silica Command),
                   out = out .. symbol name .. " = " .. symbol value
