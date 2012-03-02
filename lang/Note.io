@@ -9,7 +9,7 @@ silica Note := Object clone do(
   degree ::= 1                       // scale degree
   duration ::= 1                     // 1 = quarter note
   register ::= 5                     // octave
-  volume ::= 63                      // volume (0-127)
+  volume ::= 12000                   // volume (0-16000)
   tempo ::= 120                      // tempo in BPM
   instrument ::= nil                 // instrument
   deltadegree ::= :same              // did the pitch raise or lower?
@@ -22,7 +22,7 @@ silica Note := Object clone do(
     self degree = 1
     self duration = 1
     self register = 5
-    self volume = 63
+    self volume = 12000
     self tempo = 120
     //self instrument = silica instrument("PIANO")
     self deltadegree = :same
@@ -31,9 +31,13 @@ silica Note := Object clone do(
   
   reset := method(self init; self)
   
+  // pitch+register
   rp := method(
     new := self degree + 1
-    if(new == self scale last size + 1, new = 1; self setRegister(self register + 1))
+    if(new == self scale last size + 1, 
+      new = 1 
+      if(self register < 9, self setRegister(self register + 1))
+    )
     self setDegree(new)
     self setDeltadegree(:raise)
     nil
@@ -41,7 +45,10 @@ silica Note := Object clone do(
   
   lp := method(
     new := self degree - 1
-    if(new == 0, new = self scale last size; self setRegister(self register - 1))
+    if(new == 0,
+      new = self scale last size
+      if(self register > 0, self setRegister(self register - 1))
+    )
     self setDegree(new)
     self setDeltadegree(:lower)
     nil
@@ -52,6 +59,7 @@ silica Note := Object clone do(
     nil
   )
   
+  // play commands
   play := method(
     out := ""
     if(self deltadegree == :lower, out = out .. "\\ ")
@@ -69,6 +77,7 @@ silica Note := Object clone do(
     "M" .. self duration
   )
   
+  // duration
   expand := method(factor,
     self setDuration(self duration * factor)
     nil
@@ -89,6 +98,28 @@ silica Note := Object clone do(
   s5 := method(self shrink(5))
   s7 := method(self shrink(7))
   
+  // volume (amplitude)
+  setVol := method(value,
+    if(value < 0, value = 0)
+    if(value > 16000, value = 16000)
+    self setVolume(value)
+    nil
+  )
+  
+  setVolRelative := method(value,
+    self setVol(self volume + value)
+  )
+  
+  maxvol := method(self setVol(16000))
+  minvol := method(self setVol(0))
+  midvol := method(self setVol(8000))
+  startvol := method(self setVol(12000))
+  incvol := method(self setVolRelative(1000))
+  incvol1 := method(self setVolRelative(100))
+  decvol := method(self setVolRelative(-1000))
+  decvol1 := method(self setVolRelative(-100))
+  
+  // scale
   changeScale := method(new_scale,
     if(?REPL_DEBUG, writeln("TRACE: Changing to scale " .. new_scale name .. " (absolute mode)"))
     self setDegree(1)
@@ -140,6 +171,7 @@ silica Note := Object clone do(
     nil
   )
   
+  // state
   pushstate := method(
     state := list(
       self scale, 
@@ -191,12 +223,15 @@ silica Note := Object clone do(
     nil
   )
   
+  // reporting
   asString := method(
     out := "NOTE < \n" .. "  scalestack = " .. self scale
     out = out .. "\n  degree = " .. self degree
     out = out .. "\n  register = " .. self register
     out = out .. "\n  duration = " .. self duration
     out = out .. "\n  deltadegree = " .. self deltadegree
+    out = out .. "\n  volume = " .. self volume
+    out = out .. "\n  instrument = " .. self instrument
     out = out .. "\n>"
   )
   

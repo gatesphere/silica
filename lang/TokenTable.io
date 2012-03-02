@@ -52,6 +52,14 @@ silica TokenTable := Object clone do(
     self add(home, "removestate", silica Primitive with("REMOVESTATE", "Removes the top state of the statestack without applying it to the note.", block(silica Note removestate)))
     self add(home, "popalphabet", silica Primitive with("POPALPHABET", "Attempts to relatively pop and apply the top alphabet from the scalestack.", block(silica Note popalphabetRelative)))
     self add(home, "popalphabet$", silica Primitive with("POPALPHABET$", "Absolutely pops the top alphabet from the scalestack.", block(silica Note popalphabet)))
+    self add(home, "maxvol", silica Primitive with("MAXVOL", "Sets the volume to the maximum (16000).", block(silica Note maxvol)))
+    self add(home, "minvol", silica Primitive with("MINVOL", "Sets the volume to the minimum (0).", block(silica Note minvol)))
+    self add(home, "midvol", silica Primitive with("MIDVOL", "Sets the volume to a mid-range value (8000).", block(silica Note midvol)))
+    self add(home, "startvol", silica Primitive with("STARTVOL", "Sets the volume to the starting value (12000).", block(silica Note startvol)))
+    self add(home, "incvol", silica Primitive with("INCVOL", "Increments the volume by 1000.", block(silica Note incvol)))
+    self add(home, "incvol1", silica Primitive with("INCVOL1", "Increments the volume by 100.", block(silica Note incvol1)))
+    self add(home, "decvol", silica Primitive with("DECVOL", "Decrements the volume by 1000.", block(silica Note decvol)))
+    self add(home, "decvol1", silica Primitive with("DECVOL1", "Decrements the volume by 100.", block(silica Note decvol1)))
     
     // scales
     silica ScaleTable table values foreach(scale,
