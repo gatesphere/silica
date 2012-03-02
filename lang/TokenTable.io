@@ -175,7 +175,11 @@ silica TokenTable := Object clone do(
     self add(home, "-import", silica MetaCommand with("-IMPORT", "Run a file of silica instructions within the current namespace.",
         block(filename,
           if(filename != nil,
-            file := File with(filename) openForReading
+            file := File with(filename)
+            if(file exists not,
+              return "-IMPORT\nNo such file."
+            )
+            file openForReading
             writeln("Running script \"" .. file path .. "\".")
             loop(
               in := file readLine
@@ -359,6 +363,24 @@ silica TokenTable := Object clone do(
             )
             ,
             out = out .. "\nThis namespace doesn't contain any scale definitions.\nCheck in the \"home\" namespace."
+          )
+          out
+        )
+    ))
+    self add(home, "-modes?", silica MetaCommand with("-MODES?", "Display the names of all scale modes currently recognized by silica.",
+        block(
+          out := "-MODES?"
+          silica ModeTable table values sortBy(block(a, b, a name < b name)) foreach(m,
+            out = out .. "\n" .. m name
+          )
+          out
+        )
+    ))
+    self add(home, "-modes??", silica MetaCommand with("-MODES??", "Display the names and intervals of all scale modes currently recognized by silica.",
+        block(
+          out := "-MODES??"
+          silica ModeTable table values sortBy(block(a, b, a name < b name)) foreach(m,
+            out = out .. "\n" .. m name .. " => " .. m intervals join(" ")
           )
           out
         )
