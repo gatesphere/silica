@@ -178,8 +178,12 @@ silica REPL REPL := Object clone do(
     if(out at(1) == "!!",
       name := out at(0)
       intervals := out rest rest map(x, x asNumber)
-      if(intervals sum != 12,
-        write("--> Cannot define mode " .. name asMutable uppercase .. ": intervals must sum to 12.")
+      if(intervals sum != silica PitchNames size,
+        write("--> Cannot define mode " .. name asMutable uppercase .. ": intervals must sum to " .. silica PitchNames size .. ".")
+        return nil
+      )
+      if(silica mode(name uppercase) != nil,
+        write("--> Cannot redefine mode " .. name asMutable uppercase .. ".")
         return nil
       )
       //writeln(intervals)
