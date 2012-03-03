@@ -82,13 +82,13 @@ Here's a short list of things to do:
 
   * Error handling
   * Instruments
-  * Tempos
   * Percussion instruments
   * Sonic/Graphical rendering
 
 ### Known bugs:
 
   * meta commands allowed intermixed with other symbols in the same line
+  * display doesn't show all components of a piece
 
 ## Contributing
 This is a personal project.  If you have feedback, I'd love to hear it, but code will be mine.  You can contact me at [suschord@suspended-chord.info](mailto:suschord@suspended-chord.info).

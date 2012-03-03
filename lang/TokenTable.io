@@ -60,7 +60,19 @@ silica TokenTable := Object clone do(
     self add(home, "incvol1", silica Primitive with("INCVOL1", "Increments the volume by 100.", block(silica Note incvol1)))
     self add(home, "decvol", silica Primitive with("DECVOL", "Decrements the volume by 1000.", block(silica Note decvol)))
     self add(home, "decvol1", silica Primitive with("DECVOL1", "Decrements the volume by 100.", block(silica Note decvol1)))
-    
+    self add(home, "maxtempo", silica Primitive with("MAXTEMPO", "Sets the tempo to the maximum (400 bpm).", block(silica Note maxtempo)))
+    self add(home, "mintempo", silica Primitive with("MINTEMPO", "Sets the tempo to the minimum (20 bpm).", block(silica Note mintempo)))
+    self add(home, "midtempo", silica Primitive with("MIDTEMPO", "Sets the tempo to a mid-range value (190 bpm).", block(silica Note midtempo)))
+    self add(home, "starttempo", silica Primitive with("STARTTEMPO", "Sets the tempo to the starting value (120 bpm).", block(silica Note starttempo)))
+    self add(home, "doubletempo", silica Primitive with("DOUBLETEMPO", "Doubles the tempo.", block(silica Note doubletempo)))
+    self add(home, "tripletempo", silica Primitive with("TRIPLETEMPO", "Triples the tempo.", block(silica Note tripletempo)))
+    self add(home, "halftempo", silica Primitive with("HALFTEMPO", "Halves the tempo.", block(silica Note halftempo)))
+    self add(home, "thirdtempo", silica Primitive with("THIRDTEMPO", "Thirds the tempo.", block(silica Note thirdtempo)))
+    self add(home, "inctempo", silica Primitive with("INCTEMPO", "Increments the tempo by 10 bpm.", block(silica Note inctempo)))
+    self add(home, "inctempo1", silica Primitive with("INCTEMPO1", "Increments the tempo by 1 bpm.", block(silica Note inctempo1)))
+    self add(home, "dectempo", silica Primitive with("DECTEMPO", "Decrements the tempo by 10 bpm.", block(silica Note dectempo)))
+    self add(home, "dectempo1", silica Primitive with("DECTEMPO1", "Decrements the tempo by 1 bpm.", block(silica Note dectempo1)))
+
     // scales
     silica ScaleTable table values foreach(scale,
       name := scale name

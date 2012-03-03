@@ -119,6 +119,31 @@ silica Note := Object clone do(
   decvol := method(self setVolRelative(-1000))
   decvol1 := method(self setVolRelative(-100))
   
+  // tempo
+  setTemp := method(value,
+    if(value < 20, value = 20)
+    if(value > 400, value = 400)
+    self setTempo(value)
+    nil
+  )
+  
+  setTempRelative := method(value,
+    self setTemp(self tempo + value)
+  )
+  
+  doubletempo := method(self setTemp(self tempo * 2))
+  tripletempo := method(self setTemp(self tempo * 3))
+  halftempo := method(self setTemp(self tempo / 2))
+  thirdtempo := method(self setTemp(self tempo / 3))
+  mintempo := method(self setTemp(20))
+  maxtempo := method(self setTemp(400))
+  midtempo := method(self setTemp(190))
+  starttempo := method(self setTemp(120))
+  inctempo := method(self setTempRelative(10))
+  inctempo1 := method(self setTempRelative(1))
+  dectempo := method(self setTempRelative(-10))
+  dectempo1 := method(self setTempRelative(-1))
+  
   // scale
   changeScale := method(new_scale,
     if(?REPL_DEBUG, writeln("TRACE: Changing to scale " .. new_scale name .. " (absolute mode)"))
@@ -231,6 +256,7 @@ silica Note := Object clone do(
     out = out .. "\n  duration = " .. self duration
     out = out .. "\n  deltadegree = " .. self deltadegree
     out = out .. "\n  volume = " .. self volume
+    out = out .. "\n  tempo = " .. self tempo
     out = out .. "\n  instrument = " .. self instrument
     out = out .. "\n>"
   )
