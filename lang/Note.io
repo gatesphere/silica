@@ -24,7 +24,7 @@ silica Note := Object clone do(
     self register = 5
     self volume = 12000
     self tempo = 120
-    //self instrument = silica instrument("PIANO")
+    self instrument = silica instrument("PIANO")
     self deltadegree = :same
     self statestack = list
   )
@@ -193,6 +193,12 @@ silica Note := Object clone do(
         self setDegree(new_degree)
       )
     )
+    nil
+  )
+  
+  // instrument
+  changeInstrument := method(inst,
+    self setInstrument(inst)
     nil
   )
   

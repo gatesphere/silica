@@ -82,7 +82,7 @@ silica TokenTable := Object clone do(
         home, 
         (name .. "$") asMutable lowercase, 
         silica ScaleChanger with(name .. "$" asMutable uppercase, 
-        "Attempts to relatively push the scale " .. name .. " onto the scalestack.", 
+            "Attempts to relatively push the scale " .. name .. " onto the scalestack.", 
             block(
               silica Note changeScale(x)
             ) setScope(ctx)
@@ -91,7 +91,7 @@ silica TokenTable := Object clone do(
         home, 
         name asMutable lowercase, 
         silica ScaleChanger with(name asMutable uppercase, 
-        "Absolutely pushes the scale " .. name .. " onto the scalestack.", 
+            "Absolutely pushes the scale " .. name .. " onto the scalestack.", 
             block(
               silica Note changeScaleRelative(x)
             ) setScope(ctx)
@@ -104,6 +104,22 @@ silica TokenTable := Object clone do(
           silica Note changeScaleRelative(silica scale(tonic .. "-CHROMATIC"))
         )
     ))
+    
+    // instruments
+    silica InstrumentTable table values foreach(instrument,
+      name := instrument name
+      ctx := Object clone
+      ctx x := instrument
+      self add(
+        home,
+        name asMutable lowercase,
+        silica InstrumentChanger with(name asMutable uppercase,
+            "Changes the current instrument to " .. name .. ".",
+            block(
+              silica Note changeInstrument(x)
+            ) setScope(ctx)
+      ))
+    )
     
     
     // metas
@@ -313,7 +329,7 @@ silica TokenTable := Object clone do(
           ns := silica REPL REPL currentNamespace
           token_table := self namespace_table at(ns constructName)
           if(token_table != nil,
-            symbols := token_table values select(tok, tok isKindOf(silica Primitive) and tok isKindOf(silica MetaCommand) not and tok isKindOf(silica ScaleChanger) not) sortBy(block(a , b, a name < b name))
+            symbols := token_table values select(tok, tok isKindOf(silica Primitive) and tok isKindOf(silica MetaCommand) not and tok isKindOf(silica ScaleChanger) not and tok isKindOf(silica InstrumentChanger) not) sortBy(block(a , b, a name < b name))
             if(symbols size == 0,
               out = out .. "\nThis namespace doesn't contain any primitive definitions.\nCheck in the \"home\" namespace."
               ,
@@ -333,7 +349,7 @@ silica TokenTable := Object clone do(
           ns := silica REPL REPL currentNamespace
           token_table := self namespace_table at(ns constructName)
           if(token_table != nil,
-            symbols := token_table values select(tok, tok isKindOf(silica Primitive) and tok isKindOf(silica MetaCommand) not and tok isKindOf(silica ScaleChanger) not) sortBy(block(a , b, a name < b name))
+            symbols := token_table values select(tok, tok isKindOf(silica Primitive) and tok isKindOf(silica MetaCommand) not and tok isKindOf(silica ScaleChanger) not and tok isKindOf(silica InstrumentChanger) not) sortBy(block(a , b, a name < b name))
             if(symbols size == 0,
               out = out .. "\nThis namespace doesn't contain any primitive definitions.\nCheck in the \"home\" namespace."
               ,
@@ -401,6 +417,46 @@ silica TokenTable := Object clone do(
           out := "-MODES??"
           silica ModeTable table values sortBy(block(a, b, a name < b name)) foreach(m,
             out = out .. "\n" .. m name .. " => " .. m intervals join(" ")
+          )
+          out
+        )
+    ))
+    self add(home, "-instruments?", silica MetaCommand with("-INSTRUMENTS?", "Display the names of any instruments in the current namespace.",
+        block(
+          out := "-INSTRUMENTS?"
+          ns := silica REPL REPL currentNamespace
+          token_table := self namespace_table at(ns constructName)
+          if(token_table != nil,
+            symbols := token_table values select(tok, tok isKindOf(silica InstrumentChanger)) sortBy(block(a , b, a name < b name))
+            if(symbols size == 0,
+              out = out .. "\nThis namespace doesn't contain any instrument definitions.\nCheck in the \"home\" namespace."
+              ,
+              symbols foreach(tok,
+                out = out .. "\n" .. tok name
+              )
+            )
+            ,
+            out = out .. "\nThis namespace doesn't contain any instrument definitions.\nCheck in the \"home\" namespace."
+          )
+          out
+        )
+    ))
+    self add(home, "-instruments??", silica MetaCommand with("-INSTRUMENTS??", "Display the names and descriptions of any instruments in the current namespace.",
+        block(
+          out := "-INSTRUMENTS??"
+          ns := silica REPL REPL currentNamespace
+          token_table := self namespace_table at(ns constructName)
+          if(token_table != nil,
+            symbols := token_table values select(tok, tok isKindOf(silica InstrumentChanger)) sortBy(block(a , b, a name < b name))
+            if(symbols size == 0,
+              out = out .. "\nThis namespace doesn't contain any instrument definitions.\nCheck in the \"home\" namespace."
+              ,
+              symbols foreach(tok,
+                out = out .. "\n" .. tok name .. " => " .. tok description
+              )
+            )
+            ,
+            out = out .. "\nThis namespace doesn't contain any instrument definitions.\nCheck in the \"home\" namespace."
           )
           out
         )

@@ -13,11 +13,9 @@ silica scale := method(name,
   silica ScaleTable get(name)
 )
 
-/*
 silica instrument := method(name,
   silica InstrumentTable get(name)
 )
-*/
 
 silica namespace := method(name,
   silica NamespaceTable get(name)
@@ -46,12 +44,14 @@ silica langFileList := list(
   "TokenTable.io",
   "Primitive.io",
   "ScaleChanger.io",
+  "InstrumentChanger.io",
   "MetaCommand.io",
   "Macro.io",
   "Command.io",
   "Function.io",
   "Mode.io",
   "Scale.io",
+  "Instrument.io",
   "Note.io",
   "Transform.io"
 )
@@ -59,21 +59,6 @@ silica langFileList := list(
 silica langFileList foreach(f,
   doRelativeFile(f)
 )
-
-/*
-doRelativeFile("EntityTable.io")
-doRelativeFile("Namespace.io")
-doRelativeFile("TokenTable.io")
-doRelativeFile("Primitive.io")
-doRelativeFile("MetaCommand.io")
-doRelativeFile("Macro.io")
-doRelativeFile("Command.io")
-doRelativeFile("Function.io")
-doRelativeFile("Mode.io")
-doRelativeFile("Scale.io")
-doRelativeFile("Note.io")
-doRelativeFile("Transform.io")
-*/
 
 // initialize everything
 if(?REPL_DEBUG, writeln("Initializing language features..."))
