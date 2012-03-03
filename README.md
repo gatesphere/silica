@@ -2,7 +2,16 @@
 Copyright 2012 Jacob M. Peck, all rights reserved.
 
 ## License
-See the file [license/license.txt](https://raw.github.com/gatesphere/silica/master/license/license.txt)
+See the file [license/license.txt](https://raw.github.com/gatesphere/silica/master/license/license.txt).
+
+A brief version is as follows:
+
+  * The entirety of the silica code (all of the .io files) are released under a BSD license.
+    * silica uses the [io-symbols](https://github.com/gatesphere/io-symbols) library, which is released into the public domain.
+  * The source for sire (the silica rendering engine) are released under a BSD license.
+    * sire uses the [processing](http://processing.org/) library, which is released under a dual GPL/LGPL license, with parts under the IBM Public License.
+    * sire uses the [JFugue](http://jfugue.org/) library, which is released under a LGPL license.
+  * The silica documentation and logo are released under a creative commons license (BY-ND-3.0).
 
 ## Overview
 silica is a domain specific language and interpreter for exploring tonal music and cognition.  This project is based heavily on the Clay programming language by Craig Graci, which uses as it's featured data type a representation of a musical note.  Clay has many great features, but there are a few ares that I feel it is lacking in, and as such, I'd like to flesh it out a bit.
