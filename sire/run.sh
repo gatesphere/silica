@@ -3,5 +3,11 @@
 CP=lib/jfugue.jar:lib/processing.jar:classes/.
 
 echo "Running sire..."
-java -cp $CP SIRE
+if [[ $OSTYPE == linux-gnu ]]; then
+  java -cp $CP SIRE
+elif [[ $OSTYPE == cygwin ]]; then
+  java -cp `cygpath -wp $CP` SIRE
+else 
+  echo "Unknown platform."
+fi
 echo "Done."
