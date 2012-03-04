@@ -11,6 +11,7 @@ A brief version is as follows:
   * The source for sire (the silica rendering engine) are released under a BSD license.
     * sire uses the [processing](http://processing.org/) library, which is released under a dual GPL/LGPL license, with parts under the IBM Public License.
     * sire uses the [JFugue](http://jfugue.org/) library, which is released under a LGPL license.
+    * sire uses the [DejaVu Serif Book](http://dejavu-fonts.org/wiki/Main_Page) font, which is released under an open, free-usage license.
   * The silica documentation and logo are released under a creative commons license (BY-ND-3.0).
 
 ## Overview
