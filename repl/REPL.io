@@ -91,7 +91,7 @@ silica REPL REPL := Object clone do(
       if(ret first != nil, out append(ret first))
     )
     if(out size == 1, out append("okay")) 
-    writeln(out join(" "))
+    writeln(out join(" ") strip)
   )
   
   validName := method(name,

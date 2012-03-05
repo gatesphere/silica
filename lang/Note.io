@@ -9,6 +9,7 @@ silica Note := Object clone do(
   degree ::= 1                       // scale degree
   duration ::= 1                     // 1 = quarter note
   register ::= 5                     // octave
+  prevregister ::= 5
   volume ::= 12000                   // volume (0-16000)
   tempo ::= 120                      // tempo in BPM
   instrument ::= nil                 // instrument
@@ -22,6 +23,7 @@ silica Note := Object clone do(
     self degree = 1
     self duration = 1
     self register = 5
+    self prevregister = 5
     self volume = 12000
     self tempo = 120
     self instrument = silica instrument("PIANO")
@@ -62,10 +64,20 @@ silica Note := Object clone do(
   // play commands
   play := method(
     out := ""
-    if(self deltadegree == :lower, out = out .. "\\ ")
-    if(self deltadegree == :raise, out = out .. "/ ")
+    if(self deltadegree == :lower, out = out .. "\\")
+    if(self deltadegree == :raise, out = out .. "/")
+    deltaRegister := self prevregister - self register
+    while(deltaRegister < -1,
+      deltaRegister = deltaRegister + 1
+      out = out .. "/"
+    )
+    while(deltaRegister > 1,
+      deltaRegister = deltaRegister - 1
+      out = out .. "\\"
+    )
+    self prevregister = self register
     self setDeltadegree(:same)
-    out = out .. self scale last getNameForDegree(self degree) .. self duration
+    out = out .. " " .. self scale last getNameForDegree(self degree) .. self duration
     out
   )
   
@@ -212,7 +224,8 @@ silica Note := Object clone do(
       self volume, 
       self tempo, 
       self instrument, 
-      self deltadegree
+      self deltadegree,
+      self prevregister
     )
     self statestack push(state)
     nil
@@ -241,6 +254,7 @@ silica Note := Object clone do(
     n_tempo := state at(5)
     n_instrument := state at(6)
     n_deltadegree := state at(7)
+    n_prevregister := state at(8)
     
     self setScale(n_scale)
     self setDegree(n_degree)
@@ -250,6 +264,7 @@ silica Note := Object clone do(
     self setTempo(n_tempo)
     self setInstrument(n_instrument)
     self setDeltadegree(n_deltadegree)
+    self setPrevregister(n_prevregister)
     
     nil
   )
@@ -264,6 +279,7 @@ silica Note := Object clone do(
     out = out .. "\n  volume = " .. self volume
     out = out .. "\n  tempo = " .. self tempo
     out = out .. "\n  instrument = " .. self instrument
+    out = out .. "\n  prevregister = " .. self prevregister
     out = out .. "\n>"
   )
   
