@@ -16,8 +16,12 @@ public class SIRE extends Frame implements ComponentListener, ActionListener {
   public Player player;
   public Pattern pattern = new Pattern("");
   
+  // Controls
   public Button pause_play;
   public Button stop;
+  
+  // File watcher
+  public SIREFileDaemon sire_file_daemon;
   
   public SIRE() {
     super("sire - the silica rendering engine");
@@ -48,11 +52,15 @@ public class SIRE extends Frame implements ComponentListener, ActionListener {
     addWindowListener(new WindowAdapter(){
       public void windowClosing(WindowEvent we){
         ((SIRE)we.getWindow()).player.close();
+        ((SIRE)we.getWindow()).sire_file_daemon.stop();
         System.exit(0);
       }
     });    
     
     player = new Player();
+    
+    sire_file_daemon = new SIREFileDaemon(this);
+    sire_file_daemon.run();
     
     sire_app.init();
   }
