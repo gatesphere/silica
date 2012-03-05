@@ -70,7 +70,14 @@ public class SIRENTranslator {
         
         float duration = Float.parseFloat(token.substring(1));
         currentTime = currentTime + (duration / 4.0f);
-        String outNote = noteName + currentRegister + "/" + (duration / 4.0f);
+        String outNote = noteName;
+        
+        // not quite right
+        if(noteName.equals("A") || noteName.equals("A#") || noteName.equals("B"))
+          outNote = outNote + (currentRegister - 1);
+        else 
+          outNote = outNote + currentRegister;
+        outNote = outNote + "/" + (duration / 4.0f);
         voices[currentVoice] = voices[currentVoice] + " " + outNote;
         continue;
       }
