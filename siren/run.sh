@@ -2,11 +2,11 @@
 
 CP=lib/jfugue.jar:lib/processing.jar:classes/.
 
-echo "Running sire..."
+echo "Running siren..."
 if [[ $OSTYPE == linux-gnu ]]; then
-  java -cp $CP SIRE
+  java -cp $CP SIREN
 elif [[ $OSTYPE == cygwin ]]; then
-  java -cp `cygpath -wp $CP` SIRE
+  java -cp `cygpath -wp $CP` SIREN
 else 
   echo "Unknown platform."
 fi

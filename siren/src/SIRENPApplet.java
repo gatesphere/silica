@@ -1,12 +1,12 @@
 // silica project
 // sire - the silica rendering engine
 // Jacob M. Peck
-// SIREPApplet.java
+// SIRENPApplet.java
   
 import processing.core.*;
 import org.jfugue.*;  
   
-public class SIREPApplet extends PApplet {
+public class SIRENPApplet extends PApplet {
   public void setup() {
     PFont deja_vu_serif_16 = loadFont("DejaVuSerif-16.vlw");
     textFont(deja_vu_serif_16);
@@ -20,7 +20,7 @@ public class SIREPApplet extends PApplet {
     rect(0, 0, width, height);
     fill(0, 102, 153);
     textAlign(CENTER, CENTER);
-    text("Welcome to sire.", width/2, height/2);
+    text("Welcome to\nsiren - the silica rendering engine.", width/2, height/2);
   }
   
   public void sendUpdateEvent() {

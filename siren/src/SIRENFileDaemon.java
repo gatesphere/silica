@@ -1,7 +1,7 @@
 // silica project
 // sire - the silica rendering engine
 // Jacob M. Peck
-// SIREFileDaemon.java
+// SIRENFileDaemon.java
 
 import java.nio.file.*;
 import static java.nio.file.StandardWatchEventKinds.*;
@@ -10,13 +10,13 @@ import java.nio.file.attribute.*;
 import java.io.*;
 import java.util.*;
 
-public class SIREFileDaemon {
+public class SIRENFileDaemon {
   private static WatchService watcher;
   private static WatchKey watchkey;
   private static String separator = System.getProperty("file.separator");
-  private SIRE parent;
-  public Path indir = Paths.get("sire_in");
-  public Path outdir = Paths.get("sire_out");
+  private SIREN parent;
+  public Path indir = Paths.get("siren_in");
+  public Path outdir = Paths.get("siren_out");
   public Path mididir = Paths.get("midi");
   private boolean running = true;
   
@@ -25,7 +25,7 @@ public class SIREFileDaemon {
     return (WatchEvent<T>)event;
   }
   
-  public SIREFileDaemon(SIRE parent) {
+  public SIRENFileDaemon(SIREN parent) {
     this.parent = parent;
     if(!indir.toFile().exists()) {
       indir.toFile().mkdirs();

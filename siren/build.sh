@@ -4,7 +4,7 @@ CP=lib/jfugue.jar:lib/processing.jar:.
 SRC_DIR=src/
 CLASS_DIR=classes/
 
-echo "Building sire..."
+echo "Building siren..."
 if [[ $OSTYPE == linux-gnu ]]; then
   javac -cp $CP -sourcepath $SRC_DIR -d $CLASS_DIR $SRC_DIR/*.java
 elif [[ $OSTYPE == cygwin ]]; then

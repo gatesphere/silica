@@ -1,4 +1,4 @@
-silica and sire are released under the following license:
+silica and siren are released under the following license:
 
 (This is a BSD License)
 
@@ -14,7 +14,7 @@ Redistribution and use in source and binary forms, with or without modification,
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ==========================================
-sire uses the Processing library, which is released under the following licenses:
+siren uses the Processing library, which is released under the following licenses:
 
 We use GPL v2 for the parts of the project that we've developed ourselves.
 For the 'core' library, it's LGPL, for everything else, it's GPL.
@@ -525,7 +525,7 @@ itself (excluding combinations of the Program with other software or
 hardware.
 
 ==========================================
-sire uses the JFugue library, which is released under the following licenses:
+siren uses the JFugue library, which is released under the following licenses:
 
 GNU LESSER GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
@@ -694,7 +694,7 @@ permanent authorization for you to choose that version for the
 Library.
 
 ==========================================
-sire uses the DejaVu Serif Book font, which is released under the following licenses:
+siren uses the DejaVu Serif Book font, which is released under the following licenses:
 
 License
 Fonts are © Bitstream (see below). DejaVu changes are in public domain. Explanation of copyright is on Gnome page on Bitstream Vera fonts. Glyphs imported from Arev fonts are © Tavmjung Bah (see below)

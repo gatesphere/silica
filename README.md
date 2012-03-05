@@ -6,12 +6,12 @@ See the file [license/license.txt](https://raw.github.com/gatesphere/silica/mast
 
 A brief version is as follows:
 
-  * The entirety of the silica code (all of the .io files) are released under a BSD license.
+  * The entirety of the silica code (all of the .io files) is released under a BSD license.
     * silica uses the [io-symbols](https://github.com/gatesphere/io-symbols) library, which is released into the public domain.
-  * The source for sire (the silica rendering engine) are released under a BSD license.
-    * sire uses the [processing](http://processing.org/) library, which is released under a dual GPL/LGPL license, with parts under the IBM Public License.
-    * sire uses the [JFugue](http://jfugue.org/) library, which is released under a LGPL license.
-    * sire uses the [DejaVu Serif Book](http://dejavu-fonts.org/wiki/Main_Page) font, which is released under an open, free-usage license.
+  * The source for siren (the silica rendering engine) is released under a BSD license.
+    * siren uses the [processing](http://processing.org/) library, which is released under a dual GPL/LGPL license, with parts under the IBM Public License.
+    * siren uses the [JFugue](http://jfugue.org/) library, which is released under a LGPL license.
+    * siren uses the [DejaVu Serif Book](http://dejavu-fonts.org/wiki/Main_Page) font, which is released under an open, free-usage license.
   * The silica documentation and logo are released under a creative commons license (BY-ND-3.0).
 
 ## Overview
@@ -93,7 +93,7 @@ Here's a short list of things to do:
   * Comments in script files
   * Error handling
   * Percussion instruments
-  * Sonic/Graphical rendering
+  * Sonic/Graphical rendering (siren)
 
 ### Known bugs:
 

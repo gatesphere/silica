@@ -2,6 +2,6 @@
 
 CLASS_DIR=classes
 
-echo "Cleaning sire..."
+echo "Cleaning siren..."
 rm $CLASS_DIR/*
 echo "Done."
