@@ -89,7 +89,11 @@ public class SIREN extends Frame implements ComponentListener, ActionListener {
     //player.play(new Pattern("C D E D C"));
   }
   
-  
+  public void found(String foundString) {
+    String str = siren_translator.getMusicString(foundString);
+    pattern = new Pattern(str);
+    player.play(pattern);
+  }
   
   // action listener
   public void actionPerformed(ActionEvent ae) {

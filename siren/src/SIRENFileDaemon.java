@@ -88,7 +88,8 @@ public class SIRENFileDaemon {
               }
             } while (!success);
             if(sc != null) sc.close();
-            System.out.println("Contents: " + contents);
+            parent.found(contents);
+            //System.out.println("Contents: " + contents);
             
             // JFugue magic
             /*
