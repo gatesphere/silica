@@ -23,6 +23,9 @@ public class SIREN extends Frame implements ComponentListener, ActionListener {
   // File watcher
   public SIRENFileDaemon siren_file_daemon;
   
+  // Translator
+  public SIRENTranslator siren_translator;
+  
   public SIREN() {
     super("siren - the silica rendering engine");
     
@@ -59,8 +62,10 @@ public class SIREN extends Frame implements ComponentListener, ActionListener {
     
     player = new Player();
     
-    siren_file_daemon = new SIRENFileDaemon(this);
+    siren_file_daemon = SIRENFileDaemon.getInstance(this);
     siren_file_daemon.run();
+    
+    siren_translator = SIRENTranslator.getInstance();
     
     siren_app.init();
   }

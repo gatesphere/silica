@@ -11,6 +11,7 @@ import java.io.*;
 import java.util.*;
 
 public class SIRENFileDaemon {
+  private static SIRENFileDaemon instance = null;
   private static WatchService watcher;
   private static WatchKey watchkey;
   private static String separator = System.getProperty("file.separator");
@@ -25,7 +26,13 @@ public class SIRENFileDaemon {
     return (WatchEvent<T>)event;
   }
   
-  public SIRENFileDaemon(SIREN parent) {
+  public static SIRENFileDaemon getInstance(SIREN parent) {
+    if(instance == null) instance = new SIRENFileDaemon(parent);
+    else instance.parent = parent;
+    return instance;
+  }
+  
+  private SIRENFileDaemon(SIREN parent) {
     this.parent = parent;
     if(!indir.toFile().exists()) {
       indir.toFile().mkdirs();
