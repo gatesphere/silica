@@ -1,5 +1,5 @@
 // silica project
-// sire - the silica rendering engine
+// siren - the silica rendering engine
 // Jacob M. Peck
 // SIREN.java
 
