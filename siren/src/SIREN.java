@@ -21,6 +21,7 @@ public class SIREN extends Frame implements ComponentListener, ActionListener {
   public Button pause_play;
   public Button stop;
   public Button save_as_midi;
+  public Button render_graphics;
   
   // File watcher
   public SIRENFileDaemon siren_file_daemon;
@@ -50,10 +51,16 @@ public class SIREN extends Frame implements ComponentListener, ActionListener {
     save_as_midi.setEnabled(true);
     save_as_midi.setActionCommand("MIDI");
     save_as_midi.addActionListener(this);
+    render_graphics = new Button("Render Graphics");
+    render_graphics.setEnabled(false);
+    render_graphics.setActionCommand("Graphics");
+    render_graphics.addActionListener(this);
+    
     
     control_panel.add(pause_play);
     control_panel.add(stop);
     control_panel.add(save_as_midi);
+    control_panel.add(render_graphics);
     
     
     add(siren_app, BorderLayout.CENTER);
@@ -120,6 +127,14 @@ public class SIREN extends Frame implements ComponentListener, ActionListener {
   
   public void renderGraphics(String graphicString) {
     // blah
+    String str = siren_translator.getMusicString(graphicString);
+    pattern = new Pattern(str);
+    renderGraphicsButton();
+  }
+  
+  public void renderGraphicsButton() {
+    String str = pattern.getMusicString();
+    // blah...
   }
   
   // action listener
@@ -136,6 +151,9 @@ public class SIREN extends Frame implements ComponentListener, ActionListener {
     }
     else if (s.equals("MIDI")) {
       this.saveMidi();
+    }
+    else if (s.equals("Graphics")) {
+      this.renderGraphicsButton();
     }
   } 
   
