@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 
-public class SIREN extends Frame implements ComponentListener, ActionListener {
+public class SIREN extends Frame implements ComponentListener, ActionListener, WindowListener {
   // Graphics (processing) area
   public SIRENPApplet siren_app;
   
@@ -22,6 +22,8 @@ public class SIREN extends Frame implements ComponentListener, ActionListener {
   public Button stop;
   public Button save_as_midi;
   public Button render_graphics;
+  public Panel control_panel;
+  public boolean buttons_enabled = false;
   
   // File watcher
   public SIRENFileDaemon siren_file_daemon;
@@ -38,7 +40,7 @@ public class SIREN extends Frame implements ComponentListener, ActionListener {
     
     siren_app = new SIRENPApplet();
     
-    Panel control_panel = new Panel();
+    control_panel = new Panel();
     pause_play = new Button("Pause");
     pause_play.setEnabled(false);
     pause_play.setActionCommand("Pause");
@@ -48,7 +50,7 @@ public class SIREN extends Frame implements ComponentListener, ActionListener {
     stop.setActionCommand("Stop");
     stop.addActionListener(this);
     save_as_midi = new Button("Save as MIDI");
-    save_as_midi.setEnabled(true);
+    save_as_midi.setEnabled(false);
     save_as_midi.setActionCommand("MIDI");
     save_as_midi.addActionListener(this);
     render_graphics = new Button("Render Graphics");
@@ -68,13 +70,7 @@ public class SIREN extends Frame implements ComponentListener, ActionListener {
     setResizable(true);
     setSize(500,500);
     
-    addWindowListener(new WindowAdapter(){
-      public void windowClosing(WindowEvent we){
-        ((SIREN)we.getWindow()).player.close();
-        ((SIREN)we.getWindow()).siren_file_daemon.stop();
-        System.exit(0);
-      }
-    });    
+    addWindowListener(this);
     
     player = new Player();
     
@@ -94,18 +90,67 @@ public class SIREN extends Frame implements ComponentListener, ActionListener {
     SIREN siren = new SIREN();
     siren.setLocationRelativeTo(null);
     siren.setVisible(true);
+    siren.watchButtons();
+  }
+  
+  public void watchButtons() {
+    final SIREN siren = this;
+    new Thread(new Runnable() {
+      public void run() {
+        for(;;) {
+          if(siren.player.isPlaying()) {
+            siren.pause_play.setLabel("Pause");
+            siren.pause_play.setActionCommand("Pause");
+            siren.stop.setEnabled(true);
+            siren.control_panel.invalidate();
+            siren.control_panel.validate();
+          } else {
+            if(!siren.player.isPaused())
+              siren.pause_play.setLabel("Replay");
+            else
+              siren.pause_play.setLabel("Resume");
+            siren.pause_play.setActionCommand("Play");
+            siren.stop.setEnabled(false);
+            siren.control_panel.invalidate();
+            siren.control_panel.validate();
+          }
+        }
+      }
+    }).start();
+  }
+  
+  public void enableButtons() {
+    if(!buttons_enabled) {
+      pause_play.setEnabled(true);
+      stop.setEnabled(true);
+      save_as_midi.setEnabled(true);
+      render_graphics.setEnabled(true);
+      buttons_enabled = true;
+    }
   }
   
   public void renderSonic(String sonicString) {
     //System.out.println("Rendering sonically.");
     String str = siren_translator.getMusicString(sonicString);
     pattern = new Pattern(str);
-    player.play(pattern);
+    if(!buttons_enabled) enableButtons();
+    playInThread();
+  }
+  
+  public void playInThread() {
+    final Player player1 = this.player;
+    final Pattern pattern1 = this.pattern;
+    new Thread(new Runnable() {
+      public void run() {
+        player1.play(pattern1);
+      }
+    }).start();
   }
   
   public void renderMidi(String midiString) {
     String str = siren_translator.getMusicString(midiString);
     pattern = new Pattern(str);
+    if(!buttons_enabled) enableButtons();
     saveMidi();
   }
   
@@ -129,10 +174,11 @@ public class SIREN extends Frame implements ComponentListener, ActionListener {
     // blah
     String str = siren_translator.getMusicString(graphicString);
     pattern = new Pattern(str);
-    renderGraphicsButton();
+    if(!buttons_enabled) enableButtons();
+    renderGraphicsHelper();
   }
   
-  public void renderGraphicsButton() {
+  public void renderGraphicsHelper() {
     String str = pattern.getMusicString();
     // blah...
   }
@@ -142,21 +188,29 @@ public class SIREN extends Frame implements ComponentListener, ActionListener {
     String s = ae.getActionCommand(); 
     if (s.equals("Pause")) { 
       this.player.pause();
+      //System.out.println("Pausing.");
     } 
-    else if (s.equals("Resume")) { 
-      this.player.resume(); 
+    else if (s.equals("Play")) { 
+      if(!this.player.isPaused()) {
+        this.playInThread();
+        //System.out.println("Playing.");
+      }
+      else {
+        this.player.resume(); 
+        //System.out.println("Resuming.");
+      }
     } 
     else if (s.equals("Stop")) { 
       this.player.stop();
+      //System.out.println("Stopping.");
     }
     else if (s.equals("MIDI")) {
       this.saveMidi();
     }
     else if (s.equals("Graphics")) {
-      this.renderGraphicsButton();
+      this.renderGraphicsHelper();
     }
   } 
-  
   
   // component listener
   public void componentHidden(ComponentEvent e) {}
@@ -165,4 +219,17 @@ public class SIREN extends Frame implements ComponentListener, ActionListener {
     ((SIREN)e.getComponent()).sendUpdateEvent();
   }
   public void componentShown(ComponentEvent e) {}
+  
+  // window listener
+  public void windowActivated(WindowEvent e) {}
+  public void windowClosed(WindowEvent e) {}
+  public void windowClosing(WindowEvent e) {
+    ((SIREN)e.getWindow()).player.close();
+    ((SIREN)e.getWindow()).siren_file_daemon.stop();
+    System.exit(0); 
+  }
+  public void windowDeactivated(WindowEvent e) {}
+  public void windowDeiconified(WindowEvent e) {}
+  public void windowIconified(WindowEvent e) {}
+  public void windowOpened(WindowEvent e) {}
 }

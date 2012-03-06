@@ -116,8 +116,11 @@ silica REPL REPL := Object clone do(
     
     if(siren_out size != 0, siren_out prepend(inst) prepend(vol) prepend("!" .. silica Note tempo))
     if(?REPL_DEBUG, writeln("TRACE (parse): siren_out = " .. siren_out))
-    if(REPL_SIREN_ENABLED, self writeToSiren(siren_out prepend("render-sonic\n") join(" ") strip)) 
-    
+    if(REPL_SIREN_ENABLED,
+      if(siren_out size != 0,
+        self writeToSiren(siren_out prepend("render-sonic\n") join(" ") strip)
+      )
+    )
     if(repl_out size == 1, repl_out append("okay."))
     writeln(repl_out join(" ") strip)
   )
@@ -272,11 +275,14 @@ silica REPL REPL := Object clone do(
         if(tok containsSeq("^"),
           changed = true
           out append("[")
-          out append("pushstate")
-          out append(tok beforeSeq("^"))
-          out append("popstate")
-          out append("||")
-          out append(tok afterSeq("^"))
+          while(tok containsSeq("^"),
+            out append("pushstate")
+            out append(tok beforeSeq("^"))
+            out append("popstate")
+            out append("||")
+            tok = tok afterSeq("^")
+          )
+          out append(tok)
           out append("]")
           continue
         )
