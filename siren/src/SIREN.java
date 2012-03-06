@@ -162,7 +162,7 @@ public class SIREN extends Frame implements ComponentListener, ActionListener, W
       save.setVisible(true);
       String filename = save.getFile();
       if(filename != null) {
-        saveFile = new File(filename);
+        saveFile = new File(save.getDirectory(), filename);
         player.saveMidi(pattern, saveFile);
       }
     } catch (Exception ex) {
