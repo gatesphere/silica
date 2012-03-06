@@ -71,7 +71,7 @@ public class SIRENTranslator {
     
     String music_string = "";
     for(int i = 0; i < 16; i++) {
-      music_string = music_string + " " + voices[i];
+      music_string = music_string + " " + voices[i] + " R/0.25";
     }
     System.out.println(music_string);
     return music_string.trim();

@@ -36,6 +36,36 @@ silica Scale := silica Entity clone do(
   getNameForDegree := method(degree, self pitchnames at(degree - 1))
   getDegreeForName := method(name, pos := self pitchnames indexOf(name); if(pos != nil, pos = pos + 1); pos)
   
+  getOffsetFromC := method(
+    pos := silica PitchNames indexOf(self tonic)
+    if(pos > silica PitchNames size / 2,
+      pos = pos - silica PitchNames size
+    )
+    //writeln(pos)
+    pos
+  )
+  
+  getSirenOctave := method(orig, pitch,
+    offset := self getOffsetFromC
+    lower := silica PitchNames exSlice(0, offset)
+    higher := silica PitchNames exSlice(offset)
+    //writeln(higher)
+    //writeln(lower)
+    //writeln(offset)
+    if(offset < 0 and higher contains(pitch),
+      //writeln(orig - 1)
+      return orig - 1
+      ,
+      if(offset > 0 and lower contains(pitch),
+        //writeln(orig + 1)
+        return orig + 1
+        ,
+        //writeln(orig)
+        return orig
+      )
+    )
+  )
+  
   asString := method(
     "< SCALE " .. self name asMutable uppercase .. " >"
   )
@@ -48,4 +78,4 @@ silica ScaleTable := silica EntityTable clone do(
   )
 )
 
-silica PitchNames := list("A","Z","B","C","V","D","W","E","F","X","G","Y")
+silica PitchNames := list("C","V","D","W","E","F","X","G","Y","A","Z","B")

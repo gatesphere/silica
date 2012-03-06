@@ -82,23 +82,31 @@ public class SIRENFileDaemon {
                 continue; // try again.
               }
               //sc.reset(); // prevent crash (weird Java 1.7.0-ea bug?)
-              if (sc.hasNextLine()) {
-                contents = sc.nextLine();
+              while (sc.hasNext()) {
+                contents = contents + " " + sc.next();
                 success = true;
               }
             } while (!success);
             if(sc != null) sc.close();
-            parent.found(contents);
-            //System.out.println("Contents: " + contents);
             
-            // JFugue magic
-            /*
-            player.play(contents);
-            filename = "output" + separator + 
-                       filename.split(java.util.regex.Pattern.quote(separator))[1].trim() + ".midi";
-            player.saveMidi(contents, new File(filename));
-            System.out.println("File saved as: " + filename);
-            */
+            sc = new Scanner(contents);
+            //System.out.println(contents);
+            String modeLine = sc.next();
+            String rest = "";
+            while(sc.hasNext()) {
+              //System.out.println("building rest...");
+              rest = rest + " " + sc.next();
+            }
+            //System.out.println(rest);
+            
+            if(modeLine.equalsIgnoreCase("render-sonic"))            
+              parent.renderSonic(rest);
+            else if(modeLine.equalsIgnoreCase("render-midi"))
+              parent.renderMidi(rest);
+            else if(modeLine.equalsIgnoreCase("render-graphics"))
+              parent.renderGraphics(rest);
+            
+            //ignore anything that isn't one of those three modes
             
             // reset watcher
             watchkey.reset();

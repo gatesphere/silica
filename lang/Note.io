@@ -76,8 +76,9 @@ silica Note := Object clone do(
     )
     self prevregister = self register
     self setDeltadegree(:same)
-    out = out .. " " .. self scale last getNameForDegree(self degree) .. self duration
-    out2 := self scale last getNameForDegree(self degree) .. self register .. "/" .. (self duration / 4.0)
+    pitch := self scale last getNameForDegree(self degree)
+    out = out .. " " .. pitch .. self duration
+    out2 := pitch .. self scale last getSirenOctave(register, pitch) .. "/" .. (self duration / 4.0)
     list(out,out2)
   )
   

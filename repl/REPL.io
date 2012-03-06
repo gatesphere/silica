@@ -84,7 +84,7 @@ silica REPL REPL := Object clone do(
     if(string == "",return nil)
     //try(
       file := File with(Path with(siren_in_path,UUID uuidRandom)) openForUpdating
-      if(?REPL_DEBUG, writeln("Sending to siren: " .. file path))
+      if(?REPL_DEBUG, writeln("Sending to siren: " .. file path .. string))
       file write(string)
       file close
     //)
@@ -97,7 +97,7 @@ silica REPL REPL := Object clone do(
   parse := method(in,
     out := list(list("-->", nil))
     vol := "$" .. silica Note volume
-    inst := "@" .. silica Instrument name
+    inst := "@" .. silica Note instrument name
     
     processed := self preprocess(in)
     if(processed == nil,
@@ -111,14 +111,14 @@ silica REPL REPL := Object clone do(
       if(ret first != nil, out append(ret first))
     )
     
-    if(out size == 1, out append(list("okay",nil)))
     repl_out := out map(tok, tok first) remove(nil)
     siren_out := out map(tok, tok second) remove(nil)
     
     if(siren_out size != 0, siren_out prepend(inst) prepend(vol) prepend("!" .. silica Note tempo))
     if(?REPL_DEBUG, writeln("TRACE (parse): siren_out = " .. siren_out))
-    if(REPL_SIREN_ENABLED, self writeToSiren(siren_out join(" ") strip)) 
+    if(REPL_SIREN_ENABLED, self writeToSiren(siren_out prepend("render-sonic\n") join(" ") strip)) 
     
+    if(repl_out size == 1, repl_out append("okay."))
     writeln(repl_out join(" ") strip)
   )
   
