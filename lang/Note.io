@@ -31,7 +31,7 @@ silica Note := Object clone do(
     self statestack = list
   )
   
-  reset := method(self init; self)
+  reset := method(self init; list(self, nil))
   
   // pitch+register
   rp := method(
@@ -42,7 +42,7 @@ silica Note := Object clone do(
     )
     self setDegree(new)
     self setDeltadegree(:raise)
-    nil
+    list(nil,nil)
   )
   
   lp := method(
@@ -53,12 +53,11 @@ silica Note := Object clone do(
     )
     self setDegree(new)
     self setDeltadegree(:lower)
-    nil
+    list(nil,nil)
   )
   
   cp := method(
     if(Random value > 0.5, self lp, self rp)
-    nil
   )
   
   // play commands
@@ -78,26 +77,29 @@ silica Note := Object clone do(
     self prevregister = self register
     self setDeltadegree(:same)
     out = out .. " " .. self scale last getNameForDegree(self degree) .. self duration
-    out
+    out2 := self scale last getNameForDegree(self degree) .. self register .. "/" .. (self duration / 4.0)
+    list(out,out2)
   )
   
   rest := method(
-    "S" .. self duration
+    list("S" .. self duration, "R/" .. (self duration / 4.0))
   )
   
+  /*
   mute := method(
     "M" .. self duration
   )
+  */
   
   // duration
   expand := method(factor,
     self setDuration(self duration * factor)
-    nil
+    list(nil,nil)
   )
   
   shrink := method(factor,
     self setDuration(self duration / factor)
-    nil
+    list(nil,nil)
   )
   
   x2 := method(self expand(2))
@@ -115,7 +117,7 @@ silica Note := Object clone do(
     if(value < 0, value = 0)
     if(value > 16000, value = 16000)
     self setVolume(value)
-    nil
+    list(nil, "$" .. self volume)
   )
   
   setVolRelative := method(value,
@@ -136,7 +138,7 @@ silica Note := Object clone do(
     if(value < 20, value = 20)
     if(value > 400, value = 400)
     self setTempo(value)
-    nil
+    list(nil, "!" .. self tempo)
   )
   
   setTempRelative := method(value,
@@ -162,7 +164,7 @@ silica Note := Object clone do(
     self setDegree(1)
     self scale push(new_scale)
     self setDeltadegree(:same)
-    nil
+    list(nil,nil)
   )
   
   changeScaleRelative := method(new_scale,
@@ -175,7 +177,7 @@ silica Note := Object clone do(
       self setDegree(new_degree)
       self scale push(new_scale)
     )
-    nil
+    list(nil,nil)
   )
   
   popalphabet := method(
@@ -187,7 +189,7 @@ silica Note := Object clone do(
       self setDegree(1)
       self setDeltadegree(:same)
     )
-    nil
+    list(nil,nil)
   )
   
   popalphabetRelative := method(
@@ -205,13 +207,13 @@ silica Note := Object clone do(
         self setDegree(new_degree)
       )
     )
-    nil
+    list(nil,nil)
   )
   
   // instrument
   changeInstrument := method(inst,
     self setInstrument(inst)
-    nil
+    list(nil, "@" .. self instrument name)
   )
   
   // state
@@ -228,21 +230,21 @@ silica Note := Object clone do(
       self prevregister
     )
     self statestack push(state)
-    nil
+    list(nil,nil)
   )
   
   popstate := method(
     if(self statestack size != 0,
       self applystate(self statestack pop)
     )
-    nil
+    list(nil,nil)
   )
   
   removestate := method(
     if(self statestack size != 0,
       self statestack pop
     )
-    nil
+    list(nil,nil)
   )
   
   applystate := method(state,

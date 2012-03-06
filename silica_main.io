@@ -8,6 +8,7 @@ REPL_MAX_RECURSIVE_DEPTH := 2000
 REPL_RELOAD := true
 REPL_LOAD_HISTORY := true
 REPL_AUTOINVARIANT := false
+REPL_SIREN_ENABLED := false
 //REPL_DEBUG := true
 
 // welcome message

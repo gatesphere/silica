@@ -35,7 +35,7 @@ silica TokenTable := Object clone do(
     // primitives
     self add(home, "play", silica Primitive with("PLAY", "Plays the note with the current state.", block(silica Note play)))
     self add(home, "rest", silica Primitive with("REST", "Rests the note for the current duration.", block(silica Note rest)))
-    self add(home, "mute", silica Primitive with("MUTE", "Plays a muted note for the current duration.", block(silica Note mute)))
+    //self add(home, "mute", silica Primitive with("MUTE", "Plays a muted note for the current duration.", block(silica Note mute)))
     self add(home, "rp", silica Primitive with("RP", "Raises the pitch of the note by one scale degree.", block(silica Note rp)))
     self add(home, "lp", silica Primitive with("LP", "Lowers the pitch of the note by one scale degree.", block(silica Note lp)))
     self add(home, "cp", silica Primitive with("CP", "Stochastically applies either RP or LP.", block(silica Note cp)))
@@ -123,6 +123,18 @@ silica TokenTable := Object clone do(
     
     
     // metas
+    self add(home, "-siren", silica MetaCommand with("-SIREN", "Enable siren.",
+        block(
+          out := "-SIREN\n"
+          if(Lobby ?REPL_SIREN_ENABLED,
+            Lobby REPL_SIREN_ENABLED := false
+            out = out .. "siren disabled."
+            ,
+            Lobby REPL_SIREN_ENABLED := true
+            out = out .. "siren enabled."
+          )
+        )
+    ))
     self add(home, "-exit", silica MetaCommand with("-EXIT", "Exit silica.", block(silica exit = true; "-EXIT")))
     self add(home, "-state", silica MetaCommand with("-STATE", "Print the state of the note.", block("-STATE\n" .. silica Note asString)))
     self add(home, "-reset", silica MetaCommand with("-RESET", "Reset the state of the note.", block("-RESET\n" .. silica Note reset asString)))

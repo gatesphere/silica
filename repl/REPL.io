@@ -9,6 +9,10 @@ silica REPL REPL := Object clone do(
   
   currentNamespace := silica namespace("home")
   
+  siren_in_path := Path with(SILICA_DIR,"siren","siren_in")
+  siren_out_path := Path with(SILICA_DIR,"siren","siren_out")
+  siren_midi_path := Path with(SILICA_DIR,"siren","midi")
+  
   clone := method(self)
   
   initialize := method(
@@ -76,10 +80,24 @@ silica REPL REPL := Object clone do(
     )
   )
   
+  writeToSiren := method(string,
+    if(string == "",return nil)
+    //try(
+      file := File with(Path with(siren_in_path,UUID uuidRandom)) openForUpdating
+      if(?REPL_DEBUG, writeln("Sending to siren: " .. file path))
+      file write(string)
+      file close
+    //)
+    nil
+  )
+    
+  readFromSiren := method() // to be done
+  
   // parsing tokens, one by one
   parse := method(in,
     processed := self preprocess(in)
-    out := list("-->")
+    out := list(list("-->", nil))
+    vol := "$" .. silica Note volume
     if(processed == nil,
       writeln
       return
@@ -90,8 +108,15 @@ silica REPL REPL := Object clone do(
       ret := self interpretToken(tok asMutable lowercase, true, self currentNamespace)
       if(ret first != nil, out append(ret first))
     )
-    if(out size == 1, out append("okay")) 
-    writeln(out join(" ") strip)
+    repl_out := out map(tok, tok first) remove(nil)
+    siren_out := out map(tok, tok second) remove(nil)
+    if(out size == 1, out append("okay"))
+    if(siren_out size != 0, siren_out prepend(vol) prepend("!" .. silica Note tempo))
+    if(?REPL_DEBUG, writeln("TRACE (parse): siren_out = " .. siren_out))
+    if(REPL_SIREN_ENABLED, 
+      self writeToSiren(siren_out join(" ") strip)
+    ) 
+    writeln(repl_out join(" ") strip)
   )
   
   validName := method(name,
@@ -247,8 +272,7 @@ silica REPL REPL := Object clone do(
           out append("pushstate")
           out append(tok beforeSeq("^"))
           out append("popstate")
-          out append("]")
-          out append("[")
+          out append("||")
           out append(tok afterSeq("^"))
           out append("]")
           continue
@@ -364,8 +388,8 @@ silica REPL REPL := Object clone do(
     )
     
     // other things?
-    if(token == "{" or token == "}" or token == "[" or token == "]" or token == "*" or token == "**",
-      return list(token, false)
+    if(token == "{" or token == "}" or token == "[" or token == "]" or token == "||" or token == "*" or token == "**",
+      return list(list(token, token), false)
     )
         
     // uninterpretable.. jump up a namespace
@@ -395,7 +419,7 @@ silica REPL REPL := Object clone do(
   interpretMetaCommand := method(meta, param, 
     if(?REPL_DEBUG, writeln("TRACE (interpretToken): MetaCommand found: " .. meta))
     out := meta execute(param)
-    list("META> " .. out, true)
+    list(list("META> " .. out, nil), true)
   )
   
   applyTransforms := method(in,
