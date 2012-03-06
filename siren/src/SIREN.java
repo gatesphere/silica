@@ -7,6 +7,7 @@ import processing.core.*;
 import org.jfugue.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 
 public class SIREN extends Frame implements ComponentListener, ActionListener {
   // Graphics (processing) area
@@ -19,6 +20,7 @@ public class SIREN extends Frame implements ComponentListener, ActionListener {
   // Controls
   public Button pause_play;
   public Button stop;
+  public Button save_as_midi;
   
   // File watcher
   public SIRENFileDaemon siren_file_daemon;
@@ -39,12 +41,19 @@ public class SIREN extends Frame implements ComponentListener, ActionListener {
     pause_play = new Button("Pause");
     pause_play.setEnabled(false);
     pause_play.setActionCommand("Pause");
+    pause_play.addActionListener(this);
     stop = new Button("Stop");
     stop.setEnabled(false);
     stop.setActionCommand("Stop");
+    stop.addActionListener(this);
+    save_as_midi = new Button("Save as MIDI");
+    save_as_midi.setEnabled(true);
+    save_as_midi.setActionCommand("MIDI");
+    save_as_midi.addActionListener(this);
     
     control_panel.add(pause_play);
     control_panel.add(stop);
+    control_panel.add(save_as_midi);
     
     
     add(siren_app, BorderLayout.CENTER);
@@ -78,15 +87,6 @@ public class SIREN extends Frame implements ComponentListener, ActionListener {
     SIREN siren = new SIREN();
     siren.setLocationRelativeTo(null);
     siren.setVisible(true);
-    
-    
-    //for(;;) {
-    //  try{Thread.sleep(500);} catch(Exception ex) {}
-    //  siren.sendUpdateEvent();
-    //}
-    
-    //Player player = new Player();
-    //player.play(new Pattern("C D E D C"));
   }
   
   public void renderSonic(String sonicString) {
@@ -99,8 +99,23 @@ public class SIREN extends Frame implements ComponentListener, ActionListener {
   public void renderMidi(String midiString) {
     String str = siren_translator.getMusicString(midiString);
     pattern = new Pattern(str);
-    // determine filename here
-    //player.saveMidi(pattern, new File(filename));
+    saveMidi();
+  }
+  
+  public void saveMidi() {
+    try {
+      FileDialog save = new FileDialog(this, "Save file as...", FileDialog.SAVE);
+      File saveFile;
+      save.setDirectory(this.siren_file_daemon.mididir.toString());
+      save.setVisible(true);
+      String filename = save.getFile();
+      if(filename != null) {
+        saveFile = new File(filename);
+        player.saveMidi(pattern, saveFile);
+      }
+    } catch (Exception ex) {
+      ex.printStackTrace();
+    }
   }
   
   public void renderGraphics(String graphicString) {
@@ -118,6 +133,9 @@ public class SIREN extends Frame implements ComponentListener, ActionListener {
     } 
     else if (s.equals("Stop")) { 
       this.player.stop();
+    }
+    else if (s.equals("MIDI")) {
+      this.saveMidi();
     }
   } 
   
