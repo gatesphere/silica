@@ -269,12 +269,17 @@ silica REPL REPL := Object clone do(
       in_2 := out join(" ")
       out := list
       toks := in_2 splitNoEmpties
+      inBrackets := false
       toks foreach(tok,
+        if(tok == "[", inBrackets = true)
+        if(tok == "]", inBrackets = false)
         
         // concurrent lines
         if(tok containsSeq("^"),
           changed = true
-          out append("[")
+          if(inBrackets not,
+            out append("[")
+          )
           while(tok containsSeq("^"),
             out append("pushstate")
             out append(tok beforeSeq("^"))
@@ -283,7 +288,9 @@ silica REPL REPL := Object clone do(
             tok = tok afterSeq("^")
           )
           out append(tok)
-          out append("]")
+          if(inBrackets not,
+            out append("]")
+          )
           continue
         )
         
