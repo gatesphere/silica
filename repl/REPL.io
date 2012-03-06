@@ -82,12 +82,12 @@ silica REPL REPL := Object clone do(
   
   writeToSiren := method(string,
     if(string == "",return nil)
-    //try(
-      file := File with(Path with(siren_in_path,UUID uuidRandom)) openForUpdating
-      if(?REPL_DEBUG, writeln("Sending to siren: " .. file path .. string))
-      file write(string)
-      file close
-    //)
+    
+    file := File with(Path with(siren_in_path,UUID uuidRandom .. ".siren")) openForUpdating
+    if(?REPL_DEBUG, writeln("Sending to siren: " .. file path .. " " .. string))
+    file write(string)
+    file close
+    
     nil
   )
     

@@ -42,14 +42,19 @@ public class SIRENTranslator {
     int currentRegister = 5;
     int currentVoice = 0;
     float currentTime = 0.25f;
-    float currentTimeAlt = 0.25f;
+    boolean concurrent = false;
+    String tempo = "T120"
+    
+    /* known bugs:
+     * doesn't use JFugue's layers
+     */
     
     while(sc.hasNext()) {
       String token = sc.next();
       if(token.startsWith("!")) {
-        // tempo... put it at the head of V0, regardless of anything else.
+        // tempo
         String tempo = token.substring(1);
-        voices[0] = "T" + tempo + " " + voices[0];
+        tempo = "T" + tempo;
         continue;
       } else if(token.startsWith("@")) {
         // instrument
@@ -64,9 +69,13 @@ public class SIRENTranslator {
       } else if(token.startsWith("{") || token.startsWith("}")) {
         // command grouping
         continue;
-      } else if(token.startsWith("[") || token.startsWith("||")) {
+      } else if(token.startsWith("[")) {
+        concurrent = true;
+        continue;
+      } else if(token.startsWith("||")) {
         // push voice
         currentVoice++;
+        if(currentVoice == 9) currentVoice = 10;
         if(currentVoice > 15) currentVoice = 15;
         float length = getLengthOfVoice(voices[currentVoice]);
         if(length < currentTime) {
@@ -78,8 +87,7 @@ public class SIRENTranslator {
       } else if(token.startsWith("]")) {
         // pop voice
         currentVoice = 0;
-        float delta = currentTimeAlt - currentTime;
-        if(delta > 0) voices[currentVoice] = voices[currentVoice] + " R/" + delta;
+        concurrent = false;
         continue;
       } else {
         // a note
@@ -90,13 +98,12 @@ public class SIRENTranslator {
         token = token.replace("Z", "A#");
         
         voices[currentVoice] = voices[currentVoice] + " " + token;
-        if(getLengthOfVoice(voices[currentVoice]) > currentTimeAlt) currentTimeAlt = getLengthOfVoice(voices[currentVoice]);
-        if(currentVoice == 0) currentTime = getLengthOfVoice(voices[currentVoice]);
+        if(currentVoice == 0 && !concurrent) currentTime = getLengthOfVoice(voices[currentVoice]);
         continue;
       }
     }
     
-    String music_string = "";
+    String music_string = tempo;
     for(int i = 0; i < 16; i++) {
       music_string = music_string + " " + voices[i] + " R/0.25\n";
     }
