@@ -95,9 +95,11 @@ silica REPL REPL := Object clone do(
   
   // parsing tokens, one by one
   parse := method(in,
-    processed := self preprocess(in)
     out := list(list("-->", nil))
     vol := "$" .. silica Note volume
+    inst := "@" .. silica Instrument name
+    
+    processed := self preprocess(in)
     if(processed == nil,
       writeln
       return
@@ -108,14 +110,15 @@ silica REPL REPL := Object clone do(
       ret := self interpretToken(tok asMutable lowercase, true, self currentNamespace)
       if(ret first != nil, out append(ret first))
     )
+    
+    if(out size == 1, out append(list("okay",nil)))
     repl_out := out map(tok, tok first) remove(nil)
     siren_out := out map(tok, tok second) remove(nil)
-    if(out size == 1, out append("okay"))
-    if(siren_out size != 0, siren_out prepend(vol) prepend("!" .. silica Note tempo))
+    
+    if(siren_out size != 0, siren_out prepend(inst) prepend(vol) prepend("!" .. silica Note tempo))
     if(?REPL_DEBUG, writeln("TRACE (parse): siren_out = " .. siren_out))
-    if(REPL_SIREN_ENABLED, 
-      self writeToSiren(siren_out join(" ") strip)
-    ) 
+    if(REPL_SIREN_ENABLED, self writeToSiren(siren_out join(" ") strip)) 
+    
     writeln(repl_out join(" ") strip)
   )
   
