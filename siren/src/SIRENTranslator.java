@@ -78,6 +78,14 @@ public class SIRENTranslator {
         continue;
       } else if(token.startsWith("||")) {
         // push voice
+        currentVoice++;
+        if(currentVoice == 9) currentVoice = 10;
+        if(currentVoice == 16) {
+          currentVoice = 0;
+          currentLayer++;
+          if(currentLayer == 16) currentLayer = 15;
+        }
+        /*
         currentLayer++;
         if(currentLayer == 16) {
           currentLayer = 0;
@@ -85,6 +93,7 @@ public class SIRENTranslator {
           if(currentVoice == 9) currentVoice = 10;
           if(currentVoice > 15) currentVoice = 15;
         }
+        */
         float length = getLengthOfVoice(voices[currentVoice][currentLayer]);
         if(length < currentTime) {
           float delta = currentTime - length;
