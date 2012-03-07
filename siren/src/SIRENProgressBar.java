@@ -48,9 +48,11 @@ public class SIRENProgressBar extends PApplet {
   
   public String milisToTime(long milis) {
     String format = String.format("%%0%dd", 2);  
-    milis = milis / 1000;  
-    String seconds = String.format(format, milis % 60);  
-    String minutes = String.format(format, milis % 3600);   
+    milis = milis / 1000; // to seconds
+    long minutes_val = milis / 60;
+    long seconds_val = milis % 60;
+    String seconds = String.format(format, seconds_val);  
+    String minutes = String.format(format, minutes_val);   
     String time = minutes + ":" + seconds;  
     return time;  
   }

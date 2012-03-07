@@ -99,6 +99,7 @@ public class SIREN extends Frame implements ComponentListener, ActionListener, W
     
     siren_app.init();
     siren_progress_bar.init();
+    watchProgressBar();
   }
   
   public void sendUpdateEvent() {
@@ -143,11 +144,26 @@ public class SIREN extends Frame implements ComponentListener, ActionListener, W
     }
   }
   
+  public void watchProgressBar() {
+    final SIREN siren = this;
+    new Thread(new Runnable() {
+      public void run() {
+        for(;;) {
+          if(siren.player.isPlaying())
+            siren.siren_progress_bar.setValue(siren.player.getSequencePosition() / 1000);
+          else if(!siren.player.isPaused()) siren.siren_progress_bar.setValue(siren.siren_progress_bar.getMaxValue());
+          try{Thread.sleep(500);} catch (Exception ex) {ex.printStackTrace();}
+        }
+      }
+    }).start();
+  }
+  
   public void renderSonic(String sonicString) {
     //System.out.println("Rendering sonically.");
     String str = siren_translator.getMusicString(sonicString);
     pattern = new Pattern(str);
     if(!buttons_enabled) enableButtons();
+    siren_progress_bar.setMaxValue(player.getSequenceLength(player.getSequence(pattern)) / 1000);
     playInThread();
   }
   
