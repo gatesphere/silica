@@ -22,6 +22,8 @@ public class SIREN extends Frame implements ComponentListener, ActionListener, W
   public Button stop;
   public Button save_as_midi;
   public Button render_graphics;
+  public Button exit;
+  public Button about;
   public Panel control_panel;
   public boolean buttons_enabled = false;
   
@@ -57,13 +59,21 @@ public class SIREN extends Frame implements ComponentListener, ActionListener, W
     render_graphics.setEnabled(false);
     render_graphics.setActionCommand("Graphics");
     render_graphics.addActionListener(this);
-    
+    exit = new Button("Exit");
+    exit.setEnabled(true);
+    exit.setActionCommand("Exit");
+    exit.addActionListener(this);
+    about = new Button("About");
+    about.setEnabled(true);
+    about.setActionCommand("About");
+    about.addActionListener(this);
     
     control_panel.add(pause_play);
     control_panel.add(stop);
     control_panel.add(save_as_midi);
     control_panel.add(render_graphics);
-    
+    control_panel.add(about);
+    control_panel.add(exit);
     
     add(siren_app, BorderLayout.CENTER);
     add(control_panel, BorderLayout.SOUTH);
@@ -102,17 +112,10 @@ public class SIREN extends Frame implements ComponentListener, ActionListener, W
             siren.pause_play.setLabel("Pause");
             siren.pause_play.setActionCommand("Pause");
             siren.stop.setEnabled(true);
-            siren.control_panel.invalidate();
-            siren.control_panel.validate();
           } else {
-            if(!siren.player.isPaused())
-              siren.pause_play.setLabel("Replay");
-            else
-              siren.pause_play.setLabel("Resume");
+            siren.pause_play.setLabel("Play");
             siren.pause_play.setActionCommand("Play");
             siren.stop.setEnabled(false);
-            siren.control_panel.invalidate();
-            siren.control_panel.validate();
           }
         }
       }
@@ -183,6 +186,33 @@ public class SIREN extends Frame implements ComponentListener, ActionListener, W
     // blah...
   }
   
+  public void aboutDialog() {
+    final Dialog d = new Dialog(this, "About siren", true);
+    d.setLayout(new BorderLayout());
+    Panel infoPanel = new Panel(new BorderLayout());
+    Panel controls = new Panel();
+    infoPanel.add(new Label("siren - the silica rendering engine", Label.CENTER), BorderLayout.NORTH);
+    infoPanel.add(new Label("2012 Jacob Peck", Label.CENTER), BorderLayout.CENTER);
+    infoPanel.add(new Label("http://silica.suspended-chord.info", Label.CENTER), BorderLayout.SOUTH);
+    d.add(infoPanel, BorderLayout.CENTER);
+    Button ok = new Button("Close");
+    ok.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        d.setVisible(false);
+      }
+    });
+    d.addWindowListener(new WindowAdapter() {
+      public void windowClosing(WindowEvent e) {
+        ((Dialog)e.getComponent()).setVisible(false);
+      }
+    });
+    controls.add(ok);
+    d.add(controls, BorderLayout.SOUTH);
+    d.pack();
+    d.setLocationRelativeTo(null);
+    d.setVisible(true);
+  }
+  
   // action listener
   public void actionPerformed(ActionEvent ae) {
     String s = ae.getActionCommand(); 
@@ -209,6 +239,14 @@ public class SIREN extends Frame implements ComponentListener, ActionListener, W
     }
     else if (s.equals("Graphics")) {
       this.renderGraphicsHelper();
+    }
+    else if (s.equals("Exit")) {
+      this.player.close();
+      this.siren_file_daemon.stop();
+      System.exit(0);
+    }
+    else if (s.equals("About")) {
+      this.aboutDialog();
     }
   } 
   
