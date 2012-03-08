@@ -10,7 +10,7 @@ import java.util.Date;
   
 public class SIRENProgressBar extends PApplet {
   private long value = 1;
-  private long maxValue = 3;
+  private long maxValue = 1;
   
   public void setup() {
     size(20,20); // trick BorderLayout into sticking it in the right place

@@ -151,8 +151,10 @@ public class SIREN extends Frame implements ComponentListener, ActionListener, W
         for(;;) {
           if(siren.player.isPlaying())
             siren.siren_progress_bar.setValue(siren.player.getSequencePosition() / 1000);
-          else if(!siren.player.isPaused()) siren.siren_progress_bar.setValue(siren.siren_progress_bar.getMaxValue());
-          try{Thread.sleep(250);} catch (Exception ex) {ex.printStackTrace();}
+          else if(!siren.player.isPaused())
+            if(siren.siren_progress_bar.getValue() != siren.siren_progress_bar.getMaxValue())
+              siren.siren_progress_bar.setValue(siren.siren_progress_bar.getMaxValue());
+          try{Thread.sleep(100);} catch (Exception ex) {ex.printStackTrace();}
         }
       }
     }).start();
