@@ -152,7 +152,7 @@ public class SIREN extends Frame implements ComponentListener, ActionListener, W
           if(siren.player.isPlaying())
             siren.siren_progress_bar.setValue(siren.player.getSequencePosition() / 1000);
           else if(!siren.player.isPaused()) siren.siren_progress_bar.setValue(siren.siren_progress_bar.getMaxValue());
-          try{Thread.sleep(500);} catch (Exception ex) {ex.printStackTrace();}
+          try{Thread.sleep(250);} catch (Exception ex) {ex.printStackTrace();}
         }
       }
     }).start();
@@ -161,6 +161,7 @@ public class SIREN extends Frame implements ComponentListener, ActionListener, W
   public void renderSonic(String sonicString) {
     //System.out.println("Rendering sonically.");
     String str = siren_translator.getMusicString(sonicString);
+    if(str == null) return;
     pattern = new Pattern(str);
     if(!buttons_enabled) enableButtons();
     siren_progress_bar.setMaxValue(player.getSequenceLength(player.getSequence(pattern)) / 1000);
@@ -179,6 +180,7 @@ public class SIREN extends Frame implements ComponentListener, ActionListener, W
   
   public void renderMidi(String midiString) {
     String str = siren_translator.getMusicString(midiString);
+    if(str == null) return;
     pattern = new Pattern(str);
     if(!buttons_enabled) enableButtons();
     saveMidi();
@@ -203,6 +205,7 @@ public class SIREN extends Frame implements ComponentListener, ActionListener, W
   public void renderGraphics(String graphicString) {
     // blah
     String str = siren_translator.getMusicString(graphicString);
+    if(str == null) return;
     pattern = new Pattern(str);
     if(!buttons_enabled) enableButtons();
     renderGraphicsHelper();

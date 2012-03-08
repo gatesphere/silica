@@ -93,12 +93,13 @@ Here's a short list of things to do:
   * Comments in script files
   * Error handling
   * Percussion instruments
-  * Sonic/Graphical rendering (siren)
+  * Graphical rendering (siren)
 
 ### Known bugs:
 
   * meta commands allowed intermixed with other symbols in the same line
   * -display doesn't show all components of a piece
+  * progress bar is terrible on cpu usage
 
 ## Contributing
 This is a personal project.  If you have feedback, I'd love to hear it, but code will be mine.  You can contact me at [suschord@suspended-chord.info](mailto:suschord@suspended-chord.info).

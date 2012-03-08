@@ -121,13 +121,26 @@ public class SIRENTranslator {
       }
     }
     
-    String music_string = tempo + "\n";
-    for(int i = 0; i < 16; i++) {
+    boolean hasLength = false;
+    
+    A: for(int i = 0; i < 16; i++) {
       for(int j = 0; j < 16; j++) {
-        music_string = music_string + " " + voices[i][j] + " R/0.25\n";
+        if(getLengthOfVoice(voices[i][j]) > 0.25f) {
+          hasLength = true;
+          break A;
+        }
       }
     }
-    System.out.println(music_string);
-    return music_string.trim();
+    
+    if(hasLength) {    
+      String music_string = tempo + "\n";
+      for(int i = 0; i < 16; i++) {
+        for(int j = 0; j < 16; j++) {
+          music_string = music_string + " " + voices[i][j] + " R/0.25\n";
+        }
+      }
+      System.out.println(music_string);
+      return music_string.trim();
+    } else return null;
   }
 }
