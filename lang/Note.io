@@ -31,7 +31,7 @@ silica Note := Object clone do(
     self statestack = list
   )
   
-  reset := method(self init; list(self, nil))
+  reset := method(self init; self)
   
   // pitch+register
   rp := method(

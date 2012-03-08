@@ -137,7 +137,7 @@ silica TokenTable := Object clone do(
     ))
     self add(home, "-exit", silica MetaCommand with("-EXIT", "Exit silica.", block(silica exit = true; "-EXIT")))
     self add(home, "-state", silica MetaCommand with("-STATE", "Print the state of the note.", block("-STATE\n" .. silica Note asString)))
-    self add(home, "-reset", silica MetaCommand with("-RESET", "Reset the state of the note.", block("-RESET\n" .. silica Note reset asString)))
+    self add(home, "-reset", silica MetaCommand with("-RESET", "Reset the state of the note.", block("-RESET\n" .. silica Note reset)))
     self add(home, "-@?" , silica MetaCommand with("-@?", "Display information about the current namespace.",
         block(
           ns := silica REPL REPL currentNamespace
