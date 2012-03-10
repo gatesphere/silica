@@ -1,0 +1,48 @@
+## readme_example.silica
+## Jacob Peck
+## 20120309
+
+## This is the interactive example from the readme, as a script
+## to run it, do a silica readme_example.silica
+
+## lines that begin with ## are comments, and skipped
+## empty lines are skipped as well
+
+
+## lets start by playing a note
+play
+
+## now let's play with pitches
+rp play rp play lp play lp play
+
+## let's do the same thing, but with a repetition factor
+2rp+play 2lp+play
+
+## let's play a half note
+x2 play s2
+
+## let's define a macro for playing a half note... "play long"
+pl >> x2 play s2
+
+## test it?
+pl
+
+## let's define a command... a command is a macro with embedded structure... you'll see
+hat = play rp play lp play    
+hat
+
+## now let's make a longer piece using hat
+hat3 = hat rp hat lp hat
+hat3
+
+## now, a function (notice, macros, commands, and functions all share a namespace)
+fn_hat(x) := x rp x lp x
+
+## now, play it with a few different parameters
+fn_hat(play)
+fn_hat(pl)
+fn_hat(hat)
+fn_hat(hat3)
+
+## and finally, exit
+-exit

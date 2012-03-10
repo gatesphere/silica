@@ -9,6 +9,8 @@ silica REPL REPL := Object clone do(
   
   currentNamespace := silica namespace("home")
   
+  mcmode := false
+  
   siren_in_path := Path with(SILICA_DIR,"siren","siren_in")
   siren_out_path := Path with(SILICA_DIR,"siren","siren_out")
   siren_midi_path := Path with(SILICA_DIR,"siren","midi")
@@ -56,14 +58,16 @@ silica REPL REPL := Object clone do(
       writeln("Running script \"" .. file path .. "\".\n\n")
       loop(
         in := file readLine
-        if(in == nil,
+        if(in == nil, 
           silica exit = true;
           break
         )
         if(in strip == "",
           continue
         )
-        parse(in)
+        if(in strip beginsWithSeq("##") not, // lines beginning with ## are comments
+          parse(in)
+        )
       )
       file close
       ,
@@ -111,6 +115,8 @@ silica REPL REPL := Object clone do(
       if(ret first != nil, out append(ret first))
     )
     
+    if(?REPL_DEBUG, writeln("TRACE (parse) out = " .. out))
+    
     repl_out := out map(tok, tok first) remove(nil)
     siren_out := out map(tok, tok second) remove(nil)
     
@@ -138,6 +144,8 @@ silica REPL REPL := Object clone do(
   
   // get the input to be all primitives
   preprocess := method(in,
+    self mcmode = false
+    
     out := in splitNoEmpties
     
     // macro definition?
@@ -253,8 +261,18 @@ silica REPL REPL := Object clone do(
       return nil
     )
 
+    // metacommand mode?
+    if(out at(0) beginsWithSeq("-"),
+      self mcmode = true
+    )
+
+    // mcmode (return just the first metacommand)
+    if(self mcmode,
+      return out at(0)
+    )
+
     // auto invariance mode?
-    if(Lobby ?REPL_AUTOINVARIANT,
+    if(Lobby ?REPL_AUTOINVARIANT and mcmode not,
       out prepend("pushstate")
       out append("popstate")
     )
@@ -263,7 +281,7 @@ silica REPL REPL := Object clone do(
     changed := true
     valid := true
     depth := 0
-    while(changed and valid and (depth < REPL_MAX_RECURSIVE_DEPTH),
+    while(changed and valid and (depth < REPL_MAX_RECURSIVE_DEPTH) and mcmode not,
       depth = depth + 1
       changed = false
       in_2 := out join(" ")
@@ -434,8 +452,13 @@ silica REPL REPL := Object clone do(
   
   interpretMetaCommand := method(meta, param, 
     if(?REPL_DEBUG, writeln("TRACE (interpretToken): MetaCommand found: " .. meta))
-    out := meta execute(param)
-    list(list("META> " .. out, nil), true)
+    if(mcmode not, 
+      writeln("Ignoring Meta Command \"" .. meta name .. "\": not applicable in this context.")
+      list(list(nil, nil), true)
+      ,
+      out := meta execute(param)
+      list(list("META> " .. out, nil), true)
+    )
   )
   
   applyTransforms := method(in,
@@ -461,8 +484,8 @@ silica REPL REPL := Object clone do(
       if(current size == 0 and t_count == 0,
         out append(tok)
         ,
-        if(silica token(self currentNamespace, tok lowercase) isKindOf(silica Transform),
-          current = self applyTransform(silica token(self currentNamespace, tok lowercase), current)
+        if(silica token(silica namespace("home"), tok lowercase) isKindOf(silica Transform),
+          current = self applyTransform(silica token(silica namespace("home"), tok lowercase), current)
           ,
           if(t_count > 0,
             current append(tok)

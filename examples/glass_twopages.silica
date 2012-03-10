@@ -1,0 +1,24 @@
+## "Two Pages" by Philip Glass
+
+## get into the right namespace
+-enter(glass)
+-enter(twopages)
+
+## set the tempo
+settempo >> maxtempo 6dectempo
+
+
+## part one
+part1bar1 >> pushstate 10lp play 3rp play 3rp+play popstate
+part1bar2 >> part1bar1 part1bar1:drop
+part1bar3 >> part1bar2 part1bar1:drop:drop
+part1bar4 >> part1bar3 part1bar1:drop:drop:drop
+
+part1 >> settempo 34part1bar1 18part1bar2 14part1bar3 15part1bar4 17part1bar3 22part1bar2 26part1bar1
+
+
+## output
+-siren
+-debug
+
+part1

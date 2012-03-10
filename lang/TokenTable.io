@@ -237,7 +237,9 @@ silica TokenTable := Object clone do(
               if(in strip == "",
                 continue
               )
-              silica REPL REPL parse(in)
+              if(in strip beginsWithSeq("##") not, // lines beginning with ## are comments
+                silica REPL REPL parse(in)
+              )
             )
             file close
             writeln("--> DONE running script \"" .. file path .. "\".")
@@ -250,6 +252,8 @@ silica TokenTable := Object clone do(
     self add(home, "-display", silica MetaCommand with("-DISPLAY", "Display the definition of a macro, command, or function.",
         block(tok,
           out := "-DISPLAY\n"
+          symbols_already_defined := list
+          symbols_to_define := list
           if(tok == nil,
             out = out .. "No symbol name provided."
             ,
