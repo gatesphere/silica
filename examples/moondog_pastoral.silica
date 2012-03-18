@@ -1,0 +1,78 @@
+## Moondog - Pastoral
+## The first part, up until the major octave change
+
+## some basic utility macros
+## dotted quarter
+PDOT >> x3 s2 play x2 s3
+RDOT >> x3 s2 rest x2 s3
+
+## dotted half
+PDOTL >> x2 pdot s2
+RDOTL >> x2 rdot s2
+
+## whole
+PLL >> 2x2 play 2s2
+RLL >> 2x2 rest 2s2
+
+## half
+PL >> x2 play s2
+RL >> x2 rest s2
+
+## eighth
+PS >> s2 play x2
+RS >> s2 rest x2
+
+## sixteenth
+PSS >> 2s2 play 2x2
+RSS >> 2s2 rest 2x2
+
+
+## enter the home::moondog::pastoral namespace
+-enter(moondog)
+-enter(pastoral)
+
+## tempo for the whole song is 70 bpm
+## mintempo = 20bpm
+## inctempo = +10bpm
+SETTEMPO >> mintempo 5inctempo
+
+## the intro
+INTRO = 2introhalf
+INTROHALF = 7lp play 4rp play 5lp play 5rp play 6lp play 6rp play 5lp play 5rp play 3rp
+
+## the first part--two hats, followed by a resolution
+HATS1 = 5lp rs ps 2rp ps 2lp ps rs ps 2rp ps 2lp ps 5rp
+HAT1RESOLVE = 7lp rs ps 3rp ps lp ps lp pl 6rp
+HATS1_SEG1 = hats1 hat1resolve
+
+## the second part--two hats, with an extra sixteenth, same resolution
+HATS1A = 5lp rs ps 2rp ps 2lp ps rss 2rp pss 2lp ps 2rp ps 2lp ps 5rp
+HATS1_SEG2 = hats1a hat1resolve
+
+## transition into the first page's resolution
+TRANS1HALF = rs ps 3lp ps 2lp ps 3rp ps lp ps 3lp play 6rp
+TRANS1 = 2trans1half
+
+## the resolution
+M1RESOLVE1A = 5lp rs ps rs ps rs pdot 5rp
+M1RESOLVE1B = 6lp 5rs pdot 6rp
+M1RESOLVE1 >> m1resolve1a^m1resolve1b
+
+M1RESOLVE2A >> m1resolve1a
+M1RESOLVE2B = 7lp rs ps rs ps rs rp pdot 6rp
+M1RESOLVE2 >> m1resolve2a^m1resolve2b
+
+M1RESOLVE = m1resolve1 m1resolve2
+
+## the first part
+part1 = intro hats1_seg1 hats1_seg2 trans1 m1resolve
+
+## the whole shebang
+pastoral >> settempo part1
+
+## play it
+-siren
+pastoral
+
+## end session
+-exit
