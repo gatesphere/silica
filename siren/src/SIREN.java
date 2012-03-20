@@ -114,8 +114,10 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
     control_panel.add(play);
     control_panel.add(pause);
     control_panel.add(stop);
+    control_panel.add(Box.createHorizontalStrut(20));
     control_panel.add(save_as_midi);
     control_panel.add(render_graphics);
+    control_panel.add(Box.createHorizontalStrut(20));
     control_panel.add(about);
     control_panel.add(exit);
     
@@ -353,23 +355,37 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
   
   // component listener
   public void componentHidden(ComponentEvent e) {}
-  public void componentMoved(ComponentEvent e) {}
+  public void componentMoved(ComponentEvent e) {
+    ((SIREN)e.getComponent()).sendUpdateEvent();  
+  }
   public void componentResized(ComponentEvent e) {
-    try { Thread.sleep(100); } catch (Exception ex) {}
+    //try { Thread.sleep(100); } catch (Exception ex) {}
     ((SIREN)e.getComponent()).sendUpdateEvent();
   }
-  public void componentShown(ComponentEvent e) {}
+  public void componentShown(ComponentEvent e) {
+    ((SIREN)e.getComponent()).sendUpdateEvent();
+  }
   
   // window listener
-  public void windowActivated(WindowEvent e) {}
+  public void windowActivated(WindowEvent e) {
+    ((SIREN)e.getComponent()).sendUpdateEvent();  
+  }
   public void windowClosed(WindowEvent e) {}
   public void windowClosing(WindowEvent e) {
     ((SIREN)e.getWindow()).player.close();
     ((SIREN)e.getWindow()).siren_file_daemon.stop();
     System.exit(0); 
   }
-  public void windowDeactivated(WindowEvent e) {}
-  public void windowDeiconified(WindowEvent e) {}
-  public void windowIconified(WindowEvent e) {}
-  public void windowOpened(WindowEvent e) {}
+  public void windowDeactivated(WindowEvent e) {
+    ((SIREN)e.getComponent()).sendUpdateEvent();  
+  }
+  public void windowDeiconified(WindowEvent e) {
+    ((SIREN)e.getComponent()).sendUpdateEvent();  
+  }
+  public void windowIconified(WindowEvent e) {
+    ((SIREN)e.getComponent()).sendUpdateEvent();  
+  }
+  public void windowOpened(WindowEvent e) {
+    ((SIREN)e.getComponent()).sendUpdateEvent();  
+  }
 }
