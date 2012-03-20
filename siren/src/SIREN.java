@@ -7,9 +7,11 @@ import processing.core.*;
 import org.jfugue.*;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.filechooser.*;
 import java.io.*;
 
-public class SIREN extends Frame implements ComponentListener, ActionListener, WindowListener {
+public class SIREN extends JFrame implements ComponentListener, ActionListener, WindowListener {
   // Graphics (processing) area
   public SIRENPApplet siren_app;
   public SIRENProgressBar siren_progress_bar;
@@ -19,14 +21,14 @@ public class SIREN extends Frame implements ComponentListener, ActionListener, W
   public Pattern pattern = new Pattern("");
   
   // Controls
-  public Button pause_play;
-  public Button stop;
-  public Button save_as_midi;
-  public Button render_graphics;
-  public Button exit;
-  public Button about;
-  public Panel control_panel;
-  public Panel progress_and_controls;
+  public JButton pause_play;
+  public JButton stop;
+  public JButton save_as_midi;
+  public JButton render_graphics;
+  public JButton exit;
+  public JButton about;
+  public JPanel control_panel;
+  public JPanel progress_and_controls;
   public boolean buttons_enabled = false;
   
   // File watcher
@@ -45,28 +47,28 @@ public class SIREN extends Frame implements ComponentListener, ActionListener, W
     siren_app = new SIRENPApplet();
     siren_progress_bar = new SIRENProgressBar();
     
-    control_panel = new Panel();
-    pause_play = new Button("Pause");
+    control_panel = new JPanel();
+    pause_play = new JButton("Pause");
     pause_play.setEnabled(false);
     pause_play.setActionCommand("Pause");
     pause_play.addActionListener(this);
-    stop = new Button("Stop");
+    stop = new JButton("Stop");
     stop.setEnabled(false);
     stop.setActionCommand("Stop");
     stop.addActionListener(this);
-    save_as_midi = new Button("Save as MIDI");
+    save_as_midi = new JButton("Save as MIDI");
     save_as_midi.setEnabled(false);
     save_as_midi.setActionCommand("MIDI");
     save_as_midi.addActionListener(this);
-    render_graphics = new Button("Render Graphics");
+    render_graphics = new JButton("Render Graphics");
     render_graphics.setEnabled(false);
     render_graphics.setActionCommand("Graphics");
     render_graphics.addActionListener(this);
-    exit = new Button("Exit");
+    exit = new JButton("Exit");
     exit.setEnabled(true);
     exit.setActionCommand("Exit");
     exit.addActionListener(this);
-    about = new Button("About");
+    about = new JButton("About");
     about.setEnabled(true);
     about.setActionCommand("About");
     about.addActionListener(this);
@@ -78,7 +80,7 @@ public class SIREN extends Frame implements ComponentListener, ActionListener, W
     control_panel.add(about);
     control_panel.add(exit);
     
-    progress_and_controls = new Panel(new BorderLayout());
+    progress_and_controls = new JPanel(new BorderLayout());
     progress_and_controls.add(control_panel, BorderLayout.SOUTH);
     progress_and_controls.add(siren_progress_bar, BorderLayout.CENTER);
     
@@ -86,7 +88,7 @@ public class SIREN extends Frame implements ComponentListener, ActionListener, W
     add(siren_app, BorderLayout.CENTER);
     add(progress_and_controls, BorderLayout.SOUTH);
     setResizable(true);
-    setSize(500,500);
+    setSize(650,650);
     
     addWindowListener(this);
     
@@ -108,11 +110,23 @@ public class SIREN extends Frame implements ComponentListener, ActionListener, W
   }
   
   public static void main(String[] args) {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (Exception ex) {}
+    
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        createAndShowGUI();
+      }
+    });
+  }
+  
+  public static void createAndShowGUI() {
     SIREN siren = new SIREN();
     siren.setLocationRelativeTo(null);
-    //siren.sendUpdateEvent();
     siren.setVisible(true);
     siren.watchButtons();
+    siren.sendUpdateEvent();
   }
   
   public void watchButtons() {
@@ -121,11 +135,11 @@ public class SIREN extends Frame implements ComponentListener, ActionListener, W
       public void run() {
         for(;;) {
           if(siren.player.isPlaying()) {
-            siren.pause_play.setLabel("Pause");
+            siren.pause_play.setText("Pause");
             siren.pause_play.setActionCommand("Pause");
             siren.stop.setEnabled(true);
           } else {
-            siren.pause_play.setLabel("Play");
+            siren.pause_play.setText("Play");
             siren.pause_play.setActionCommand("Play");
             siren.stop.setEnabled(false);
           }
@@ -190,13 +204,14 @@ public class SIREN extends Frame implements ComponentListener, ActionListener, W
   
   public void saveMidi() {
     try {
-      FileDialog save = new FileDialog(this, "Save file as...", FileDialog.SAVE);
+      JFileChooser save = new JFileChooser();
+      FileNameExtensionFilter filter = new FileNameExtensionFilter("MIDI files", "mid", "midi");
+      save.setFileFilter(filter);
       File saveFile;
-      save.setDirectory(this.siren_file_daemon.mididir.toString());
-      save.setVisible(true);
-      String filename = save.getFile();
-      if(filename != null) {
-        saveFile = new File(save.getDirectory(), filename);
+      save.setCurrentDirectory(new File(this.siren_file_daemon.mididir.toString()));
+      int retval = save.showSaveDialog(this);
+      if(retval == JFileChooser.APPROVE_OPTION) {
+        saveFile = save.getSelectedFile();
         player.saveMidi(pattern, saveFile);
       }
     } catch (Exception ex) {
@@ -219,15 +234,15 @@ public class SIREN extends Frame implements ComponentListener, ActionListener, W
   }
   
   public void aboutDialog() {
-    final Dialog d = new Dialog(this, "About siren", true);
+    final JDialog d = new JDialog(this, "About siren", true);
     d.setLayout(new BorderLayout());
-    Panel infoPanel = new Panel(new BorderLayout());
-    Panel controls = new Panel();
-    infoPanel.add(new Label("siren - the silica rendering engine", Label.CENTER), BorderLayout.NORTH);
-    infoPanel.add(new Label("2012 Jacob Peck", Label.CENTER), BorderLayout.CENTER);
-    infoPanel.add(new Label("http://silica.suspended-chord.info", Label.CENTER), BorderLayout.SOUTH);
+    JPanel infoPanel = new JPanel(new BorderLayout());
+    JPanel controls = new JPanel();
+    infoPanel.add(new JLabel("siren - the silica rendering engine", JLabel.CENTER), BorderLayout.NORTH);
+    infoPanel.add(new JLabel("2012 Jacob Peck", JLabel.CENTER), BorderLayout.CENTER);
+    infoPanel.add(new SIRENURLLabel("http://silica.suspended-chord.info", "http://silica.suspended-chord.info", JLabel.CENTER), BorderLayout.SOUTH);
     d.add(infoPanel, BorderLayout.CENTER);
-    Button ok = new Button("Close");
+    JButton ok = new JButton("Close");
     ok.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         d.setVisible(false);
