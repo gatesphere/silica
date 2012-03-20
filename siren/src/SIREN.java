@@ -29,7 +29,18 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
   public JButton about;
   public JPanel control_panel;
   public JPanel progress_and_controls;
+  
+  /*
+  public ImageIcon pause_icon;
+  public ImageIcon play_icon;
+  public ImageIcon stop_icon;
+  public ImageIcon graphics_icon;
+  public ImageIcon exit_icon;
+  public ImageIcon about_icon;
+  */
+  
   public boolean buttons_enabled = false;
+  public boolean statechanged = false;
   
   // File watcher
   public SIRENFileDaemon siren_file_daemon;
@@ -40,6 +51,15 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
   public SIREN() {
     super("siren - the silica rendering engine");
     
+    // load icons
+    /*
+    pause_icon = new ImageIcon("data/pause.png");
+    play_icon = new ImageIcon("data/play.png");
+    stop_icon = new ImageIcon("data/stop.png");
+    graphics_icon = new ImageIcon("data/graphics.png");
+    exit_icon = new ImageIcon("data/exit.png");
+    about_icon = new ImageIcon("data/about.png");
+    */
     addComponentListener(this);
     
     setLayout(new BorderLayout());
@@ -48,6 +68,7 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
     siren_progress_bar = new SIRENProgressBar();
     
     control_panel = new JPanel();
+    //pause_play = new JButton(play_icon);
     pause_play = new JButton("Pause");
     pause_play.setEnabled(false);
     pause_play.setActionCommand("Pause");
@@ -134,14 +155,19 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
     new Thread(new Runnable() {
       public void run() {
         for(;;) {
-          if(siren.player.isPlaying()) {
-            siren.pause_play.setText("Pause");
-            siren.pause_play.setActionCommand("Pause");
-            siren.stop.setEnabled(true);
-          } else {
-            siren.pause_play.setText("Play");
-            siren.pause_play.setActionCommand("Play");
-            siren.stop.setEnabled(false);
+          if(statechanged) {
+            statechanged = false;
+            if(siren.player.isPlaying()) {
+              //siren.pause_play.setIcon(pause_icon);
+              siren.pause_play.setText("Pause");
+              siren.pause_play.setActionCommand("Pause");
+              siren.stop.setEnabled(true);
+            } else {
+              //siren.pause_play.setIcon(play_icon);
+              siren.pause_play.setText("Play");
+              siren.pause_play.setActionCommand("Play");
+              siren.stop.setEnabled(false);
+            }
           }
         }
       }
@@ -155,6 +181,7 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
       save_as_midi.setEnabled(true);
       //render_graphics.setEnabled(true); // not yet available
       buttons_enabled = true;
+      statechanged = true;
     }
   }
   
@@ -176,6 +203,7 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
   
   public void renderSonic(String sonicString) {
     //System.out.println("Rendering sonically.");
+    statechanged = true;
     String str = siren_translator.getMusicString(sonicString);
     if(str == null) return;
     pattern = new Pattern(str);
@@ -221,6 +249,7 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
   
   public void renderGraphics(String graphicString) {
     // blah
+    statechanged = true;
     String str = siren_translator.getMusicString(graphicString);
     if(str == null) return;
     pattern = new Pattern(str);
@@ -295,6 +324,7 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
     else if (s.equals("About")) {
       this.aboutDialog();
     }
+    statechanged = true;
   } 
   
   // component listener
