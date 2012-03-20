@@ -26,6 +26,17 @@ if(?REPL_DEBUG, writeln("Initializing REPL..."))
     REPL_LOAD_HISTORY = false
   )
 
+  if(?REPL_DEBUG, writeln("  + Autoexec..."))
+  if(?AUTOEXEC,
+    if(File with(AUTOEXEC) exists,
+      if(?REPL_DEBUG, writeln("    + autoexec.silica found.  Loading..."))
+      silica exit := false
+      silica REPL REPL run(AUTOEXEC, true)
+      ,
+      if(?REPL_DEBUG, writeln("    + autoexec.silica not found.  Skipping..."))
+    )
+  )
+
   if(?REPL_DEBUG, writeln("  + Starting REPL..."))
   silica exit := false
   silica REPL REPL run(SCRIPT_FILE)

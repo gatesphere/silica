@@ -15,7 +15,13 @@ if(System getEnvironmentVariable("SILICA_DIR") == nil,
   SILICA_DIR = Path absolute(System getEnvironmentVariable("SILICA_DIR"))
 )
 
+// autoexec file?
+AUTOEXEC := nil
+if(SILICA_DIR != nil,
+  AUTOEXEC = Path with(SILICA_DIR, "autoexec.silica")
+)
 
+// load the language
 if(SILICA_DIR != nil,
   doFile(Path with(SILICA_DIR, "lib/io-symbols.io"))
   doFile(Path with(SILICA_DIR, "silica_main.io"))

@@ -45,7 +45,7 @@ silica REPL REPL := Object clone do(
   )
   
   // runs the whole thing
-  run := method(script,
+  run := method(script, autoexec,
     if(script != nil,
       // scripting mode
       file := File with(script)
@@ -55,11 +55,11 @@ silica REPL REPL := Object clone do(
         break
       )
       file := File with(script) openForReading
-      writeln("Running script \"" .. file path .. "\".\n\n")
+      if(autoexec == nil, writeln("Running script \"" .. file path .. "\".\n"))
       loop(
         in := file readLine
         if(in == nil, 
-          silica exit = true;
+          if(autoexec == nil, silica exit = true) // exit after a script, but not after autoexec
           break
         )
         if(in strip == "",
