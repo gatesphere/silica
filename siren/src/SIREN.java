@@ -21,7 +21,8 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
   public Pattern pattern = new Pattern("");
   
   // Controls
-  public JButton pause_play;
+  public JButton pause;
+  public JButton play;
   public JButton stop;
   public JButton save_as_midi;
   public JButton render_graphics;
@@ -40,7 +41,7 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
   */
   
   public boolean buttons_enabled = false;
-  public boolean statechanged = false;
+  //public boolean statechanged = false;
   
   // File watcher
   public SIRENFileDaemon siren_file_daemon;
@@ -68,11 +69,15 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
     siren_progress_bar = new SIRENProgressBar();
     
     control_panel = new JPanel();
+    play = new JButton("Play");
+    play.setEnabled(false);
+    play.setActionCommand("Play");
+    play.addActionListener(this);
     //pause_play = new JButton(play_icon);
-    pause_play = new JButton("Pause");
-    pause_play.setEnabled(false);
-    pause_play.setActionCommand("Pause");
-    pause_play.addActionListener(this);
+    pause = new JButton("Pause");
+    pause.setEnabled(false);
+    pause.setActionCommand("Pause");
+    pause.addActionListener(this);
     stop = new JButton("Stop");
     stop.setEnabled(false);
     stop.setActionCommand("Stop");
@@ -94,7 +99,8 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
     about.setActionCommand("About");
     about.addActionListener(this);
     
-    control_panel.add(pause_play);
+    control_panel.add(play);
+    control_panel.add(pause);
     control_panel.add(stop);
     control_panel.add(save_as_midi);
     control_panel.add(render_graphics);
@@ -126,6 +132,7 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
   }
   
   public void sendUpdateEvent() {
+    this.updateButtons();
     siren_progress_bar.redraw();
     siren_app.sendUpdateEvent();
   }
@@ -146,42 +153,42 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
     SIREN siren = new SIREN();
     siren.setLocationRelativeTo(null);
     siren.setVisible(true);
-    siren.watchButtons();
+    //siren.watchButtons();
     siren.sendUpdateEvent();
   }
   
-  public void watchButtons() {
-    final SIREN siren = this;
-    new Thread(new Runnable() {
-      public void run() {
-        for(;;) {
-          if(statechanged) {
-            statechanged = false;
-            if(siren.player.isPlaying()) {
-              //siren.pause_play.setIcon(pause_icon);
-              siren.pause_play.setText("Pause");
-              siren.pause_play.setActionCommand("Pause");
-              siren.stop.setEnabled(true);
-            } else {
-              //siren.pause_play.setIcon(play_icon);
-              siren.pause_play.setText("Play");
-              siren.pause_play.setActionCommand("Play");
-              siren.stop.setEnabled(false);
-            }
-          }
-        }
+  public void updateButtons() { updateButtons(false); }
+  public void updateButtons(boolean replay) {
+    System.out.println("Updating buttons. " + replay);
+    if(player.isPlaying() || replay) {
+      pause.setEnabled(true);
+      play.setEnabled(false);
+      stop.setEnabled(true);
+    } else if(player.isPaused()) {
+      pause.setEnabled(false);
+      play.setEnabled(true);
+      stop.setEnabled(false);
+    } else {
+      if(buttons_enabled) {
+        play.setEnabled(true);
+        pause.setEnabled(false);
+        stop.setEnabled(false);
+      } else {
+        play.setEnabled(false);
+        pause.setEnabled(false);
+        stop.setEnabled(false);
       }
-    }).start();
+    }
   }
   
   public void enableButtons() {
     if(!buttons_enabled) {
-      pause_play.setEnabled(true);
+      pause.setEnabled(true);
       stop.setEnabled(true);
       save_as_midi.setEnabled(true);
       //render_graphics.setEnabled(true); // not yet available
       buttons_enabled = true;
-      statechanged = true;
+      //statechanged = true;
     }
   }
   
@@ -203,7 +210,7 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
   
   public void renderSonic(String sonicString) {
     //System.out.println("Rendering sonically.");
-    statechanged = true;
+    //statechanged = true;
     String str = siren_translator.getMusicString(sonicString);
     if(str == null) return;
     pattern = new Pattern(str);
@@ -215,9 +222,11 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
   public void playInThread() {
     final Player player1 = this.player;
     final Pattern pattern1 = this.pattern;
+    final SIREN siren = this;
     new Thread(new Runnable() {
       public void run() {
         player1.play(pattern1);
+        siren.updateButtons();
       }
     }).start();
   }
@@ -249,7 +258,7 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
   
   public void renderGraphics(String graphicString) {
     // blah
-    statechanged = true;
+    //statechanged = true;
     String str = siren_translator.getMusicString(graphicString);
     if(str == null) return;
     pattern = new Pattern(str);
@@ -294,20 +303,24 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
     String s = ae.getActionCommand(); 
     if (s.equals("Pause")) { 
       this.player.pause();
+      this.updateButtons();
       //System.out.println("Pausing.");
     } 
     else if (s.equals("Play")) { 
       if(!this.player.isPaused()) {
         this.playInThread();
+        this.updateButtons(true);
         //System.out.println("Playing.");
       }
       else {
         this.player.resume(); 
+        this.updateButtons();
         //System.out.println("Resuming.");
       }
     } 
     else if (s.equals("Stop")) { 
       this.player.stop();
+      this.updateButtons();
       //System.out.println("Stopping.");
     }
     else if (s.equals("MIDI")) {
@@ -324,13 +337,13 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
     else if (s.equals("About")) {
       this.aboutDialog();
     }
-    statechanged = true;
   } 
   
   // component listener
   public void componentHidden(ComponentEvent e) {}
   public void componentMoved(ComponentEvent e) {}
   public void componentResized(ComponentEvent e) {
+    try { Thread.sleep(100); } catch (Exception ex) {}
     ((SIREN)e.getComponent()).sendUpdateEvent();
   }
   public void componentShown(ComponentEvent e) {}
