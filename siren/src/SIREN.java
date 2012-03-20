@@ -31,15 +31,14 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
   public JPanel control_panel;
   public JPanel progress_and_controls;
   
-  /*
   public ImageIcon pause_icon;
   public ImageIcon play_icon;
   public ImageIcon stop_icon;
+  public ImageIcon save_icon;
   public ImageIcon graphics_icon;
   public ImageIcon exit_icon;
   public ImageIcon about_icon;
-  */
-  
+   
   public boolean buttons_enabled = false;
   //public boolean statechanged = false;
   
@@ -53,14 +52,14 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
     super("siren - the silica rendering engine");
     
     // load icons
-    /*
     pause_icon = new ImageIcon("data/pause.png");
     play_icon = new ImageIcon("data/play.png");
     stop_icon = new ImageIcon("data/stop.png");
+    save_icon = new ImageIcon("data/save.png");
     graphics_icon = new ImageIcon("data/graphics.png");
     exit_icon = new ImageIcon("data/exit.png");
     about_icon = new ImageIcon("data/about.png");
-    */
+
     addComponentListener(this);
     
     setLayout(new BorderLayout());
@@ -69,34 +68,47 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
     siren_progress_bar = new SIRENProgressBar();
     
     control_panel = new JPanel();
-    play = new JButton("Play");
+    
+    play = new JButton(play_icon);
     play.setEnabled(false);
     play.setActionCommand("Play");
+    play.setToolTipText("Play");
     play.addActionListener(this);
-    //pause_play = new JButton(play_icon);
-    pause = new JButton("Pause");
+    
+    pause = new JButton(pause_icon);
     pause.setEnabled(false);
     pause.setActionCommand("Pause");
+    pause.setToolTipText("Pause");
     pause.addActionListener(this);
-    stop = new JButton("Stop");
+    
+    stop = new JButton(stop_icon);
     stop.setEnabled(false);
     stop.setActionCommand("Stop");
+    stop.setToolTipText("Stop");
     stop.addActionListener(this);
-    save_as_midi = new JButton("Save as MIDI");
+    
+    save_as_midi = new JButton(save_icon);
     save_as_midi.setEnabled(false);
     save_as_midi.setActionCommand("MIDI");
+    save_as_midi.setToolTipText("Save as MIDI file");
     save_as_midi.addActionListener(this);
-    render_graphics = new JButton("Render Graphics");
+    
+    render_graphics = new JButton(graphics_icon);
     render_graphics.setEnabled(false);
     render_graphics.setActionCommand("Graphics");
+    render_graphics.setToolTipText("Render graphical output");
     render_graphics.addActionListener(this);
-    exit = new JButton("Exit");
+    
+    exit = new JButton(exit_icon);
     exit.setEnabled(true);
     exit.setActionCommand("Exit");
+    exit.setToolTipText("Exit siren");
     exit.addActionListener(this);
-    about = new JButton("About");
+    
+    about = new JButton(about_icon);
     about.setEnabled(true);
     about.setActionCommand("About");
+    about.setToolTipText("About siren and silica");
     about.addActionListener(this);
     
     control_panel.add(play);
@@ -159,7 +171,7 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
   
   public void updateButtons() { updateButtons(false); }
   public void updateButtons(boolean replay) {
-    System.out.println("Updating buttons. " + replay);
+    //System.out.println("Updating buttons. " + replay);
     if(player.isPlaying() || replay) {
       pause.setEnabled(true);
       play.setEnabled(false);
