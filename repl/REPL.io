@@ -134,7 +134,7 @@ silica REPL REPL := Object clone do(
   
   validName := method(name,
     out := true
-    if(name findSeqs(list("(",")",":","=","+", "-",",",">>")) != nil, out = false)
+    if(name findSeqs(list("(", ")", ":", "=", "+", "-", ",", ">>")) != nil, out = false)
     symbol := silica token(silica namespace("home"), name lowercase)
     if(symbol isKindOf(silica Primitive) or symbol isKindOf(silica MetaCommand) or symbol isKindOf(silica Transform),
       out := false
