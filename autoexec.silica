@@ -1,8 +1,10 @@
 ## silica autoexec file
 ## this file will be run upon startup
 
+-silent
+
 ## settings
-# enable siren immediately
+## enable siren immediately
 -siren
 
 ## some standard utility macros
@@ -30,3 +32,9 @@ playxlp >> chromatic lp play rp popalphabet
 hat >> play rp play lp play
 asc3 >> 3play+rp
 desc3 >> 3play+lp
+
+pop@$ >> popalphabet$
+pop@ >> popalphabet
+
+
+-silent

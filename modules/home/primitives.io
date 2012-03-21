@@ -1,0 +1,50 @@
+// silica programming language
+// Jacob M. Peck
+// home module - primitives
+
+
+if(?REPL_DEBUG, writeln("    + Initializing default primitives..."))
+
+home := silica namespace("home")
+
+tt := silica TokenTable
+
+tt add(home, "play", silica Primitive with("PLAY", "Plays the note with the current state.", block(silica Note play)))
+tt add(home, "rest", silica Primitive with("REST", "Rests the note for the current duration.", block(silica Note rest)))
+//tt add(home, "mute", silica Primitive with("MUTE", "Plays a muted note for the current duration.", block(silica Note mute)))
+tt add(home, "rp", silica Primitive with("RP", "Raises the pitch of the note by one scale degree.", block(silica Note rp)))
+tt add(home, "lp", silica Primitive with("LP", "Lowers the pitch of the note by one scale degree.", block(silica Note lp)))
+tt add(home, "cp", silica Primitive with("CP", "Stochastically applies either RP or LP.", block(silica Note cp)))
+tt add(home, "x2", silica Primitive with("X2", "Expands the current duration by a factor of 2", block(silica Note x2)))
+tt add(home, "x3", silica Primitive with("X3", "Expands the current duration by a factor of 3", block(silica Note x3)))
+tt add(home, "x5", silica Primitive with("X5", "Expands the current duration by a factor of 5", block(silica Note x5)))
+tt add(home, "x7", silica Primitive with("X7", "Expands the current duration by a factor of 7", block(silica Note x7)))
+tt add(home, "s2", silica Primitive with("S2", "Shrinks the current duration by a factor of 2", block(silica Note s2)))
+tt add(home, "s3", silica Primitive with("S3", "Shrinks the current duration by a factor of 3", block(silica Note s3)))
+tt add(home, "s5", silica Primitive with("S5", "Shrinks the current duration by a factor of 5", block(silica Note s5)))
+tt add(home, "s7", silica Primitive with("S7", "Shrinks the current duration by a factor of 7", block(silica Note s7)))
+tt add(home, "pushstate", silica Primitive with("PUSHSTATE", "Pushes the current state of the note onto the statestack.", block(silica Note pushstate)))
+tt add(home, "popstate", silica Primitive with("POPSTATE", "Pops the top state of the statestack off and applies it to the note.", block(silica Note popstate)))
+tt add(home, "removestate", silica Primitive with("REMOVESTATE", "Removes the top state of the statestack without applying it to the note.", block(silica Note removestate)))
+tt add(home, "popalphabet", silica Primitive with("POPALPHABET", "Attempts to relatively pop and apply the top alphabet from the scalestack.", block(silica Note popalphabetRelative)))
+tt add(home, "popalphabet$", silica Primitive with("POPALPHABET$", "Absolutely pops the top alphabet from the scalestack.", block(silica Note popalphabet)))
+tt add(home, "maxvol", silica Primitive with("MAXVOL", "Sets the volume to the maximum (16000).", block(silica Note maxvol)))
+tt add(home, "minvol", silica Primitive with("MINVOL", "Sets the volume to the minimum (0).", block(silica Note minvol)))
+tt add(home, "midvol", silica Primitive with("MIDVOL", "Sets the volume to a mid-range value (8000).", block(silica Note midvol)))
+tt add(home, "startvol", silica Primitive with("STARTVOL", "Sets the volume to the starting value (12000).", block(silica Note startvol)))
+tt add(home, "incvol", silica Primitive with("INCVOL", "Increments the volume by 1000.", block(silica Note incvol)))
+tt add(home, "incvol1", silica Primitive with("INCVOL1", "Increments the volume by 100.", block(silica Note incvol1)))
+tt add(home, "decvol", silica Primitive with("DECVOL", "Decrements the volume by 1000.", block(silica Note decvol)))
+tt add(home, "decvol1", silica Primitive with("DECVOL1", "Decrements the volume by 100.", block(silica Note decvol1)))
+tt add(home, "maxtempo", silica Primitive with("MAXTEMPO", "Sets the tempo to the maximum (400 bpm).", block(silica Note maxtempo)))
+tt add(home, "mintempo", silica Primitive with("MINTEMPO", "Sets the tempo to the minimum (20 bpm).", block(silica Note mintempo)))
+tt add(home, "midtempo", silica Primitive with("MIDTEMPO", "Sets the tempo to a mid-range value (190 bpm).", block(silica Note midtempo)))
+tt add(home, "starttempo", silica Primitive with("STARTTEMPO", "Sets the tempo to the starting value (120 bpm).", block(silica Note starttempo)))
+tt add(home, "doubletempo", silica Primitive with("DOUBLETEMPO", "Doubles the tempo.", block(silica Note doubletempo)))
+tt add(home, "tripletempo", silica Primitive with("TRIPLETEMPO", "Triples the tempo.", block(silica Note tripletempo)))
+tt add(home, "halftempo", silica Primitive with("HALFTEMPO", "Halves the tempo.", block(silica Note halftempo)))
+tt add(home, "thirdtempo", silica Primitive with("THIRDTEMPO", "Thirds the tempo.", block(silica Note thirdtempo)))
+tt add(home, "inctempo", silica Primitive with("INCTEMPO", "Increments the tempo by 10 bpm.", block(silica Note inctempo)))
+tt add(home, "inctempo1", silica Primitive with("INCTEMPO1", "Increments the tempo by 1 bpm.", block(silica Note inctempo1)))
+tt add(home, "dectempo", silica Primitive with("DECTEMPO", "Decrements the tempo by 10 bpm.", block(silica Note dectempo)))
+tt add(home, "dectempo1", silica Primitive with("DECTEMPO1", "Decrements the tempo by 1 bpm.", block(silica Note dectempo1)))

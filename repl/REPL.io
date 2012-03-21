@@ -10,6 +10,7 @@ silica REPL REPL := Object clone do(
   currentNamespace := silica namespace("home")
   
   mcmode := false
+  silent := false
   
   siren_in_path := Path with(SILICA_DIR,"siren","siren_in")
   siren_out_path := Path with(SILICA_DIR,"siren","siren_out")
@@ -105,7 +106,7 @@ silica REPL REPL := Object clone do(
     
     processed := self preprocess(in)
     if(processed == nil,
-      writeln
+      if(self silent not, writeln)
       return
     )
     if(?REPL_DEBUG, writeln("TRACE (parse) received: " .. processed))
@@ -128,12 +129,12 @@ silica REPL REPL := Object clone do(
       )
     )
     if(repl_out size == 1, repl_out append("okay."))
-    writeln(repl_out join(" ") strip)
+    if(silent not, writeln(repl_out join(" ") strip))
   )
   
   validName := method(name,
     out := true
-    if(name findSeqs(list("(",")",":","=","+", "-",",")) != nil, out = false)
+    if(name findSeqs(list("(",")",":","=","+", "-",",",">>")) != nil, out = false)
     symbol := silica token(silica namespace("home"), name lowercase)
     if(symbol isKindOf(silica Primitive) or symbol isKindOf(silica MetaCommand) or symbol isKindOf(silica Transform),
       out := false
@@ -152,7 +153,9 @@ silica REPL REPL := Object clone do(
     if(out at(1) == ">>",
       name := out at(0)
       if(self validName(name) not,
-        write("--> MACRO name is invalid.")
+        if(self silent not,
+          write("--> MACRO name is invalid.")
+        )
         ,
         contents := out rest rest join(" ")
         if(name asNumber isNan,
@@ -161,9 +164,13 @@ silica REPL REPL := Object clone do(
                                 name lowercase, 
                                 m
           )
-          write("--> MACRO " .. self currentNamespace constructName .. "::" .. name uppercase .. " defined.")
+          if(self silent not, 
+            write("--> MACRO " .. self currentNamespace constructName .. "::" .. name uppercase .. " defined.")
+          )
           ,
-          write("--> MACRO names cannot begin with numbers.")
+          if(self silent not,
+            write("--> MACRO names cannot begin with numbers.")
+          )
         )
       )
       return nil
@@ -173,7 +180,9 @@ silica REPL REPL := Object clone do(
     if(out at(1) == "=", 
       name := out at(0)
       if(self validName(name) not,
-        write("--> COMMAND name is invalid.")
+        if(self silent not,
+          write("--> COMMAND name is invalid.")
+        )
         ,
         contents := out rest rest join(" ")
         if(name asNumber isNan,
@@ -182,9 +191,13 @@ silica REPL REPL := Object clone do(
                                 name lowercase, 
                                 c
           )
-          write("--> COMMAND " .. self currentNamespace constructName .. "::" .. name uppercase .. " defined.")
+          if(self silent not,
+            write("--> COMMAND " .. self currentNamespace constructName .. "::" .. name uppercase .. " defined.")
+          )
           ,
-          write("--> COMMAND names cannot begin with numbers.")
+          if(self silent not,
+            write("--> COMMAND names cannot begin with numbers.")
+          )
         )
       )
       return nil
@@ -195,7 +208,9 @@ silica REPL REPL := Object clone do(
       compound := out at(0) splitNoEmpties("(",",",")")
       name := compound at(0)
       if(self validName(name) not,
-        write("--> FUNCTION name is invalid.")
+        if(self silent not,
+          write("--> FUNCTION name is invalid.")
+        )
         ,
         params := compound rest
         contents := out rest rest join(" ")
@@ -205,9 +220,13 @@ silica REPL REPL := Object clone do(
                                 name lowercase,
                                 f
           )
-          write("--> FUNCTION " .. self currentNamespace constructName .. "::" .. name uppercase .. " defined.")
+          if(self silent not,
+            write("--> FUNCTION " .. self currentNamespace constructName .. "::" .. name uppercase .. " defined.")
+          )
           ,
-          write("--> FUNCTION names cannot begin with numbers.")
+          if(self silent not,
+            write("--> FUNCTION names cannot begin with numbers.")
+          )
         )
       )
       return nil
@@ -218,11 +237,15 @@ silica REPL REPL := Object clone do(
       name := out at(0)
       intervals := out rest rest map(x, x asNumber)
       if(intervals sum != silica PitchNames size,
-        write("--> Cannot define mode " .. name asMutable uppercase .. ": intervals must sum to " .. silica PitchNames size .. ".")
+        if(self silent not,
+          write("--> Cannot define mode " .. name asMutable uppercase .. ": intervals must sum to " .. silica PitchNames size .. ".")
+        )
         return nil
       )
       if(silica mode(name uppercase) != nil,
-        write("--> Cannot redefine mode " .. name asMutable uppercase .. ".")
+        if(self silent not,
+          write("--> Cannot redefine mode " .. name asMutable uppercase .. ".")
+        )
         return nil
       )
       //writeln(intervals)
@@ -257,7 +280,22 @@ silica REPL REPL := Object clone do(
             ) setScope(ctx)
         ))
       )
-      write("--> MODE " .. name uppercase .. " defined.")
+      ctx := Object clone
+      ctx x := m name
+      silica TokenTable add(
+        ns,
+        m name asMutable lowercase,
+        silica ScaleChanger with(m name asMutable uppercase,
+            "(USER DEFINED) Relatively pushes the " .. m name .. " scale matching the note's current pitch class onto the scalestack.",
+            block(
+              tonic := silica Note scale last getNameForDegree(silica Note degree)
+              scalename := tonic .. "-" .. x asMutable uppercase
+              silica Note changeScaleRelative(silica scale(scalename))
+            ) setScope(ctx)
+      ))
+      if(self silent not,
+        write("--> MODE " .. name uppercase .. " defined.")
+      )
       return nil
     )
 
@@ -341,7 +379,9 @@ silica REPL REPL := Object clone do(
             // not a grouping factor or repetition factor
             ret := self interpretToken(tok asMutable lowercase, false, self currentNamespace)
             if(ret first == nil,
-              writeln("--> ERROR: cannot recognize token \"" .. tok asMutable uppercase .. "\" within namespace \"" .. self currentNamespace constructName .. "\".")
+              if(self silent not,
+                writeln("--> ERROR: cannot recognize token \"" .. tok asMutable uppercase .. "\" within namespace \"" .. self currentNamespace constructName .. "\".")
+              )
               if(?REPL_DEBUG, writeln("TRACE (preprocess) breaking with: " .. out join(" ")))
               valid = false
               break
@@ -367,7 +407,9 @@ silica REPL REPL := Object clone do(
       )
       if(valid not, out = list)
       if(depth >= REPL_MAX_RECURSIVE_DEPTH,
-        writeln("--> ERROR: infinite loop detected.  Bailing out.")
+        if(self silent not,
+          writeln("--> ERROR: infinite loop detected.  Bailing out.")
+        )
         out = list
       )
       if(?REPL_DEBUG, writeln("TRACE (preprocess) step: " .. out join(" ")))
@@ -453,7 +495,9 @@ silica REPL REPL := Object clone do(
   interpretMetaCommand := method(meta, param, 
     if(?REPL_DEBUG, writeln("TRACE (interpretToken): MetaCommand found: " .. meta))
     if(mcmode not, 
-      writeln("Ignoring Meta Command \"" .. meta name .. "\": not applicable in this context.")
+      if(self silent not,
+        writeln("Ignoring Meta Command \"" .. meta name .. "\": not applicable in this context.")
+      )
       list(list(nil, nil), true)
       ,
       out := meta execute(param)
