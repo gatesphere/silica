@@ -15,7 +15,6 @@ silica REPL Parser := Object clone do(
     )
     out
   )
-    
   
   // get the input to be all primitives
   preprocess := method(in, repl,
@@ -24,164 +23,22 @@ silica REPL Parser := Object clone do(
     out := in splitNoEmpties
     
     // macro definition?
-    if(out at(1) == ">>",
-      name := out at(0)
-      if(self validName(name) not,
-        if(repl silent not,
-          write("--> MACRO name is invalid.")
-        )
-        ,
-        contents := out rest rest join(" ")
-        if(name asNumber isNan,
-          m := silica Macro with(name uppercase, contents)
-          silica TokenTable add(repl currentNamespace, 
-                                name lowercase, 
-                                m
-          )
-          if(repl silent not, 
-            write("--> MACRO " .. repl currentNamespace constructName .. "::" .. name uppercase .. " defined.")
-          )
-          ,
-          if(repl silent not,
-            write("--> MACRO names cannot begin with numbers.")
-          )
-        )
-      )
-      return nil
-    )
+    if(out at(1) == ">>", return self defineMacro(out, repl))
     
     // command definition?
-    if(out at(1) == "=", 
-      name := out at(0)
-      if(self validName(name) not,
-        if(repl silent not,
-          write("--> COMMAND name is invalid.")
-        )
-        ,
-        contents := out rest rest join(" ")
-        if(name asNumber isNan,
-          c := silica Command with(name uppercase, contents)
-          silica TokenTable add(repl currentNamespace, 
-                                name lowercase, 
-                                c
-          )
-          if(repl silent not,
-            write("--> COMMAND " .. repl currentNamespace constructName .. "::" .. name uppercase .. " defined.")
-          )
-          ,
-          if(repl silent not,
-            write("--> COMMAND names cannot begin with numbers.")
-          )
-        )
-      )
-      return nil
-    )
+    if(out at(1) == "=", return self defineCommand(out, repl))
     
     // function definition?
-    if(out at(1) == ":=", 
-      compound := out at(0) splitNoEmpties("(",",",")")
-      name := compound at(0)
-      if(self validName(name) not,
-        if(repl silent not,
-          write("--> FUNCTION name is invalid.")
-        )
-        ,
-        params := compound rest
-        contents := out rest rest join(" ")
-        if(name asNumber isNan,
-          f := silica Function with(name uppercase, contents, params)
-          silica TokenTable add(repl currentNamespace,
-                                name lowercase,
-                                f
-          )
-          if(repl silent not,
-            write("--> FUNCTION " .. repl currentNamespace constructName .. "::" .. name uppercase .. " defined.")
-          )
-          ,
-          if(repl silent not,
-            write("--> FUNCTION names cannot begin with numbers.")
-          )
-        )
-      )
-      return nil
-    )
+    if(out at(1) == ":=", return self defineFunction(out, repl))
     
     // mode definition?
-    if(out at(1) == "!!",
-      name := out at(0)
-      intervals := out rest rest map(x, x asNumber)
-      if(intervals sum != silica PitchNames size,
-        if(repl silent not,
-          write("--> Cannot define mode " .. name asMutable uppercase .. ": intervals must sum to " .. silica PitchNames size .. ".")
-        )
-        return nil
-      )
-      if(silica mode(name uppercase) != nil,
-        if(repl silent not,
-          write("--> Cannot redefine mode " .. name asMutable uppercase .. ".")
-        )
-        return nil
-      )
-      //writeln(intervals)
-      silica ModeTable new(name uppercase, intervals);
-      ns := silica namespace("home")
-      m := silica mode(name uppercase)
-      //writeln(m intervals)
-      silica PitchNames foreach(tonic,
-        ctx := Object clone
-        ctx sname := tonic .. "-" .. m name
-        silica ScaleTable new(ctx sname, m, tonic)
-        ctx scale := silica scale(ctx sname)
-        //writeln(ctx scale mode)
-        silica TokenTable add(
-          ns, 
-          ctx sname asMutable lowercase, 
-          silica ScaleChanger with(
-            ctx sname asMutable uppercase,
-            "(USER DEFINED) Attempts to relatively push the scale " .. ctx sname asMutable uppercase .. " onto the scalestack.",
-            block(
-              silica Note changeScaleRelative(scale)
-            ) setScope(ctx)
-        ))
-        silica TokenTable add(
-          ns, 
-          (ctx sname .. "$") asMutable lowercase, 
-          silica ScaleChanger with(
-            (ctx sname .. "$") asMutable uppercase,
-            "(USER DEFINED) Absolutely pushes the scale " .. (ctx sname .. "$") asMutable uppercase .. " onto the scalestack.", 
-            block(
-              silica Note changeScale(scale)
-            ) setScope(ctx)
-        ))
-      )
-      ctx := Object clone
-      ctx x := m name
-      silica TokenTable add(
-        ns,
-        m name asMutable lowercase,
-        silica ScaleChanger with(m name asMutable uppercase,
-            "(USER DEFINED) Relatively pushes the " .. m name .. " scale matching the note's current pitch class onto the scalestack.",
-            block(
-              tonic := silica Note scale last getNameForDegree(silica Note degree)
-              scalename := tonic .. "-" .. x asMutable uppercase
-              silica Note changeScaleRelative(silica scale(scalename))
-            ) setScope(ctx)
-      ))
-      if(repl silent not,
-        write("--> MODE " .. name uppercase .. " defined.")
-      )
-      return nil
-    )
+    if(out at(1) == "!!", return self defineMode(out, repl))
 
     // metacommand mode?
-    if(out at(0) beginsWithSeq("-"),
-      repl mcmode = true
-    )
+    if(out at(0) beginsWithSeq("-"), repl mcmode = true)
 
     // mcmode (return just the first metacommand)
-    if(repl mcmode,
-      return out at(0)
-    )
+    if(repl mcmode, return out at(0))
 
     // auto invariance mode?
     if(Lobby ?REPL_AUTOINVARIANT and repl mcmode not,
@@ -291,6 +148,153 @@ silica REPL Parser := Object clone do(
     if(?REPL_DEBUG, writeln("TRACE (preprocess) returning: " .. out join(" ")))
     out join(" ")
   )
+  
+  defineMacro := method(out, repl,
+    name := out at(0)
+    if(self validName(name) not,
+      if(repl silent not,
+        write("--> MACRO name is invalid.")
+      )
+      ,
+      contents := out rest rest join(" ")
+      if(name asNumber isNan,
+        m := silica Macro with(name uppercase, contents)
+        silica TokenTable add(repl currentNamespace, 
+                              name lowercase, 
+                              m
+        )
+        if(repl silent not, 
+          write("--> MACRO " .. repl currentNamespace constructName .. "::" .. name uppercase .. " defined.")
+        )
+        ,
+        if(repl silent not,
+          write("--> MACRO names cannot begin with numbers.")
+        )
+      )
+    )
+    return nil
+  )
+  
+  defineCommand := method(out, repl,
+    name := out at(0)
+    if(self validName(name) not,
+      if(repl silent not,
+        write("--> COMMAND name is invalid.")
+      )
+      ,
+      contents := out rest rest join(" ")
+      if(name asNumber isNan,
+        c := silica Command with(name uppercase, contents)
+        silica TokenTable add(repl currentNamespace, 
+                              name lowercase, 
+                              c
+        )
+        if(repl silent not,
+          write("--> COMMAND " .. repl currentNamespace constructName .. "::" .. name uppercase .. " defined.")
+        )
+        ,
+        if(repl silent not,
+          write("--> COMMAND names cannot begin with numbers.")
+        )
+      )
+    )
+    return nil
+  )
+  
+  defineFunction := method(out, repl,
+    compound := out at(0) splitNoEmpties("(",",",")")
+    name := compound at(0)
+    if(self validName(name) not,
+      if(repl silent not,
+        write("--> FUNCTION name is invalid.")
+      )
+      ,
+      params := compound rest
+      contents := out rest rest join(" ")
+      if(name asNumber isNan,
+        f := silica Function with(name uppercase, contents, params)
+        silica TokenTable add(repl currentNamespace,
+                              name lowercase,
+                              f
+        )
+        if(repl silent not,
+          write("--> FUNCTION " .. repl currentNamespace constructName .. "::" .. name uppercase .. " defined.")
+        )
+        ,
+        if(repl silent not,
+          write("--> FUNCTION names cannot begin with numbers.")
+        )
+      )
+    )
+    return nil
+  )
+  
+  defineMode := method(out, repl,
+    name := out at(0)
+    intervals := out rest rest map(x, x asNumber)
+    if(intervals sum != silica PitchNames size,
+      if(repl silent not,
+        write("--> Cannot define mode " .. name asMutable uppercase .. ": intervals must sum to " .. silica PitchNames size .. ".")
+      )
+      return nil
+    )
+    if(silica mode(name uppercase) != nil,
+      if(repl silent not,
+        write("--> Cannot redefine mode " .. name asMutable uppercase .. ".")
+      )
+      return nil
+    )
+    //writeln(intervals)
+    silica ModeTable new(name uppercase, intervals);
+    ns := silica namespace("home")
+    m := silica mode(name uppercase)
+    //writeln(m intervals)
+    silica PitchNames foreach(tonic,
+      ctx := Object clone
+      ctx sname := tonic .. "-" .. m name
+      silica ScaleTable new(ctx sname, m, tonic)
+      ctx scale := silica scale(ctx sname)
+      //writeln(ctx scale mode)
+      silica TokenTable add(
+        ns, 
+        ctx sname asMutable lowercase, 
+        silica ScaleChanger with(
+          ctx sname asMutable uppercase,
+          "(USER DEFINED) Attempts to relatively push the scale " .. ctx sname asMutable uppercase .. " onto the scalestack.",
+          block(
+            silica Note changeScaleRelative(scale)
+          ) setScope(ctx)
+      ))
+      silica TokenTable add(
+        ns, 
+        (ctx sname .. "$") asMutable lowercase, 
+        silica ScaleChanger with(
+          (ctx sname .. "$") asMutable uppercase,
+          "(USER DEFINED) Absolutely pushes the scale " .. (ctx sname .. "$") asMutable uppercase .. " onto the scalestack.", 
+          block(
+            silica Note changeScale(scale)
+          ) setScope(ctx)
+      ))
+    )
+    ctx := Object clone
+    ctx x := m name
+    silica TokenTable add(
+      ns,
+      m name asMutable lowercase,
+      silica ScaleChanger with(m name asMutable uppercase,
+          "(USER DEFINED) Relatively pushes the " .. m name .. " scale matching the note's current pitch class onto the scalestack.",
+          block(
+            tonic := silica Note scale last getNameForDegree(silica Note degree)
+            scalename := tonic .. "-" .. x asMutable uppercase
+            silica Note changeScaleRelative(silica scale(scalename))
+          ) setScope(ctx)
+    ))
+    if(repl silent not,
+      write("--> MODE " .. name uppercase .. " defined.")
+    )
+    return nil
+  )
+  
   
   interpretToken := method(token, final, namespace, repl,
     // find function, if it is one
