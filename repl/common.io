@@ -8,6 +8,7 @@ silica REPL := Object clone // namespace
 if(?REPL_DEBUG, writeln("Loading REPL files..."))
 
 silica replFileList := list(
+  "Parser.io",
   "REPL.io"
 )
 

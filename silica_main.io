@@ -9,7 +9,7 @@ REPL_RELOAD := true
 REPL_LOAD_HISTORY := true
 REPL_AUTOINVARIANT := false
 REPL_SIREN_ENABLED := false
-//REPL_DEBUG := true
+REPL_DEBUG := true
 
 // welcome message
 writeln("Welcome to silica!")

@@ -135,7 +135,7 @@ tt add(home, "-import", silica MetaCommand with("-IMPORT", "Run a file of silica
             continue
           )
           if(in strip beginsWithSeq("##") not, // lines beginning with ## are comments
-            silica REPL REPL parse(in)
+            silica REPL REPL interpretLine(in)
           )
         )
         file close
