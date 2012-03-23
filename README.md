@@ -85,20 +85,31 @@ There are a few things that differentiate silica from Clay.  Here's an extremely
   * Open source
   * User-defined scales and modes
   * Functions
-  * Muted notes
+  * Modular
 
 ### To do:
 Here's a short list of things to do:
 
   * More transforms
-  * Percussion instruments
+  * Modules:
+    * Percussion instruments
+    * Statistics
+    * Algorithmic Composition
+    * Microtonal Composition
+    * Atonal and Minimalist Composition (Serialists, row-based music, etc)
   * Graphical rendering (siren)
+    * Visual representation
+    * Pitch mapping (like a sparkline)
+    * Duration mapping
+    * Octave mapping
+    * Chunking
+    * Tree structures
+  * Give siren a history
 
 ### Known bugs:
 
   * siren midi file saving dialog not filtered for midi files
   * -display doesn't show all components of a piece
-  * siren progress bar is terrible on cpu usage
 
 ## Contributing
 This is a personal project.  If you have feedback, I'd love to hear it, but code will be mine.  You can contact me at [suschord@suspended-chord.info](mailto:suschord@suspended-chord.info).
