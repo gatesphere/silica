@@ -46,105 +46,9 @@ silica REPL Parser := Object clone do(
       out append("popstate")
     )
     
-    // repetition and grouping factors, and concurrent lines
-    changed := true
-    valid := true
-    depth := 0
-    while(changed and valid and (depth < REPL_MAX_RECURSIVE_DEPTH) and repl mcmode not,
-      depth = depth + 1
-      changed = false
-      in_2 := out join(" ")
-      out := list
-      toks := in_2 splitNoEmpties
-      inBrackets := false
-      toks foreach(tok,
-        if(tok == "[", inBrackets = true)
-        if(tok == "]", inBrackets = false)
-        
-        // concurrent lines
-        if(tok containsSeq("^"),
-          changed = true
-          if(inBrackets not,
-            out append("[")
-          )
-          while(tok containsSeq("^"),
-            out append("pushstate")
-            out append(tok beforeSeq("^"))
-            out append("popstate")
-            out append("||")
-            tok = tok afterSeq("^")
-          )
-          out append(tok)
-          if(inBrackets not,
-            out append("]")
-          )
-          continue
-        )
-        
-        // transform
-        if(tok containsSeq(":") and tok beginsWithSeq(":") not and silica token(repl currentNamespace, tok lowercase) == nil,
-          // not quite right yet... need to do rightmost decomposition
-          changed = true
-          pos := tok size - 1
-          while(tok exSlice(pos, pos+1) != ":",
-            pos = pos - 1
-          )
-          before := tok exSlice(0, pos)
-          after := tok exSlice(pos)
-          out append("**")
-          out append(before)
-          out append("*")
-          out append(after)
-          continue
-        )
-        
-        // repetition/grouping factors
-        if(tok asNumber isNan,
-          // not a repetition factor
-          if(tok containsSeq("+"),
-            // grouping factor
-            changed = true
-            out append(tok beforeSeq("+"))
-            out append(tok afterSeq("+"))
-            ,
-            // not a grouping factor or repetition factor
-            ret := self interpretToken(tok asMutable lowercase, false, repl currentNamespace, repl)
-            if(ret first == nil,
-              if(repl silent not,
-                writeln("--> ERROR: cannot recognize token \"" .. tok asMutable uppercase .. "\" within namespace \"" .. repl currentNamespace constructName .. "\".")
-              )
-              if(?REPL_DEBUG, writeln("TRACE (preprocess) breaking with: " .. out join(" ")))
-              valid = false
-              break
-            )
-            // macro/fn/cmd
-            if(ret second,
-              changed = true
-              out append(ret first)
-              ,
-              // must be a primitive
-              out append(tok)
-            )
-          )
-          ,
-          // repetition factor
-          changed = true
-          num := tok asNumber
-          info := tok afterSeq(num asString)
-          num repeat(
-            out append(info)
-          )
-        )
-      )
-      if(valid not, out = list)
-      if(depth >= REPL_MAX_RECURSIVE_DEPTH,
-        if(repl silent not,
-          writeln("--> ERROR: infinite loop detected.  Bailing out.")
-        )
-        out = list
-      )
-      if(?REPL_DEBUG, writeln("TRACE (preprocess) step: " .. out join(" ")))
-    )
+    // repetition and grouping factors, concurrent lines, and transforms
+    out = self simplify(out, repl)
+    
     if(?REPL_DEBUG, writeln("TRACE (preprocess) returning: " .. out join(" ")))
     out join(" ")
   )
@@ -295,8 +199,203 @@ silica REPL Parser := Object clone do(
     return nil
   )
   
+  simplify := method(out, repl,
+    // concurrent lines
+    changed := true
+    valid := true
+    depth := 0
+    values := list // multiple return values, stored as list(changed, valid, out)
+    while(changed and valid and (depth < REPL_MAX_RECURSIVE_DEPTH) and repl mcmode not,
+      depth = depth + 1
+      changed = false
+
+      // concurrent voices
+      values = simplifyVoices(changed, valid, out, repl)
+      changed = values at(0)
+      valid = values at(1)
+      out = values at(2)
+      
+      if(valid not, break)
+      
+      // transforms
+      values = simplifyTransforms(changed, valid, out, repl)
+      changed = values at(0)
+      valid = values at(1)
+      out = values at(2)
+      
+      if(valid not, break)
+      
+      // repetition/grouping factors
+      values = simplifyFactors(changed, valid, out, repl)
+      changed = values at(0)
+      valid = values at(1)
+      out = values at(2)
+      
+      if(valid not, break)
+      
+      // macros, commands, and functions
+      values = simplifyExpansions(changed, valid, out, repl)
+      changed = values at(0)
+      valid = values at(1)
+      out = values at(2)
+      
+      if(valid not, break)
+      
+      if(?REPL_DEBUG, writeln("TRACE (simplify) step " .. depth .. ": " .. out join(" ")))
+    )
+    
+    // check validity
+    values = checkValidity(changed, valid, out, repl)
+    changed = values at(0)
+    valid = values at(1)
+    out = values at(2)
+    
+    if(valid not, out = list)
+    if(depth >= REPL_MAX_RECURSIVE_DEPTH,
+      if(repl silent not,
+        writeln("--> ERROR: infinite loop detected.  Bailing out.")
+      )
+      out = list
+    )
+    out
+  )
+  
+  simplifyVoices := method(changed, valid, out, repl,
+    if(?REPL_DEBUG, writeln("TRACE (simplifyVoices) entering with: " .. out join(" ")))
+    in_2 := out join(" ")
+    out := list
+    toks := in_2 splitNoEmpties
+    inBrackets := false
+    toks foreach(tok,
+      if(tok == "[", inBrackets = true)
+      if(tok == "]", inBrackets = false)
+      
+      // concurrent lines
+      if(tok containsSeq("^"),
+        changed = true
+        if(inBrackets not,
+          out append("[")
+        )
+        while(tok containsSeq("^"),
+          out append("pushstate")
+          out append(tok beforeSeq("^"))
+          out append("popstate")
+          out append("||")
+          tok = tok afterSeq("^")
+        )
+        out append(tok)
+        if(inBrackets not,
+          out append("]")
+        )
+        continue
+        ,
+        out append(tok)
+      )
+    )
+    if(?REPL_DEBUG, writeln("TRACE (simplifyVoices) returning: " .. out join(" ")))
+    list(changed, valid, out)
+  )
+      
+  simplifyTransforms := method(changed, valid, out, repl,
+    if(?REPL_DEBUG, writeln("TRACE (simplifyTransforms) entering with: " .. out join(" ")))
+    in_2 := out join(" ")
+    out := list
+    toks := in_2 splitNoEmpties
+    toks foreach(tok,
+      // transform
+      if(tok containsSeq(":") and tok beginsWithSeq(":") not and silica token(repl currentNamespace, tok lowercase) == nil,
+        changed = true
+        pos := tok size - 1
+        while(tok exSlice(pos, pos+1) != ":",
+          pos = pos - 1
+        )
+        before := tok exSlice(0, pos)
+        after := tok exSlice(pos)
+        out append("**")
+        out append(before)
+        out append("*")
+        out append(after)
+        continue
+        ,
+        out append(tok)
+      )
+    )
+    if(?REPL_DEBUG, writeln("TRACE (simplifyTransforms) returning: " .. out join(" ")))
+    list(changed, valid, out)
+  )
+  
+  simplifyFactors := method(changed, valid, out, repl,
+    if(?REPL_DEBUG, writeln("TRACE (simplifyFactors) entering with: " .. out join(" ")))
+    // repetition/grouping factors
+    in_2 := out join(" ")
+    out := list
+    toks := in_2 splitNoEmpties
+    toks foreach(tok,    
+      if(tok asNumber isNan not,
+        // a repetition factor
+        changed = true
+        num := tok asNumber
+        info := tok afterSeq(num asString)
+        num repeat(out append(info))
+        ,
+        if(tok containsSeq("+"),
+          // grouping factor
+          changed = true
+          out append(tok beforeSeq("+"))
+          out append(tok afterSeq("+"))
+          ,
+          // not a grouping factor or repetition factor
+          out append(tok)
+        )
+      )
+    )
+    if(?REPL_DEBUG, writeln("TRACE (simplifyFactors) returning: " .. out join(" ")))
+    list(changed, valid, out)
+  )
+  
+  simplifyExpansions := method(changed, valid, out, repl,
+    if(?REPL_DEBUG, writeln("TRACE (simplifyExpansions) entering with: " .. out join(" ")))
+    in_2 := out join(" ")
+    out := list
+    toks := in_2 splitNoEmpties
+    toks foreach(tok,
+      ret := self interpretToken(tok asMutable lowercase, false, repl currentNamespace, repl)
+      // macro/fn/cmd
+      if(ret second,
+        changed = true
+        out append(ret first)
+        ,
+        // must be a primitive
+        out append(tok)
+      )
+    )
+    if(?REPL_DEBUG, writeln("TRACE (simplifyExpansions) returning: " .. out join(" ")))
+    list(changed, valid, out)
+  )
+  
+  checkValidity := method(changed, valid, out, repl,
+    if(?REPL_DEBUG, writeln("TRACE (checkValidity) entering with: " .. out join(" ")))
+    in_2 := out join(" ")
+    out := list
+    toks := in_2 splitNoEmpties
+    toks foreach(tok,
+      ret := self interpretToken(tok asMutable lowercase, false, repl currentNamespace, repl)
+      if(ret first == nil, // unknown token
+        if(repl silent not,
+          writeln("--> ERROR: cannot recognize token \"" .. tok asMutable uppercase .. "\" within namespace \"" .. repl currentNamespace constructName .. "\".")
+        )
+        if(?REPL_DEBUG, writeln("TRACE (checkValidity) breaking with: " .. out join(" ")))
+        valid = false
+        break
+        ,
+        out append(tok)
+      )
+    )
+    list(changed, valid, out)
+  )
   
   interpretToken := method(token, final, namespace, repl,
+    if(?REPL_DEBUG, writeln("TRACE (interpretToken) interpreting: " .. token))
     // find function, if it is one
     tokenName := token beforeSeq("(")
     //writeln(tokenName)
@@ -355,23 +454,23 @@ silica REPL Parser := Object clone do(
   )
   
   interpretFunction := method(fn, params, repl,
-    if(?REPL_DEBUG, writeln("TRACE (interpretToken): Function found: " .. fn))
+    if(?REPL_DEBUG, writeln("TRACE (interpretFunction): Function found: " .. fn))
     list(fn expand(params), true)
   )
   
   interpretMacro := method(macro, repl, 
-    if(?REPL_DEBUG, writeln("TRACE (interpretToken): Macro found: " .. macro))
+    if(?REPL_DEBUG, writeln("TRACE (interpretMacro): Macro found: " .. macro))
     list(macro expand, true)
   )
   
   interpretPrimitive := method(primitive, repl, 
-    if(?REPL_DEBUG, writeln("TRACE (interpretToken): Primitive found: " .. primitive))
+    if(?REPL_DEBUG, writeln("TRACE (interpretPrimitive): Primitive found: " .. primitive))
     out := primitive execute
     list(out, true)
   )
   
   interpretMetaCommand := method(meta, param, repl, 
-    if(?REPL_DEBUG, writeln("TRACE (interpretToken): MetaCommand found: " .. meta))
+    if(?REPL_DEBUG, writeln("TRACE (interpretMetaCommand): MetaCommand found: " .. meta))
     if(repl mcmode not, 
       if(repl silent not,
         writeln("Ignoring Meta Command \"" .. meta name .. "\": not applicable in this context.")
