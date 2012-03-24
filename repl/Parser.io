@@ -6,6 +6,7 @@ if(?REPL_DEBUG, writeln("  + Loading Parser.io"))
 
 silica REPL Parser := Object clone do(
   operation_table := list setSize(16)
+  definition_table := list setSize(16)
   
   clone := method(self)
   
@@ -17,6 +18,16 @@ silica REPL Parser := Object clone do(
     if(opList == nil, opList = list)
     opList append(operation)
     self operation_table atPut(precedence, opList)
+  )
+  
+  add_definition := method(definition, test, precedence,
+    // constrain precedence
+    if(precedence < 0, precedence = 0)
+    if(precedence > 15, precedence = 15)
+    defList := self definition_table at(precedence)
+    if(defList == nil, defList = list)
+    defList append(list(test, definition))
+    self definition_table atPut(precedence, defList)
   )
   
   validName := method(name,
@@ -32,20 +43,25 @@ silica REPL Parser := Object clone do(
   // get the input to be all primitives
   preprocess := method(in, repl,
     repl mcmode = false
+    done := false
     
     out := in splitNoEmpties
     
-    // macro definition?
-    if(out at(1) == ">>", return self defineMacro(out, repl))
+    for(i, 0, 16,
+      defList := definition_table at(i)
+      if(defList == nil, continue)
+      defList foreach(def,
+        test := def at(0)
+        defn := def at(1)
+        if(test call(out), 
+          done = defn call(out, repl)
+          if(done, break)
+        )
+      )
+      if(done, break)
+    )
     
-    // command definition?
-    if(out at(1) == "=", return self defineCommand(out, repl))
-    
-    // function definition?
-    if(out at(1) == ":=", return self defineFunction(out, repl))
-    
-    // mode definition?
-    if(out at(1) == "!!", return self defineMode(out, repl))
+    if(done, return nil)
 
     // metacommand mode?
     if(out at(0) beginsWithSeq("-"), repl mcmode = true)
@@ -66,7 +82,7 @@ silica REPL Parser := Object clone do(
     out join(" ")
   )
   
-  defineMacro := method(out, repl,
+  defineMacro := block(out, repl,
     name := out at(0)
     if(self validName(name) not,
       if(repl silent not,
@@ -89,10 +105,10 @@ silica REPL Parser := Object clone do(
         )
       )
     )
-    return nil
+    return true
   )
   
-  defineCommand := method(out, repl,
+  defineCommand := block(out, repl,
     name := out at(0)
     if(self validName(name) not,
       if(repl silent not,
@@ -115,10 +131,10 @@ silica REPL Parser := Object clone do(
         )
       )
     )
-    return nil
+    return true
   )
   
-  defineFunction := method(out, repl,
+  defineFunction := block(out, repl,
     compound := out at(0) splitNoEmpties("(",",",")")
     name := compound at(0)
     if(self validName(name) not,
@@ -143,23 +159,23 @@ silica REPL Parser := Object clone do(
         )
       )
     )
-    return nil
+    return true
   )
   
-  defineMode := method(out, repl,
+  defineMode := block(out, repl,
     name := out at(0)
     intervals := out rest rest map(x, x asNumber)
     if(intervals sum != silica PitchNames size,
       if(repl silent not,
         write("--> Cannot define mode " .. name asMutable uppercase .. ": intervals must sum to " .. silica PitchNames size .. ".")
       )
-      return nil
+      return true
     )
     if(silica mode(name uppercase) != nil,
       if(repl silent not,
         write("--> Cannot redefine mode " .. name asMutable uppercase .. ".")
       )
-      return nil
+      return true
     )
     //writeln(intervals)
     silica ModeTable new(name uppercase, intervals);
@@ -209,7 +225,7 @@ silica REPL Parser := Object clone do(
     if(repl silent not,
       write("--> MODE " .. name uppercase .. " defined.")
     )
-    return nil
+    return true
   )
   
   simplify := method(out, repl,
@@ -529,6 +545,10 @@ silica REPL Parser := Object clone do(
   )
   
   initialize := method(
+    self add_definition(self getSlot("defineMacro"), block(x, x at(1) == ">>"), 0)
+    self add_definition(self getSlot("defineCommand"), block(x, x at(1) == "="), 0)
+    self add_definition(self getSlot("defineFunction"), block(x, x at(1) == ":="), 0)
+    self add_definition(self getSlot("defineMode"), block(x, x at(1) == "!!"), 0)
     self add_operation(self getSlot("simplifyVoices"), 0)
     self add_operation(self getSlot("simplifyTransforms"), 4)
     self add_operation(self getSlot("simplifyFactors"), 8)
