@@ -5,6 +5,19 @@
 if(?REPL_DEBUG, writeln("  + Loading Parser.io"))
 
 silica REPL Parser := Object clone do(
+  operation_table := list setSize(16)
+  
+  clone := method(self)
+  
+  add_operation := method(operation, precedence,
+    // constrain precedence
+    if(precedence < 0, precedence = 0)
+    if(precedence > 15, precedence = 15)
+    opList := self operation_table at(precedence)
+    if(opList == nil, opList = list)
+    opList append(operation)
+    self operation_table atPut(precedence, opList)
+  )
   
   validName := method(name,
     out := true
@@ -208,39 +221,19 @@ silica REPL Parser := Object clone do(
     while(changed and valid and (depth < REPL_MAX_RECURSIVE_DEPTH) and repl mcmode not,
       depth = depth + 1
       changed = false
-
-      // concurrent voices
-      values = simplifyVoices(changed, valid, out, repl)
-      changed = values at(0)
-      valid = values at(1)
-      out = values at(2)
       
-      if(valid not, break)
-      
-      // transforms
-      values = simplifyTransforms(changed, valid, out, repl)
-      changed = values at(0)
-      valid = values at(1)
-      out = values at(2)
-      
-      if(valid not, break)
-      
-      // repetition/grouping factors
-      values = simplifyFactors(changed, valid, out, repl)
-      changed = values at(0)
-      valid = values at(1)
-      out = values at(2)
-      
-      if(valid not, break)
-      
-      // macros, commands, and functions
-      values = simplifyExpansions(changed, valid, out, repl)
-      changed = values at(0)
-      valid = values at(1)
-      out = values at(2)
-      
-      if(valid not, break)
-      
+      for(i, 0, 16,
+        opList := self operation_table at(i)
+        if(opList == nil, continue)
+        opList foreach(op,
+          if(?REPL_DEBUG, writeln("TRACE (simplify) running operations for precedence " .. i))
+          values = op call(changed, valid, out, repl)
+          changed = values at(0)
+          valid = values at(1)
+          out = values at(2)
+          if(valid not, break)
+        )
+      )      
       if(?REPL_DEBUG, writeln("TRACE (simplify) step " .. depth .. ": " .. out join(" ")))
     )
     
@@ -260,7 +253,7 @@ silica REPL Parser := Object clone do(
     out
   )
   
-  simplifyVoices := method(changed, valid, out, repl,
+  simplifyVoices := block(changed, valid, out, repl,
     if(?REPL_DEBUG, writeln("TRACE (simplifyVoices) entering with: " .. out join(" ")))
     in_2 := out join(" ")
     out := list
@@ -296,7 +289,7 @@ silica REPL Parser := Object clone do(
     list(changed, valid, out)
   )
       
-  simplifyTransforms := method(changed, valid, out, repl,
+  simplifyTransforms := block(changed, valid, out, repl,
     if(?REPL_DEBUG, writeln("TRACE (simplifyTransforms) entering with: " .. out join(" ")))
     in_2 := out join(" ")
     out := list
@@ -324,7 +317,7 @@ silica REPL Parser := Object clone do(
     list(changed, valid, out)
   )
   
-  simplifyFactors := method(changed, valid, out, repl,
+  simplifyFactors := block(changed, valid, out, repl,
     if(?REPL_DEBUG, writeln("TRACE (simplifyFactors) entering with: " .. out join(" ")))
     // repetition/grouping factors
     in_2 := out join(" ")
@@ -353,7 +346,7 @@ silica REPL Parser := Object clone do(
     list(changed, valid, out)
   )
   
-  simplifyExpansions := method(changed, valid, out, repl,
+  simplifyExpansions := block(changed, valid, out, repl,
     if(?REPL_DEBUG, writeln("TRACE (simplifyExpansions) entering with: " .. out join(" ")))
     in_2 := out join(" ")
     out := list
@@ -534,4 +527,13 @@ silica REPL Parser := Object clone do(
     if(?REPL_DEBUG, writeln("TRACE (applyTransform): Applying transform " .. trans name .. " on input " .. input))
     trans execute(input join(" "), silica Note scale last) splitNoEmpties
   )
+  
+  initialize := method(
+    self add_operation(self getSlot("simplifyVoices"), 0)
+    self add_operation(self getSlot("simplifyTransforms"), 4)
+    self add_operation(self getSlot("simplifyFactors"), 8)
+    self add_operation(self getSlot("simplifyExpansions"), 12)
+    self
+  )
+  
 )

@@ -12,7 +12,7 @@ silica REPL REPL := Object clone do(
   mcmode := false
   silent := false
   
-  parser := silica REPL Parser
+  parser := silica REPL Parser initialize
   
   siren_in_path := Path with(SILICA_DIR,"siren","siren_in")
   siren_out_path := Path with(SILICA_DIR,"siren","siren_out")
