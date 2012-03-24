@@ -47,6 +47,7 @@ silica REPL Parser := Object clone do(
     )
     
     // repetition and grouping factors, and concurrent lines
+    //out := self splitFactors(out, repl)
     changed := true
     valid := true
     depth := 0

@@ -4,6 +4,11 @@
 
 if(?REPL_DEBUG, writeln("  + Loading Note.io"))
 
+/*
+ * Class: Note
+ * 
+ * The internal representation of the global Note object
+ */
 silica Note := Object clone do(
   scale ::= nil                      // C-Major scale
   degree ::= 1                       // scale degree
@@ -16,8 +21,38 @@ silica Note := Object clone do(
   deltadegree ::= :same              // did the pitch raise or lower?
   statestack ::= nil
   
+
+  // Group: initializers 
+  /*
+   * Method: clone
+   *
+   * Returns the Note object (singleton)
+   *
+   * Parameters:
+   *   none
+   *
+   * Returns:
+   *   The singleton Note object
+   *
+   * See Also:
+   *   <init>
+   */
   clone := method(self)      // singleton
   
+  /*
+   * Method: init
+   *
+   * Initializes the Note object to the default values
+   *
+   * Parameters:
+   *   none
+   *
+   * Returns:
+   *   The singleton Note object
+   *
+   * See Also:
+   *   <clone>
+   */
   init := method(
     self scale = list(silica scale("C-MAJOR"))
     self degree = 1
@@ -31,9 +66,37 @@ silica Note := Object clone do(
     self statestack = list
   )
   
+  /*
+   * Method: reset
+   *
+   * Calls init, and returns self
+   *
+   * Parameters:
+   *   none
+   *
+   * Returns:
+   *   self
+   *
+   * See Also:
+   *   <init>
+   */
   reset := method(self init; self)
   
-  // pitch+register
+  // Group: pitch mutators
+  /*
+   * Method: rp
+   *
+   * Raises the pitch by one degree, respecting octave boundaries
+   *
+   * Parameters:
+   *   none
+   *
+   * Returns:
+   *   list(nil, nil)
+   *
+   * See Also:
+   *   <lp>, <cp>
+   */
   rp := method(
     new := self degree + 1
     if(new == self scale last size + 1, 
