@@ -1,29 +1,29 @@
 1.52
 Io
 /home/Jake/programming/silica/lang/Note.io	1332650475	1	Note
-/home/Jake/programming/silica/lang/Macro.io	1330992321	0	/home/Jake/programming/silica/lang/Macro.io
+/home/Jake/programming/silica/lang/Macro.io	1332686331	1	Macro
 /home/Jake/programming/silica/modules/home/scales.io	1332288898	0	/home/Jake/programming/silica/modules/home/scales.io
 /home/Jake/programming/silica/modules/home/main.io	1332286514	0	/home/Jake/programming/silica/modules/home/main.io
-/home/Jake/programming/silica/lang/common.io	1332650475	1	Lang Globals
-/home/Jake/programming/silica/lang/Mode.io	1330992321	0	/home/Jake/programming/silica/lang/Mode.io
+/home/Jake/programming/silica/lang/common.io	1332685573	1	Lang Globals
+/home/Jake/programming/silica/lang/Mode.io	1332686451	1	Mode
 /home/Jake/programming/silica/modules/home/primitives.io	1332286009	0	/home/Jake/programming/silica/modules/home/primitives.io
-/home/Jake/programming/silica/lang/Primitive.io	1330992321	0	/home/Jake/programming/silica/lang/Primitive.io
-/home/Jake/programming/silica/lang/InstrumentChanger.io	1330992321	0	/home/Jake/programming/silica/lang/InstrumentChanger.io
-/home/Jake/programming/silica/lang/Transform.io	1330992321	0	/home/Jake/programming/silica/lang/Transform.io
-/home/Jake/programming/silica/lang/Scale.io	1331011771	0	/home/Jake/programming/silica/lang/Scale.io
+/home/Jake/programming/silica/lang/Primitive.io	1332687136	1	Primitive
+/home/Jake/programming/silica/lang/InstrumentChanger.io	1332685220	1	InstrumentChanger
+/home/Jake/programming/silica/lang/Transform.io	1332688801	1	Transform
+/home/Jake/programming/silica/lang/Scale.io	1332688081	1	Scale
 /home/Jake/programming/silica/modules/home/modes.io	1332285696	0	/home/Jake/programming/silica/modules/home/modes.io
 /home/Jake/programming/silica/lang/EntityTable.io	1332650475	1	EntityTable
-/home/Jake/programming/silica/lang/Function.io	1330992321	0	/home/Jake/programming/silica/lang/Function.io
+/home/Jake/programming/silica/lang/Function.io	1332684747	1	Function
 /home/Jake/programming/silica/repl/Parser.io	1332650475	0	/home/Jake/programming/silica/repl/Parser.io
 /home/Jake/programming/silica/lang/Entity.io	1332650475	1	Entity
-/home/Jake/programming/silica/lang/Namespace.io	1330992321	0	/home/Jake/programming/silica/lang/Namespace.io
-/home/Jake/programming/silica/lang/Instrument.io	1332286690	0	/home/Jake/programming/silica/lang/Instrument.io
+/home/Jake/programming/silica/lang/Namespace.io	1332686876	1	Namespace
+/home/Jake/programming/silica/lang/Instrument.io	1332685081	1	Instrument
 /home/Jake/programming/silica/modules/home/instruments.io	1332286950	0	/home/Jake/programming/silica/modules/home/instruments.io
 /home/Jake/programming/silica/modules/home/metacommands.io	1332544992	0	/home/Jake/programming/silica/modules/home/metacommands.io
 /home/Jake/programming/silica/lang/Command.io	1332651135	1	Command
-/home/Jake/programming/silica/lang/MetaCommand.io	1330992321	0	/home/Jake/programming/silica/lang/MetaCommand.io
+/home/Jake/programming/silica/lang/MetaCommand.io	1332685773	1	MetaCommand
 /home/Jake/programming/silica/repl/REPL.io	1332548867	0	/home/Jake/programming/silica/repl/REPL.io
 /home/Jake/programming/silica/repl/common.io	1332544992	0	/home/Jake/programming/silica/repl/common.io
 /home/Jake/programming/silica/modules/home/transforms.io	1332287061	0	/home/Jake/programming/silica/modules/home/transforms.io
-/home/Jake/programming/silica/lang/TokenTable.io	1332288960	0	/home/Jake/programming/silica/lang/TokenTable.io
-/home/Jake/programming/silica/lang/ScaleChanger.io	1330992321	0	/home/Jake/programming/silica/lang/ScaleChanger.io
+/home/Jake/programming/silica/lang/TokenTable.io	1332688500	1	TokenTable
+/home/Jake/programming/silica/lang/ScaleChanger.io	1332688137	1	ScaleChanger

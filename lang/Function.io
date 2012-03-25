@@ -4,7 +4,22 @@
 
 if(?REPL_DEBUG, writeln("  + Loading Function.io"))
 
+/*
+ * Class: Function
+ *   Extends <Macro>
+ *
+ * The internal representation of a silica Function
+ */
 silica Function := silica Macro clone do(
+  //////////////////////////////////////////////////////////////////////////////
+  // Group: Fields
+  /* Topic: Object fields
+   *
+   * Note:
+   *   Unless otherwise noted, all fields include a setSlot(value) method
+   *
+   * params - a list of the parameters as string tokens
+   */
   params ::= nil
   
   init := method(
@@ -13,11 +28,38 @@ silica Function := silica Macro clone do(
     self name = nil
   )
   
+  //////////////////////////////////////////////////////////////////////////////
+  // Group: Constructor
+  /*
+   * Method: with(name, value, params)
+   *
+   * Constructs a new Function with the parameters provided
+   *
+   * Parameters:
+   *   name - the function's name
+   *   value - the function's body
+   *   params - the function's params
+   *
+   * Returns:
+   *   Function
+   */
   with := method(name, value, params,
     self clone setName(name) setValue(self expandValue(value)) setParams(params)
   )
   
-  // repetition and grouping factors...expand them
+  //////////////////////////////////////////////////////////////////////////////
+  // Group: Expansion
+  /*
+   * Method: expandValue(in)
+   *
+   * Expands all repetition and grouping factors in an input string
+   *
+   * Parameters:
+   *   in - the string to expand
+   *
+   * Returns:
+   *   string
+   */
   expandValue := method(in,
     out := list
     changed := true
@@ -51,6 +93,17 @@ silica Function := silica Macro clone do(
     in
   )
   
+  /*
+   * Method: expand(in)
+   *
+   * Expands the body, replacing all valid parameters with their replacement tokens
+   *
+   * Parameters:
+   *   in - the parameter expansion list
+   *
+   * Returns:
+   *   string
+   */
   expand := method(in,
     inargs := list
     if(in != nil, inargs = in splitNoEmpties(","), return self value)
@@ -94,6 +147,19 @@ silica Function := silica Macro clone do(
     val join (" ")
   )
   
+  //////////////////////////////////////////////////////////////////////////////
+  // Group: Reporting
+  /*
+   * Method: asString
+   *
+   * Returns a string representation of the Function
+   *
+   * Parameters:
+   *   none
+   *
+   * Returns:
+   *   string
+   */
   asString := method(
     "< FUNCTION " .. self name uppercase .. " >"
   )

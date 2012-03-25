@@ -4,8 +4,26 @@
 
 if(?REPL_DEBUG, writeln("  + Loading InstrumentChanger.io"))
 
+/*
+ * Class: InstrumentChanger
+ *   Extends <Primitive>
+ *
+ * The internal representation of a silica Instrument Change primitive
+ */
 silica InstrumentChanger := silica Primitive clone do(
-    asString := method(
+   
+  /*
+   * Method: asString
+   *
+   * Returns a string representation of the InstrumentChanger
+   *
+   * Parameters:
+   *   none
+   *
+   * Returns:
+   *   string
+   */   
+   asString := method(
     "< INSTRUMENTCHANGER " .. self name .. " >"
   )
 )

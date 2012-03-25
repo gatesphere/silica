@@ -52,18 +52,26 @@ Don't Index: General, Functions, Files, Classes
 # --------------------------------------------------------------------------
 
 
-Group: Lang  {
+Group: silica  {
 
-   Group: silica  {
-
-      File: Command  (/home/Jake/programming/silica/lang/Command.io)
-      File: Entity  (/home/Jake/programming/silica/lang/Entity.io)
-      File: EntityTable  (/home/Jake/programming/silica/lang/EntityTable.io)
-      File: Lang Globals  (/home/Jake/programming/silica/lang/common.io)
-      File: Note  (/home/Jake/programming/silica/lang/Note.io)
-      }  # Group: silica
-
-   }  # Group: Lang
+   File: Lang Globals  (/home/Jake/programming/silica/lang/common.io)
+   File: Command  (/home/Jake/programming/silica/lang/Command.io)
+   File: Entity  (/home/Jake/programming/silica/lang/Entity.io)
+   File: EntityTable  (/home/Jake/programming/silica/lang/EntityTable.io)
+   File: Function  (/home/Jake/programming/silica/lang/Function.io)
+   File: Instrument  (/home/Jake/programming/silica/lang/Instrument.io)
+   File: InstrumentChanger  (/home/Jake/programming/silica/lang/InstrumentChanger.io)
+   File: Macro  (/home/Jake/programming/silica/lang/Macro.io)
+   File: MetaCommand  (/home/Jake/programming/silica/lang/MetaCommand.io)
+   File: Mode  (/home/Jake/programming/silica/lang/Mode.io)
+   File: Namespace  (/home/Jake/programming/silica/lang/Namespace.io)
+   File: Note  (/home/Jake/programming/silica/lang/Note.io)
+   File: Primitive  (/home/Jake/programming/silica/lang/Primitive.io)
+   File: Scale  (/home/Jake/programming/silica/lang/Scale.io)
+   File: ScaleChanger  (/home/Jake/programming/silica/lang/ScaleChanger.io)
+   File: TokenTable  (/home/Jake/programming/silica/lang/TokenTable.io)
+   File: Transform  (/home/Jake/programming/silica/lang/Transform.io)
+   }  # Group: silica
 
 
 

@@ -6,7 +6,10 @@ silica := Object clone // namespace
 
 ////////////////////////////////////////////////////////////////////////////////
 // File: Lang Globals
-// Group: Lookup methods
+//
+// Globally available methods from the Lang group
+
+// Group: Lookup Methods
 /* Method: mode(name)
  *
  * Gets the mode mapped to by name
