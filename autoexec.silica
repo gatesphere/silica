@@ -5,7 +5,7 @@
 
 ## settings
 ## enable siren immediately
--siren
+## -siren
 
 ## some standard utility macros
 -home

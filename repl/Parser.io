@@ -5,6 +5,30 @@
 if(?REPL_DEBUG, writeln("  + Loading Parser.io"))
 
 silica REPL Parser := Object clone do(
+  operation_table := list setSize(16)
+  definition_table := list setSize(16)
+  
+  clone := method(self)
+  
+  add_operation := method(operation, precedence,
+    // constrain precedence
+    if(precedence < 0, precedence = 0)
+    if(precedence > 15, precedence = 15)
+    opList := self operation_table at(precedence)
+    if(opList == nil, opList = list)
+    opList append(operation)
+    self operation_table atPut(precedence, opList)
+  )
+  
+  add_definition := method(definition, test, precedence,
+    // constrain precedence
+    if(precedence < 0, precedence = 0)
+    if(precedence > 15, precedence = 15)
+    defList := self definition_table at(precedence)
+    if(defList == nil, defList = list)
+    defList append(list(test, definition))
+    self definition_table atPut(precedence, defList)
+  )
   
   validName := method(name,
     out := true
@@ -19,20 +43,25 @@ silica REPL Parser := Object clone do(
   // get the input to be all primitives
   preprocess := method(in, repl,
     repl mcmode = false
+    done := false
     
     out := in splitNoEmpties
     
-    // macro definition?
-    if(out at(1) == ">>", return self defineMacro(out, repl))
+    for(i, 0, 16,
+      defList := definition_table at(i)
+      if(defList == nil, continue)
+      defList foreach(def,
+        test := def at(0)
+        defn := def at(1)
+        if(test call(out), 
+          done = defn call(out, repl)
+          if(done, break)
+        )
+      )
+      if(done, break)
+    )
     
-    // command definition?
-    if(out at(1) == "=", return self defineCommand(out, repl))
-    
-    // function definition?
-    if(out at(1) == ":=", return self defineFunction(out, repl))
-    
-    // mode definition?
-    if(out at(1) == "!!", return self defineMode(out, repl))
+    if(done, return nil)
 
     // metacommand mode?
     if(out at(0) beginsWithSeq("-"), repl mcmode = true)
@@ -45,112 +74,14 @@ silica REPL Parser := Object clone do(
       out prepend("pushstate")
       out append("popstate")
     )
-    
-    // repetition and grouping factors, and concurrent lines
-    //out := self splitFactors(out, repl)
-    changed := true
-    valid := true
-    depth := 0
-    while(changed and valid and (depth < REPL_MAX_RECURSIVE_DEPTH) and repl mcmode not,
-      depth = depth + 1
-      changed = false
-      in_2 := out join(" ")
-      out := list
-      toks := in_2 splitNoEmpties
-      inBrackets := false
-      toks foreach(tok,
-        if(tok == "[", inBrackets = true)
-        if(tok == "]", inBrackets = false)
-        
-        // concurrent lines
-        if(tok containsSeq("^"),
-          changed = true
-          if(inBrackets not,
-            out append("[")
-          )
-          while(tok containsSeq("^"),
-            out append("pushstate")
-            out append(tok beforeSeq("^"))
-            out append("popstate")
-            out append("||")
-            tok = tok afterSeq("^")
-          )
-          out append(tok)
-          if(inBrackets not,
-            out append("]")
-          )
-          continue
-        )
-        
-        // transform
-        if(tok containsSeq(":") and tok beginsWithSeq(":") not and silica token(repl currentNamespace, tok lowercase) == nil,
-          // not quite right yet... need to do rightmost decomposition
-          changed = true
-          pos := tok size - 1
-          while(tok exSlice(pos, pos+1) != ":",
-            pos = pos - 1
-          )
-          before := tok exSlice(0, pos)
-          after := tok exSlice(pos)
-          out append("**")
-          out append(before)
-          out append("*")
-          out append(after)
-          continue
-        )
-        
-        // repetition/grouping factors
-        if(tok asNumber isNan,
-          // not a repetition factor
-          if(tok containsSeq("+"),
-            // grouping factor
-            changed = true
-            out append(tok beforeSeq("+"))
-            out append(tok afterSeq("+"))
-            ,
-            // not a grouping factor or repetition factor
-            ret := self interpretToken(tok asMutable lowercase, false, repl currentNamespace, repl)
-            if(ret first == nil,
-              if(repl silent not,
-                writeln("--> ERROR: cannot recognize token \"" .. tok asMutable uppercase .. "\" within namespace \"" .. repl currentNamespace constructName .. "\".")
-              )
-              if(?REPL_DEBUG, writeln("TRACE (preprocess) breaking with: " .. out join(" ")))
-              valid = false
-              break
-            )
-            // macro/fn/cmd
-            if(ret second,
-              changed = true
-              out append(ret first)
-              ,
-              // must be a primitive
-              out append(tok)
-            )
-          )
-          ,
-          // repetition factor
-          changed = true
-          num := tok asNumber
-          info := tok afterSeq(num asString)
-          num repeat(
-            out append(info)
-          )
-        )
-      )
-      if(valid not, out = list)
-      if(depth >= REPL_MAX_RECURSIVE_DEPTH,
-        if(repl silent not,
-          writeln("--> ERROR: infinite loop detected.  Bailing out.")
-        )
-        out = list
-      )
-      if(?REPL_DEBUG, writeln("TRACE (preprocess) step: " .. out join(" ")))
-    )
+
+    out = self simplify(out, repl)
+
     if(?REPL_DEBUG, writeln("TRACE (preprocess) returning: " .. out join(" ")))
     out join(" ")
   )
   
-  defineMacro := method(out, repl,
+  defineMacro := block(out, repl,
     name := out at(0)
     if(self validName(name) not,
       if(repl silent not,
@@ -173,10 +104,10 @@ silica REPL Parser := Object clone do(
         )
       )
     )
-    return nil
+    return true
   )
   
-  defineCommand := method(out, repl,
+  defineCommand := block(out, repl,
     name := out at(0)
     if(self validName(name) not,
       if(repl silent not,
@@ -199,10 +130,10 @@ silica REPL Parser := Object clone do(
         )
       )
     )
-    return nil
+    return true
   )
   
-  defineFunction := method(out, repl,
+  defineFunction := block(out, repl,
     compound := out at(0) splitNoEmpties("(",",",")")
     name := compound at(0)
     if(self validName(name) not,
@@ -227,23 +158,23 @@ silica REPL Parser := Object clone do(
         )
       )
     )
-    return nil
+    return true
   )
   
-  defineMode := method(out, repl,
+  defineMode := block(out, repl,
     name := out at(0)
     intervals := out rest rest map(x, x asNumber)
     if(intervals sum != silica PitchNames size,
       if(repl silent not,
         write("--> Cannot define mode " .. name asMutable uppercase .. ": intervals must sum to " .. silica PitchNames size .. ".")
       )
-      return nil
+      return true
     )
     if(silica mode(name uppercase) != nil,
       if(repl silent not,
         write("--> Cannot redefine mode " .. name asMutable uppercase .. ".")
       )
-      return nil
+      return true
     )
     //writeln(intervals)
     silica ModeTable new(name uppercase, intervals);
@@ -293,11 +224,186 @@ silica REPL Parser := Object clone do(
     if(repl silent not,
       write("--> MODE " .. name uppercase .. " defined.")
     )
-    return nil
+    return true
   )
   
+  simplify := method(out, repl,
+    // concurrent lines
+    changed := true
+    valid := true
+    depth := 0
+    values := list // multiple return values, stored as list(changed, valid, out)
+    while(changed and valid and (depth < REPL_MAX_RECURSIVE_DEPTH) and repl mcmode not,
+      depth = depth + 1
+      changed = false
+      
+      for(i, 0, 16,
+        opList := self operation_table at(i)
+        if(opList == nil, continue)
+        opList foreach(op,
+          if(?REPL_DEBUG, writeln("TRACE (simplify) running operations for precedence " .. i))
+          values = op call(changed, valid, out, repl)
+          changed = values at(0)
+          valid = values at(1)
+          out = values at(2)
+          if(valid not, break)
+        )
+      )      
+      if(?REPL_DEBUG, writeln("TRACE (simplify) step " .. depth .. ": " .. out join(" ")))
+    )
+    
+    // check validity
+    values = checkValidity(changed, valid, out, repl)
+    changed = values at(0)
+    valid = values at(1)
+    out = values at(2)
+    
+    if(valid not, out = list)
+    if(depth >= REPL_MAX_RECURSIVE_DEPTH,
+      if(repl silent not,
+        writeln("--> ERROR: infinite loop detected.  Bailing out.")
+      )
+      out = list
+    )
+    out
+  )
+  
+  simplifyVoices := block(changed, valid, out, repl,
+    if(?REPL_DEBUG, writeln("TRACE (simplifyVoices) entering with: " .. out join(" ")))
+    in_2 := out join(" ")
+    out := list
+    toks := in_2 splitNoEmpties
+    inBrackets := false
+    toks foreach(tok,
+      if(tok == "[", inBrackets = true)
+      if(tok == "]", inBrackets = false)
+      
+      // concurrent lines
+      if(tok containsSeq("^"),
+        changed = true
+        if(inBrackets not,
+          out append("[")
+        )
+        while(tok containsSeq("^"),
+          out append("pushstate")
+          out append(tok beforeSeq("^"))
+          out append("popstate")
+          out append("||")
+          tok = tok afterSeq("^")
+        )
+        out append(tok)
+        if(inBrackets not,
+          out append("]")
+        )
+        continue
+        ,
+        out append(tok)
+      )
+    )
+    if(?REPL_DEBUG, writeln("TRACE (simplifyVoices) returning: " .. out join(" ")))
+    list(changed, valid, out)
+  )
+      
+  simplifyTransforms := block(changed, valid, out, repl,
+    if(?REPL_DEBUG, writeln("TRACE (simplifyTransforms) entering with: " .. out join(" ")))
+    in_2 := out join(" ")
+    out := list
+    toks := in_2 splitNoEmpties
+    toks foreach(tok,
+      // transform
+      if(tok containsSeq(":") and tok beginsWithSeq(":") not and silica token(repl currentNamespace, tok lowercase) == nil,
+        changed = true
+        pos := tok size - 1
+        while(tok exSlice(pos, pos+1) != ":",
+          pos = pos - 1
+        )
+        before := tok exSlice(0, pos)
+        after := tok exSlice(pos)
+        out append("**")
+        out append(before)
+        out append("*")
+        out append(after)
+        continue
+        ,
+        out append(tok)
+      )
+    )
+    if(?REPL_DEBUG, writeln("TRACE (simplifyTransforms) returning: " .. out join(" ")))
+    list(changed, valid, out)
+  )
+  
+  simplifyFactors := block(changed, valid, out, repl,
+    if(?REPL_DEBUG, writeln("TRACE (simplifyFactors) entering with: " .. out join(" ")))
+    // repetition/grouping factors
+    in_2 := out join(" ")
+    out := list
+    toks := in_2 splitNoEmpties
+    toks foreach(tok,    
+      if(tok asNumber isNan not,
+        // a repetition factor
+        changed = true
+        num := tok asNumber
+        info := tok afterSeq(num asString)
+        num repeat(out append(info))
+        ,
+        if(tok containsSeq("+"),
+          // grouping factor
+          changed = true
+          out append(tok beforeSeq("+"))
+          out append(tok afterSeq("+"))
+          ,
+          // not a grouping factor or repetition factor
+          out append(tok)
+        )
+      )
+    )
+    if(?REPL_DEBUG, writeln("TRACE (simplifyFactors) returning: " .. out join(" ")))
+    list(changed, valid, out)
+  )
+  
+  simplifyExpansions := block(changed, valid, out, repl,
+    if(?REPL_DEBUG, writeln("TRACE (simplifyExpansions) entering with: " .. out join(" ")))
+    in_2 := out join(" ")
+    out := list
+    toks := in_2 splitNoEmpties
+    toks foreach(tok,
+      ret := self interpretToken(tok asMutable lowercase, false, repl currentNamespace, repl)
+      // macro/fn/cmd
+      if(ret second,
+        changed = true
+        out append(ret first)
+        ,
+        // must be a primitive
+        out append(tok)
+      )
+    )
+    if(?REPL_DEBUG, writeln("TRACE (simplifyExpansions) returning: " .. out join(" ")))
+    list(changed, valid, out)
+  )
+  
+  checkValidity := method(changed, valid, out, repl,
+    if(?REPL_DEBUG, writeln("TRACE (checkValidity) entering with: " .. out join(" ")))
+    in_2 := out join(" ")
+    out := list
+    toks := in_2 splitNoEmpties
+    toks foreach(tok,
+      ret := self interpretToken(tok asMutable lowercase, false, repl currentNamespace, repl)
+      if(ret first == nil, // unknown token
+        if(repl silent not,
+          writeln("--> ERROR: cannot recognize token \"" .. tok asMutable uppercase .. "\" within namespace \"" .. repl currentNamespace constructName .. "\".")
+        )
+        if(?REPL_DEBUG, writeln("TRACE (checkValidity) breaking with: " .. out join(" ")))
+        valid = false
+        break
+        ,
+        out append(tok)
+      )
+    )
+    list(changed, valid, out)
+  )
   
   interpretToken := method(token, final, namespace, repl,
+    if(?REPL_DEBUG, writeln("TRACE (interpretToken) interpreting: " .. token))
     // find function, if it is one
     tokenName := token beforeSeq("(")
     //writeln(tokenName)
@@ -356,23 +462,23 @@ silica REPL Parser := Object clone do(
   )
   
   interpretFunction := method(fn, params, repl,
-    if(?REPL_DEBUG, writeln("TRACE (interpretToken): Function found: " .. fn))
+    if(?REPL_DEBUG, writeln("TRACE (interpretFunction): Function found: " .. fn))
     list(fn expand(params), true)
   )
   
   interpretMacro := method(macro, repl, 
-    if(?REPL_DEBUG, writeln("TRACE (interpretToken): Macro found: " .. macro))
+    if(?REPL_DEBUG, writeln("TRACE (interpretMacro): Macro found: " .. macro))
     list(macro expand, true)
   )
   
   interpretPrimitive := method(primitive, repl, 
-    if(?REPL_DEBUG, writeln("TRACE (interpretToken): Primitive found: " .. primitive))
+    if(?REPL_DEBUG, writeln("TRACE (interpretPrimitive): Primitive found: " .. primitive))
     out := primitive execute
     list(out, true)
   )
   
   interpretMetaCommand := method(meta, param, repl, 
-    if(?REPL_DEBUG, writeln("TRACE (interpretToken): MetaCommand found: " .. meta))
+    if(?REPL_DEBUG, writeln("TRACE (interpretMetaCommand): MetaCommand found: " .. meta))
     if(repl mcmode not, 
       if(repl silent not,
         writeln("Ignoring Meta Command \"" .. meta name .. "\": not applicable in this context.")
@@ -436,4 +542,17 @@ silica REPL Parser := Object clone do(
     if(?REPL_DEBUG, writeln("TRACE (applyTransform): Applying transform " .. trans name .. " on input " .. input))
     trans execute(input join(" "), silica Note scale last) splitNoEmpties
   )
+  
+  initialize := method(
+    self add_definition(self getSlot("defineMacro"), block(x, x at(1) == ">>"), 0)
+    self add_definition(self getSlot("defineCommand"), block(x, x at(1) == "="), 0)
+    self add_definition(self getSlot("defineFunction"), block(x, x at(1) == ":="), 0)
+    self add_definition(self getSlot("defineMode"), block(x, x at(1) == "!!"), 0)
+    self add_operation(self getSlot("simplifyVoices"), 0)
+    self add_operation(self getSlot("simplifyTransforms"), 4)
+    self add_operation(self getSlot("simplifyFactors"), 8)
+    self add_operation(self getSlot("simplifyExpansions"), 12)
+    self
+  )
+  
 )
