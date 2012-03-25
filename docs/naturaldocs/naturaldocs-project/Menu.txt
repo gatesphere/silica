@@ -1,4 +1,4 @@
-Format: 1.51
+Format: 1.52
 
 
 Title: silica Internals
@@ -25,7 +25,7 @@ Footer: <a href="http://silica.suspended-chord.info/">silica</a> is a project of
 # These are indexes you deleted, so Natural Docs will not add them again
 # unless you remove them from this line.
 
-Don't Index: General, Functions, Classes
+Don't Index: General, Functions, Files, Classes
 
 
 # --------------------------------------------------------------------------
@@ -52,17 +52,15 @@ Don't Index: General, Functions, Classes
 # --------------------------------------------------------------------------
 
 
-File Index: Files
-
 Group: Lang  {
 
    Group: silica  {
 
-      File: Command  (/home/jake/programming/silica/lang/Command.io)
-      File: Entity  (/home/jake/programming/silica/lang/Entity.io)
-      File: EntityTable  (/home/jake/programming/silica/lang/EntityTable.io)
-      File: Lang Globals  (/home/jake/programming/silica/lang/common.io)
-      File: Note  (/home/jake/programming/silica/lang/Note.io)
+      File: Command  (/home/Jake/programming/silica/lang/Command.io)
+      File: Entity  (/home/Jake/programming/silica/lang/Entity.io)
+      File: EntityTable  (/home/Jake/programming/silica/lang/EntityTable.io)
+      File: Lang Globals  (/home/Jake/programming/silica/lang/common.io)
+      File: Note  (/home/Jake/programming/silica/lang/Note.io)
       }  # Group: silica
 
    }  # Group: Lang
@@ -70,6 +68,6 @@ Group: Lang  {
 
 
 ##### Do not change or remove these lines. #####
-Data: 1(D3333RuEG3lpAG3IHu`HpEE8\`368o89p3op\`)
-Data: 1(h3333RuEG3lpAG3IHu`HpEE8\`368o89p3HGIo)
-Data: 1(T3333RuEG3lpAG3IHu`HpEE8\`368o89p3EufNoG6)
+Data: 1(D3333RuEG3ZpAG3IHu`HpEE8\`368o89p3op\`)
+Data: 1(h3333RuEG3ZpAG3IHu`HpEE8\`368o89p3HGIo)
+Data: 1(T3333RuEG3ZpAG3IHu`HpEE8\`368o89p3EufNoG6)

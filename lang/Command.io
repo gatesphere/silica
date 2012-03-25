@@ -6,7 +6,7 @@ if(?REPL_DEBUG, writeln("  + Loading Command.io"))
 
 /*
  * Class: Command
- *   Extends <silica Macro>
+ *   Extends <Macro>
  *
  * The internal representation of a silica Command
  */
