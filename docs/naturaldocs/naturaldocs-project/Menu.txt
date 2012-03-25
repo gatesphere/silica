@@ -52,6 +52,8 @@ Don't Index: General, Functions, Files, Classes
 # --------------------------------------------------------------------------
 
 
+File: Globals  (/home/Jake/programming/silica/silica.io)
+
 Group: silica  {
 
    File: Lang Globals  (/home/Jake/programming/silica/lang/common.io)
@@ -71,6 +73,13 @@ Group: silica  {
    File: ScaleChanger  (/home/Jake/programming/silica/lang/ScaleChanger.io)
    File: TokenTable  (/home/Jake/programming/silica/lang/TokenTable.io)
    File: Transform  (/home/Jake/programming/silica/lang/Transform.io)
+
+   Group: REPL  {
+
+      File: Parser  (/home/Jake/programming/silica/repl/Parser.io)
+      File: REPL  (/home/Jake/programming/silica/repl/REPL.io)
+      }  # Group: REPL
+
    }  # Group: silica
 
 
@@ -79,3 +88,4 @@ Group: silica  {
 Data: 1(D3333RuEG3ZpAG3IHu`HpEE8\`368o89p3op\`)
 Data: 1(h3333RuEG3ZpAG3IHu`HpEE8\`368o89p3HGIo)
 Data: 1(T3333RuEG3ZpAG3IHu`HpEE8\`368o89p3EufNoG6)
+Data: 1(-3333RuEG3ZpAG3IHu`HpEE8\`368o89p)
