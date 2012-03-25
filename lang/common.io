@@ -4,23 +4,76 @@
 
 silica := Object clone // namespace
 
-// lookup methods
+////////////////////////////////////////////////////////////////////////////////
+// File: Lang Globals
+// Group: Lookup methods
+/* Method: mode(name)
+ *
+ * Gets the mode mapped to by name
+ *
+ * Parameters:
+ *   name - key into mode table
+ *
+ * Returns:
+ *   mode
+ */
 silica mode := method(name,
   silica ModeTable get(name)
 )
 
+/* Method: scale(name)
+ *
+ * Gets the scale mapped to by name
+ *
+ * Parameters:
+ *   name - key into scale table
+ *
+ * Returns:
+ *   scale
+ */
 silica scale := method(name,
   silica ScaleTable get(name)
 )
 
+/* Method: instrument(name)
+ *
+ * Gets the instrument mapped to by name
+ *
+ * Parameters:
+ *   name - key into instrument table
+ *
+ * Returns:
+ *   instrument
+ */
 silica instrument := method(name,
   silica InstrumentTable get(name)
 )
 
+/* Method: namespace(name)
+ *
+ * Gets the namespace mapped to by name
+ *
+ * Parameters:
+ *   name - key into namespace table
+ *
+ * Returns:
+ *   namespace
+ */
 silica namespace := method(name,
   silica NamespaceTable get(name)
 )
 
+/* Method: token(namespace, name)
+ *
+ * Gets the token mapped to by name within namespace
+ *
+ * Parameters:
+ *   namespace - namespace to check within
+ *   name - key into token table
+ *
+ * Returns:
+ *   token
+ */
 silica token := method(namespace, name,
   silica TokenTable get(namespace, name)
 )

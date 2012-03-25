@@ -52,9 +52,19 @@ Don't Index: General, Functions, Classes
 # --------------------------------------------------------------------------
 
 
+File Index: Files
+
 Group: Lang  {
 
-   File: Note  (/home/jake/programming/silica/lang/Note.io)
+   Group: silica  {
+
+      File: Command  (/home/jake/programming/silica/lang/Command.io)
+      File: Entity  (/home/jake/programming/silica/lang/Entity.io)
+      File: EntityTable  (/home/jake/programming/silica/lang/EntityTable.io)
+      File: Lang Globals  (/home/jake/programming/silica/lang/common.io)
+      File: Note  (/home/jake/programming/silica/lang/Note.io)
+      }  # Group: silica
+
    }  # Group: Lang
 
 
