@@ -81,6 +81,27 @@ silica token := method(namespace, name,
   silica TokenTable get(namespace, name)
 )
 
+/* Method: loadmodule(name)
+ *
+ * Loads the module with the provided name
+ *
+ * Parameters:
+ *   name - the module to load
+ *
+ * Returns:
+ *   boolean - true if load successful, false if otherwise
+ */
+silica loadmodule := method(name,
+  p := Path with(SILICA_DIR, "modules", name, "main.io")
+  f := File with(p)
+  if(f exists,
+    doFile(p)
+    return true
+    ,
+    return false
+  )
+)
+  
 // load lang files
 
 if(?REPL_DEBUG, writeln("Loading lang files..."))
@@ -112,7 +133,7 @@ silica langFileList foreach(f,
 if(?REPL_DEBUG, writeln("Initializing language features..."))
 
   // load the "home" module
-  doRelativeFile("../modules/home/main.io")
+  silica loadmodule("home")
   
   // initialize the Note
   if(?REPL_DEBUG, writeln("  + Initializing the note..."))

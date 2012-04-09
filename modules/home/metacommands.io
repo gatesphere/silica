@@ -496,3 +496,19 @@ tt add(home, "-about", silica MetaCommand with("-ABOUT", "Display information ab
       out
     )
 ))
+tt add(home, "-require", silica MetaCommand with("-REQUIRE", "Load a module with the given name.",
+    block(name,
+      out := "-REQUIRE\n"
+      if(name == nil,
+        out = out .. "No module name provided."
+        return out
+      )
+      success := silica loadmodule(name)
+      if(success,
+        out = out .. "Module \"" .. name .. "\" loaded successfully."
+        ,
+        out = out .. "Module \"" .. name .. "\" not loaded."
+      )
+      out
+    )
+))
