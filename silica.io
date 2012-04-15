@@ -21,6 +21,7 @@
  * REPL_AUTOINVARIANT - whether or not auto-invariance mode is enabled
  * REPL_SIREN_ENABLED - whether or not to read and write to siren
  * REPL_DEBUG - whether or not to print textual debugging info
+ * REPL_DEBUGTIME - whether or not to print parsing time info
  * silica exit - whether or not to exit the REPL loop after the current command
  */
 

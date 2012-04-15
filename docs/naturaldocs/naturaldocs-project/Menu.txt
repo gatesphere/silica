@@ -1,4 +1,4 @@
-Format: 1.52
+Format: 1.51
 
 
 Title: silica Internals
@@ -52,32 +52,32 @@ Don't Index: General, Functions, Files, Classes
 # --------------------------------------------------------------------------
 
 
-File: Globals  (/home/Jake/programming/silica/silica.io)
+File: Globals  (/home/jake/programming/silica/silica.io)
 
 Group: silica  {
 
-   File: Lang Globals  (/home/Jake/programming/silica/lang/common.io)
-   File: Command  (/home/Jake/programming/silica/lang/Command.io)
-   File: Entity  (/home/Jake/programming/silica/lang/Entity.io)
-   File: EntityTable  (/home/Jake/programming/silica/lang/EntityTable.io)
-   File: Function  (/home/Jake/programming/silica/lang/Function.io)
-   File: Instrument  (/home/Jake/programming/silica/lang/Instrument.io)
-   File: InstrumentChanger  (/home/Jake/programming/silica/lang/InstrumentChanger.io)
-   File: Macro  (/home/Jake/programming/silica/lang/Macro.io)
-   File: MetaCommand  (/home/Jake/programming/silica/lang/MetaCommand.io)
-   File: Mode  (/home/Jake/programming/silica/lang/Mode.io)
-   File: Namespace  (/home/Jake/programming/silica/lang/Namespace.io)
-   File: Note  (/home/Jake/programming/silica/lang/Note.io)
-   File: Primitive  (/home/Jake/programming/silica/lang/Primitive.io)
-   File: Scale  (/home/Jake/programming/silica/lang/Scale.io)
-   File: ScaleChanger  (/home/Jake/programming/silica/lang/ScaleChanger.io)
-   File: TokenTable  (/home/Jake/programming/silica/lang/TokenTable.io)
-   File: Transform  (/home/Jake/programming/silica/lang/Transform.io)
+   File: Lang Globals  (/home/jake/programming/silica/lang/common.io)
+   File: Command  (/home/jake/programming/silica/lang/Command.io)
+   File: Entity  (/home/jake/programming/silica/lang/Entity.io)
+   File: EntityTable  (/home/jake/programming/silica/lang/EntityTable.io)
+   File: Function  (/home/jake/programming/silica/lang/Function.io)
+   File: Instrument  (/home/jake/programming/silica/lang/Instrument.io)
+   File: InstrumentChanger  (/home/jake/programming/silica/lang/InstrumentChanger.io)
+   File: Macro  (/home/jake/programming/silica/lang/Macro.io)
+   File: MetaCommand  (/home/jake/programming/silica/lang/MetaCommand.io)
+   File: Mode  (/home/jake/programming/silica/lang/Mode.io)
+   File: Namespace  (/home/jake/programming/silica/lang/Namespace.io)
+   File: Note  (/home/jake/programming/silica/lang/Note.io)
+   File: Primitive  (/home/jake/programming/silica/lang/Primitive.io)
+   File: Scale  (/home/jake/programming/silica/lang/Scale.io)
+   File: ScaleChanger  (/home/jake/programming/silica/lang/ScaleChanger.io)
+   File: TokenTable  (/home/jake/programming/silica/lang/TokenTable.io)
+   File: Transform  (/home/jake/programming/silica/lang/Transform.io)
 
    Group: REPL  {
 
-      File: Parser  (/home/Jake/programming/silica/repl/Parser.io)
-      File: REPL  (/home/Jake/programming/silica/repl/REPL.io)
+      File: Parser  (/home/jake/programming/silica/repl/Parser.io)
+      File: REPL  (/home/jake/programming/silica/repl/REPL.io)
       }  # Group: REPL
 
    }  # Group: silica
@@ -85,7 +85,7 @@ Group: silica  {
 
 
 ##### Do not change or remove these lines. #####
-Data: 1(D3333RuEG3ZpAG3IHu`HpEE8\`368o89p3op\`)
-Data: 1(h3333RuEG3ZpAG3IHu`HpEE8\`368o89p3HGIo)
-Data: 1(T3333RuEG3ZpAG3IHu`HpEE8\`368o89p3EufNoG6)
-Data: 1(-3333RuEG3ZpAG3IHu`HpEE8\`368o89p)
+Data: 1(D3333RuEG3lpAG3IHu`HpEE8\`368o89p3op\`)
+Data: 1(h3333RuEG3lpAG3IHu`HpEE8\`368o89p3HGIo)
+Data: 1(T3333RuEG3lpAG3IHu`HpEE8\`368o89p3EufNoG6)
+Data: 1(-3333RuEG3lpAG3IHu`HpEE8\`368o89p)
