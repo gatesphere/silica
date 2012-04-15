@@ -1,7 +1,9 @@
 ## silica autoexec file
 ## this file will be run upon startup
 
--silent
+##-silent
+-debug
+-debugtime
 
 ## settings
 ## enable siren immediately
@@ -37,4 +39,4 @@ pop@$ >> popalphabet$
 pop@ >> popalphabet
 
 
--silent
+##-silent

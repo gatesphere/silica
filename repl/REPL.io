@@ -203,15 +203,16 @@ silica REPL REPL := Object clone do(
     vol := "$" .. silica Note volume
     inst := "@" .. silica Note instrument name
     
+    begin_time := Date clone now
     processed := self parser preprocess(in, self)
     if(processed == nil,
       if(self silent not, writeln)
       return
     )
-    if(?REPL_DEBUG, writeln("TRACE (interpretLine) received: " .. processed))
+    if(?REPL_DEBUG, writeln("TRACE (interpretLine - stage 1) received: " .. processed))
     
     transformed := self parser applyTransforms(processed)
-    if(?REPL_DEBUG, writeln("TRACE (interpretLine) received: " .. processed))
+    if(?REPL_DEBUG, writeln("TRACE (interpretLine - stage 2) received: " .. processed))
     
     transformed splitNoEmpties foreach(tok,
       ret := self parser interpretToken(tok asMutable lowercase, true, self currentNamespace, self)
@@ -231,6 +232,7 @@ silica REPL REPL := Object clone do(
     )
     if(repl_out size == 1, repl_out append("okay."))
     if(silent not, writeln(repl_out join(" ") strip))
+    if(?REPL_DEBUGTIME, writeln("The expression took " .. Date clone now secondsSince(begin_time) .. " seconds to parse."))
   )
   
   /*

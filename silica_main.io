@@ -3,13 +3,14 @@
 // the silica repl
 
 // globals
-SILICA_VERSION := "March 2012"
+SILICA_VERSION := "April 2012"
 REPL_MAX_RECURSIVE_DEPTH := 2000
 REPL_RELOAD := true
 REPL_LOAD_HISTORY := true
 REPL_AUTOINVARIANT := false
 REPL_SIREN_ENABLED := false
 //REPL_DEBUG := true
+//REPL_DEBUGTIME := true
 
 // welcome message
 writeln("Welcome to silica!")

@@ -68,6 +68,19 @@ tt add(home, "-debug", silica MetaCommand with("-DEBUG", "Toggle debugging outpu
       out
     )
 ))
+tt add(home, "-debugtime", silica MetaCommand with("-DEBUGTIME", "Toggle display of parse time.",
+    block(
+      out := "-DEBUGTIME\n"
+      if(Lobby ?REPL_DEBUGTIME,
+        Lobby REPL_DEBUGTIME := false
+        out = out .. "Debug time deactivated."
+        ,
+        Lobby REPL_DEBUGTIME := true
+        out = out .. "Debug time activated."
+      )
+      out
+    )
+))    
 tt add(home, "-reloadlang", silica MetaCommand with("-RELOADLANG", "Reload the silica language files.",
     block(
       Lobby REPL_RELOAD = true

@@ -4,19 +4,19 @@
 
 if(?REPL_DEBUG, writeln("    + Initializing default scales..."))
 
-silica ModeTable table values foreach(mode,
+silica ModeTable table values foreach(mode_n,
   silica PitchNames foreach(tonic,
-    silica ScaleTable new(tonic .. "-" .. mode name, mode, tonic)
+    silica ScaleTable new(tonic .. "-" .. mode_n name, mode_n, tonic)
   )
 )
 
 home := silica namespace("home")
 tt := silica TokenTable
 
-silica ScaleTable table values foreach(scale,
-  name := scale name
+silica ScaleTable table values foreach(scale_n,
+  name := scale_n name
   ctx := Object clone
-  ctx x := scale
+  ctx x := scale_n
   tt add(
     home, 
     (name .. "$") asMutable lowercase, 
@@ -37,10 +37,10 @@ silica ScaleTable table values foreach(scale,
   ))
 )
 
-silica ModeTable table values foreach(mode,
-  name := mode name
+silica ModeTable table values foreach(mode_n,
+  name := mode_n name
   ctx := Object clone
-  ctx x := mode name
+  ctx x := mode_n name
   tt add(
     home,
     name asMutable lowercase,
