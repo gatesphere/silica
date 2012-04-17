@@ -62,6 +62,7 @@ tt add(home, ":retrograde", silica Transform with(":RETROGRADE", "Reverses the o
       contours := list
       durations := list
       play_commands := list
+      others := list
       curr_contour := 0 // relative
       curr_duration_stack := list
       curr_duration_recovery := list
@@ -80,6 +81,8 @@ tt add(home, ":retrograde", silica Transform with(":RETROGRADE", "Reverses the o
           play_commands prepend(tok)
           contours prepend(curr_contour)
           durations prepend(list(curr_duration_stack clone, curr_duration_recovery clone))
+          ,
+          others append(tok)
         )
       )
       if(?REPL_DEBUG, writeln("TRACE (:retrograde): play_commands = " .. play_commands))
@@ -87,7 +90,7 @@ tt add(home, ":retrograde", silica Transform with(":RETROGRADE", "Reverses the o
       if(?REPL_DEBUG, writeln("TRACE (:retrograde): durations = " .. durations))
       
       // reverse
-      out := list("pushstate")
+      out := list("pushstate") append(others) flatten
       curr_contour = 0
       play_commands foreach(i, pc,
         target_contour := contours at(i)
