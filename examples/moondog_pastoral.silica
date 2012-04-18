@@ -71,8 +71,8 @@ part1 = intro hats1_seg1 hats1_seg2 trans1 m1resolve
 pastoral >> settempo part1
 
 ## play it
--siren
+##-siren
 pastoral
 
 ## end session
--exit
+##-exit

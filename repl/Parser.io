@@ -19,9 +19,11 @@ silica REPL Parser := Object clone do(
    *
    * operation_table - a list of operation phases with precedence
    * definition_table - a list of definition phases with precedence
+   * parse_cache - a cache used to speed parsing
    */
   operation_table ::= list setSize(16)
   definition_table ::= list setSize(16)
+  parse_cache ::= Map clone
   
   //////////////////////////////////////////////////////////////////////////////
   // Group: Initializers 
@@ -58,6 +60,7 @@ silica REPL Parser := Object clone do(
     self add_operation(self getSlot("simplifyTransforms"), 4)
     self add_operation(self getSlot("simplifyFactors"), 8)
     self add_operation(self getSlot("simplifyExpansions"), 12)
+    
     self
   )
   
@@ -245,6 +248,9 @@ silica REPL Parser := Object clone do(
    *   <preprocess(in, repl)>
    */
   simplify := method(out, repl,
+    // caching
+    //self cache_reset
+    
     // concurrent lines
     changed := true
     valid := true
@@ -614,6 +620,14 @@ silica REPL Parser := Object clone do(
     tokenName := token beforeSeq("(")
     //writeln(tokenName)
     // get token
+    
+    /*
+    itok := self cache_lookup(namespace, tokenName)
+    if(itok == nil,
+      itok = silica token(namespace, tokenName)
+      if(itok != nil, self cache_add(namespace, tokenName, itok))
+    )
+    */
     itok := silica token(namespace, tokenName)
     //writeln(itok)
     
@@ -825,4 +839,68 @@ silica REPL Parser := Object clone do(
     trans execute(input join(" "), silica Note scale last) splitNoEmpties
   )
   
+  //////////////////////////////////////////////////////////////////////////////
+  // Group: Caching
+  /*
+   * Method: cache_lookup(namespace, token)
+   *
+   * Looks the token up within the parse_cache
+   *
+   * Parameters:
+   *   namespace - the namespace
+   *   token - the token
+   *
+   * Returns:
+   *   the token, or nil if not in parse_cache
+   *
+   * See also:
+   *   <cache_add(namespace, token, value)>, <cache_reset>
+   */
+  cache_lookup := method(namespace, token,
+    namespace_table := self parse_cache at(namespace constructName)
+    if(namespace_table == nil, return nil)
+    namespace_table at(token)
+  )
+  
+  /*
+   * Method: cache_add(namespace, token, value)
+   *
+   * Adds a token to the parse_cache
+   *
+   * Parameters:
+   *   namespace - the namespace
+   *   token - the token
+   *   value - the value of the token
+   *
+   * Returns:
+   *   self
+   *
+   * See also:
+   *   <cache_lookup(namespace, token)>, <cache_reset>
+   */
+  cache_add := method(namespace, token, value,
+    //writeln("ns: " .. namespace .. " tok: " .. token .. " val: " .. value)
+    namespace_table := self parse_cache atIfAbsentPut(namespace constructName, Map clone)
+    namespace_table atIfAbsentPut(token, value)
+    self
+  )
+  
+  /*
+   * Method: cache_reset
+   *
+   * Resets the cache (emptying it)
+   *
+   * Parameters:
+   *   none
+   *
+   * Returns:
+   *   self
+   *
+   * See also:
+   *   <cache_lookup(namespace, token)>, <cache_add(namespace, token, value)>
+   */
+  cache_reset := method(
+    self parse_cache = Map clone
+    self
+  )
 )
