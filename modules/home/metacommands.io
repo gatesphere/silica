@@ -55,26 +55,6 @@ tt add(home, "-@?" , silica MetaCommand with("-@?", "Display information about t
       out
     )
 ))
-tt add(home, "-debug", silica MetaCommand with("-DEBUG", "Toggle debugging output.",
-    block(
-      out := "-DEBUG\n"
-      if(Lobby ?REPL_DEBUG, 
-        Lobby REPL_DEBUG := false
-        out = out .. "Debug mode deactivated."
-        ,
-        Lobby REPL_DEBUG := true
-        out = out .. "Debug mode activated."
-      )
-      out
-    )
-))
-tt add(home, "-reloadlang", silica MetaCommand with("-RELOADLANG", "Reload the silica language files.",
-    block(
-      Lobby REPL_RELOAD = true
-      silica exit = true
-      "-RELOADLANG"
-    )
-))
 tt add(home, "-leave", silica MetaCommand with("-LEAVE", "Leave the current namespace, retreating one level up.",
     block(
       out := "-LEAVE\n"

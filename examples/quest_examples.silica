@@ -1,0 +1,26 @@
+## Quest example
+
+e-pentaminor$
+
+## The main theme
+theme(rp,lp) := play rp 2ps 3lp 2ps+rp play 5rp pl 5lp play
+themeinst(piano) := piano theme
+
+
+## variation 1: into major mode
+var1 >> major theme popalphabet
+
+## variation 2: round
+var2 >> theme^rll+themeinst(string_ensemble_1)^rll+rll+theme
+
+## variation 3: crab canon style
+var3 >> theme^themeinst(string_ensemble_1):retrograde
+
+## variation 4: "serpentine"
+var4 >> theme^themeinst(string_ensemble_1):invert
+
+## variation 5: functional replacement
+var5 >> theme(2rp,2lp)
+
+## tv: all together
+tv >> themeinst var1 var2 var3 var4 var5 themeinst

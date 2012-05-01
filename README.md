@@ -108,8 +108,11 @@ Here's a short list of things to do:
 
 ### Known bugs:
 
-  * siren midi file saving dialog not filtered for midi files
   * -display doesn't show all components of a piece
+  * :retrograde is broken in some aspects
+  * function parameters are not passed deeper than one level (eg. a(x,y) := x b(y), b would not recieve y)
+  * parser is slow!  solve by caching?
+  * REPL interpretLine should be modular like the parser, to allow further manipulations like transforms
 
 ## Contributing
 This is a personal project.  If you have feedback, I'd love to hear it, but code will be mine.  You can contact me at [suschord@suspended-chord.info](mailto:suschord@suspended-chord.info).

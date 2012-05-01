@@ -170,10 +170,10 @@ list(
 home := silica namespace("home")
 tt := silica TokenTable
 
-silica InstrumentTable table values foreach(instrument,
-  name := instrument name
+silica InstrumentTable table values foreach(instrument_n,
+  name := instrument_n name
   ctx := Object clone
-  ctx x := instrument
+  ctx x := instrument_n
   tt add(
     home,
     name asMutable lowercase,

@@ -2,6 +2,8 @@
 ## this file will be run upon startup
 
 -silent
+##-debug
+##-debugtime
 
 ## settings
 ## enable siren immediately
