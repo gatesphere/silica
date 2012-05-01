@@ -47,6 +47,7 @@ public class SIRENTranslator {
     int currentLayer = 0;
     float currentTime = 0.25f;
     boolean concurrent = false;
+    int depth = 0;
     String tempo = "T120";
     
     /* known bugs:
@@ -75,6 +76,7 @@ public class SIRENTranslator {
         continue;
       } else if(token.startsWith("[")) {
         concurrent = true;
+        depth++;
         continue;
       } else if(token.startsWith("||")) {
         // push voice
@@ -103,9 +105,12 @@ public class SIRENTranslator {
         continue;
       } else if(token.startsWith("]")) {
         // pop voice
-        currentVoice = 0;
-        currentLayer = 0;
-        concurrent = false;
+        depth--;
+        if(depth == 0) {
+          currentVoice = 0;
+          currentLayer = 0;
+          concurrent = false;
+        }
         continue;
       } else {
         // a note
