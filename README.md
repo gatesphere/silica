@@ -109,13 +109,16 @@ Here's a short list of things to do:
 
 ### Known bugs:
 
-  * Embedded concurrent voices are broken
+  * Embedded concurrent voices are broken - siren-side only
+    * Problem is that siren assumes the top voice is the lead voice
   * Sometimes the graphical display or the progress bar of siren throws an exception and stops working
   * -display doesn't show all components of a piece
   * :retrograde is broken in some aspects
   * function parameters are not passed deeper than one level (eg. a(x,y) := x b(y), b would not recieve y)
   * parser is slow!
+    * orders of magnitude slower with concurrent voices, due to recursive parser call
   * REPL interpretLine should be modular like the parser, to allow further manipulations like transforms
+  * REPL default output "okay." is confusing... try -reloadlang without -require(debug) and see what I mean
 
 ## Contributing
 This is a personal project.  If you have feedback, I'd love to hear it, but code will be mine.  You can contact me at [suschord@suspended-chord.info](mailto:suschord@suspended-chord.info).

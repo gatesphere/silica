@@ -2,12 +2,13 @@
 ## this file will be run upon startup
 
 -silent
+-require(debug)
 ##-debug
 ##-debugtime
 
 ## settings
 ## enable siren immediately
-## -siren
+##-siren
 
 ## some standard utility macros
 -home

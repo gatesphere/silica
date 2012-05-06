@@ -299,6 +299,7 @@ silica REPL Parser := Object clone do(
    * Simplifies any concurrent voices in the string
    */
   simplifyVoices := block(changed, valid, out, repl,
+    //writeln("TRACE (simplifyVoices) entering with: " .. out)
     if(?REPL_DEBUG, writeln("TRACE (simplifyVoices) entering with: " .. out join(" ")))
     in_2 := out join(" ")
     out := list
@@ -316,12 +317,12 @@ silica REPL Parser := Object clone do(
         )
         while(tok containsSeq("^"),
           out append("pushstate")
-          out append(tok beforeSeq("^"))
+          out append(self simplify(list(tok beforeSeq("^")), repl) join(" "))
           out append("popstate")
           out append("||")
           tok = tok afterSeq("^")
         )
-        out append(tok)
+        out append(self simplify(list(tok), repl) join(" "))
         if(inBrackets not,
           out append("]")
         )

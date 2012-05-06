@@ -1,0 +1,17 @@
+## example which breaks concurrent voices
+break >> breaka^breakb
+fullbarrest >> 4rest
+
+breaka >> blaha fullbarrest blahb fullbarrest blaha blahb
+breakb >> fooa^foob
+
+blaha >> parta^partb
+blahb >> partb^partc
+
+fooa >> 14parta
+foob >> 14partc
+
+parta >> s2 3play+rp 3lp x2
+partc >> 3lp parta 3rp
+partb >> 3rp parta 3lp
+
