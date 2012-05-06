@@ -91,6 +91,7 @@ There are a few things that differentiate silica from Clay.  Here's an extremely
 Here's a short list of things to do:
 
   * More transforms
+    * Implement '->' reduction
   * Modules:
     * Percussion instruments
     * Statistics
@@ -108,10 +109,12 @@ Here's a short list of things to do:
 
 ### Known bugs:
 
+  * Embedded concurrent voices are broken
+  * Sometimes the graphical display or the progress bar of siren throws an exception and stops working
   * -display doesn't show all components of a piece
   * :retrograde is broken in some aspects
   * function parameters are not passed deeper than one level (eg. a(x,y) := x b(y), b would not recieve y)
-  * parser is slow!  solve by caching?
+  * parser is slow!
   * REPL interpretLine should be modular like the parser, to allow further manipulations like transforms
 
 ## Contributing

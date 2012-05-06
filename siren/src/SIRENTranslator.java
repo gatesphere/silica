@@ -49,10 +49,6 @@ public class SIRENTranslator {
     boolean concurrent = false;
     String tempo = "T120";
     
-    /* known bugs:
-     * doesn't use JFugue's layers
-     */
-    
     while(sc.hasNext()) {
       String token = sc.next();
       if(token.startsWith("!")) {

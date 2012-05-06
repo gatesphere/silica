@@ -64,8 +64,10 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
     
     setLayout(new BorderLayout());
     
+    /*
     siren_app = new SIRENPApplet();
     siren_progress_bar = new SIRENProgressBar();
+    */
     
     control_panel = new JPanel();
     
@@ -123,10 +125,10 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
     
     progress_and_controls = new JPanel(new BorderLayout());
     progress_and_controls.add(control_panel, BorderLayout.SOUTH);
-    progress_and_controls.add(siren_progress_bar, BorderLayout.CENTER);
+    //progress_and_controls.add(siren_progress_bar, BorderLayout.CENTER);
     
     
-    add(siren_app, BorderLayout.CENTER);
+    //add(siren_app, BorderLayout.CENTER);
     add(progress_and_controls, BorderLayout.SOUTH);
     setResizable(true);
     setSize(650,650);
@@ -140,9 +142,9 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
     
     siren_translator = SIRENTranslator.getInstance();
     
-    siren_app.init();
-    siren_progress_bar.init();
-    watchProgressBar();
+    //siren_app.init();
+    //siren_progress_bar.init();
+    //watchProgressBar();
   }
   
   public void sendUpdateEvent() {
@@ -166,6 +168,13 @@ public class SIREN extends JFrame implements ComponentListener, ActionListener, 
   public static void createAndShowGUI() {
     SIREN siren = new SIREN();
     siren.setLocationRelativeTo(null);
+    siren.siren_app = new SIRENPApplet();
+    siren.siren_progress_bar = new SIRENProgressBar();
+    siren.progress_and_controls.add(siren.siren_progress_bar, BorderLayout.CENTER);
+    siren.add(siren.siren_app, BorderLayout.CENTER);
+    siren.siren_app.init();
+    siren.siren_progress_bar.init();
+    siren.watchProgressBar();
     siren.setVisible(true);
     //siren.watchButtons();
     siren.sendUpdateEvent();
