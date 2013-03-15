@@ -87,6 +87,21 @@ There are a few things that differentiate silica from Clay.  Here's an extremely
   * Functions
   * Modular
 
+### Installation
+Installing silica can be a bit of a chore, unfortunately.
+
+Here's what you need to do:
+
+  1. Install [Io](http://iobin.suspended-chord.info/).  Preferrably on a 
+     linux system.
+  2. Install a Java 7 JDK.
+  3. Clone this repo.
+  4. Build siren: `$ cd siren; ./build.sh`
+  5. Set the environment variable `SILICA_DIR` to the repo's root directory.
+  6. Run siren: `siren/run.sh`
+  7. Run silica: `./silica.io` or `io silica.io`
+  8. Pray that everything went well.
+
 ### To do:
 Here's a short list of things to do:
 
