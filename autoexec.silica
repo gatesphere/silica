@@ -1,3 +1,5 @@
+#@+leo-ver=5-thin
+#@+node:peckj.20130604112211.2172: * @file ../autoexec.silica
 ## silica autoexec file
 ## this file will be run upon startup
 
@@ -41,3 +43,4 @@ pop@ >> popalphabet
 
 
 -silent
+#@-leo
