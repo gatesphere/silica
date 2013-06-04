@@ -1,6 +1,11 @@
 # silica Programming Language
 Copyright 2012 Jacob M. Peck, all rights reserved.
 
+## THIS BRANCH IS DEPRECATED
+All new development on silica is in Python.  This branch
+is merely historical storage for the Io language prototype
+of silica.
+
 ## License
 See the file [license/license.txt](https://raw.github.com/gatesphere/silica/master/license/license.txt).
 
