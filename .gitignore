@@ -32,10 +32,11 @@ nosetests.xml
 # Mr Developer
 .mr.developer.cfg
 .project
+.pydevproject
 
 # silica
 autoexec.silica
 
 # leo dev
-core/silica.leo
-.pydevproject
+silica/core/silica.leo
+silica/test/silicaProfile.txt

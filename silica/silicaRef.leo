@@ -10,18 +10,25 @@
 <preferences/>
 <find_panel_settings/>
 <vnodes>
+<v t="peckj.20130604112211.4466"><vh>Startup</vh>
+<v t="peckj.20130604112211.4467"><vh>@settings</vh></v>
+<v t="peckj.20130604112211.4468"><vh>Buttons</vh>
+<v t="peckj.20130604112211.4469"><vh>@button timeit</vh></v>
+<v t="peckj.20130604112211.4470"><vh>@button profile</vh></v>
+</v>
+</v>
 <v t="peckj.20130604112211.2164" a="E"><vh>Code</vh>
-<v t="peckj.20130604112211.2170" a="E"><vh>autoexec</vh>
+<v t="peckj.20130604112211.2170"><vh>autoexec</vh>
 <v t="peckj.20130604112211.2172"><vh>@file ../autoexec.silica</vh></v>
 </v>
 <v t="peckj.20130604112211.2165"><vh>Launcher</vh>
 <v t="peckj.20130604112211.2162"><vh>@file ../silica.py</vh></v>
 </v>
-<v t="peckj.20130604112211.2148"><vh>silica</vh>
+<v t="peckj.20130604112211.2148" a="E"><vh>silica</vh>
 <v t="peckj.20130604112211.2146"><vh>@file __init__.py</vh></v>
 <v t="peckj.20130604112211.2149" a="E"><vh>core</vh>
 <v t="peckj.20130604112211.2147"><vh>@file core/__init__.py</vh></v>
-<v t="peckj.20130604112211.2150"><vh>@file core/runSilica.py</vh></v>
+<v t="peckj.20130604112211.2150" a="E"><vh>@file core/runSilica.py</vh></v>
 </v>
 <v t="peckj.20130604112211.2151"><vh>examples</vh>
 <v t="peckj.20130604112211.2153"><vh>@edit examples/readme_example.silica</vh></v>
@@ -51,5 +58,19 @@
 <t tx="peckj.20130604112211.2165"></t>
 <t tx="peckj.20130604112211.2166"></t>
 <t tx="peckj.20130604112211.2170"></t>
+<t tx="peckj.20130604112211.4466"></t>
+<t tx="peckj.20130604112211.4467">@ 
+  keybindings - for unit-testing
+@c
+
+run-selected-unit-tests-locally = Alt-4
+run-marked-unit-tests-locally = Alt-5
+run-all-unit-tests-locally = Alt-6
+</t>
+<t tx="peckj.20130604112211.4468">@language python</t>
+<t tx="peckj.20130604112211.4469">@language python
+c.testManager.runTimerOnNode(p,count=100)</t>
+<t tx="peckj.20130604112211.4470">@language python
+c.testManager.runProfileOnNode(p,outputPath='test/silicaProfile.txt')</t>
 </tnodes>
 </leo_file>
