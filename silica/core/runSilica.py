@@ -1,5 +1,5 @@
 #@+leo-ver=5-thin
-#@+node:peckj.20130604112211.2150: * @file core/runSilica.py
+#@+node:peckj.20130604112211.2150: * @file runSilica.py
 #@@language python
 #@+others
 #@+node:peckj.20130604112211.4471: ** run

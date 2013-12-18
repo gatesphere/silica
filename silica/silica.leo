@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Created by Leo (http://webpages.charter.net/edreamleo/front.html) -->
+<!-- Created by Leo (http://leoeditor.com/leo_toc.html) -->
 <?xml-stylesheet ekr_test?>
 <leo_file xmlns:leo="http://www.leo-editor.org/2011/leo" >
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
@@ -17,18 +17,26 @@
 <v t="peckj.20130604112211.4470"><vh>@button profile</vh></v>
 </v>
 </v>
-<v t="peckj.20130604112211.2164" a="E"><vh>Code</vh>
+<v t="peckj.20130604112211.2164"><vh>Code</vh>
 <v t="peckj.20130604112211.2170"><vh>autoexec</vh>
 <v t="peckj.20130604112211.2172"><vh>@file ../autoexec.silica</vh></v>
 </v>
 <v t="peckj.20130604112211.2165"><vh>Launcher</vh>
 <v t="peckj.20130604112211.2162"><vh>@file ../silica.py</vh></v>
 </v>
-<v t="peckj.20130604112211.2148" a="E"><vh>silica</vh>
+<v t="peckj.20130604112211.2148"><vh>silica</vh>
 <v t="peckj.20130604112211.2146"><vh>@file __init__.py</vh></v>
-<v t="peckj.20130604112211.2149" a="E"><vh>core</vh>
-<v t="peckj.20130604112211.2147"><vh>@file core/__init__.py</vh></v>
-<v t="peckj.20130604112211.2150" a="E"><vh>@file core/runSilica.py</vh></v>
+<v t="peckj.20130604112211.2149"><vh>@path core</vh>
+<v t="peckj.20130604112211.2147"><vh>@file __init__.py</vh></v>
+<v t="peckj.20131218082219.4099"><vh>@file Entity.py</vh></v>
+<v t="peckj.20131218082219.4105"
+expanded="peckj.20131218082219.4108,"><vh>@file Globals.py</vh></v>
+<v t="peckj.20131218082219.4117"><vh>@file Mode.py</vh></v>
+<v t="peckj.20131218082219.4088"
+expanded="peckj.20131218082219.4091,"><vh>@file Note.py</vh></v>
+<v t="peckj.20130604112211.2150"><vh>@file runSilica.py</vh></v>
+<v t="peckj.20131218082219.4095"
+expanded="peckj.20131218082219.4098,peckj.20131218082219.4129,"><vh>@file Scale.py</vh></v>
 </v>
 <v t="peckj.20130604112211.2151"><vh>examples</vh>
 <v t="peckj.20130604112211.2153"><vh>@edit examples/readme_example.silica</vh></v>
