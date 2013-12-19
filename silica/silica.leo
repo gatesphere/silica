@@ -10,9 +10,9 @@
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="peckj.20130604112211.4466" a="E"><vh>Startup</vh>
+<v t="peckj.20130604112211.4466"><vh>Startup</vh>
 <v t="peckj.20130604112211.4467"><vh>@settings</vh></v>
-<v t="peckj.20130604112211.4468" a="E"><vh>Buttons</vh>
+<v t="peckj.20130604112211.4468"><vh>Buttons</vh>
 <v t="peckj.20130604112211.4469"><vh>@button timeit</vh></v>
 <v t="peckj.20130604112211.4470"><vh>@button profile</vh></v>
 </v>
@@ -21,19 +21,19 @@
 <v t="peckj.20130604112211.2165"><vh>Launcher</vh>
 <v t="peckj.20130604112211.2162"><vh>@file ../silica.py</vh></v>
 </v>
-<v t="peckj.20131219081918.4174" a="E"><vh>Tester</vh>
-<v t="peckj.20131219081918.4175" a="E"><vh>@file ../silicaTester.py</vh></v>
+<v t="peckj.20131219081918.4174"><vh>Tester</vh>
+<v t="peckj.20131219081918.4175"><vh>@file ../silicaTester.py</vh></v>
 </v>
 <v t="peckj.20130604112211.2148" a="E"><vh>silica</vh>
 <v t="peckj.20130604112211.2146"><vh>@file __init__.py</vh></v>
 <v t="peckj.20130604112211.2149" a="E"><vh>@path core</vh>
 <v t="peckj.20130604112211.2147"><vh>@file __init__.py</vh></v>
 <v t="peckj.20131218082219.4099"><vh>@file entity.py</vh></v>
-<v t="peckj.20131218082219.4105" a="E"
-expanded="peckj.20131219081918.4217,peckj.20131219081918.4218,"><vh>@file sglobals.py</vh></v>
+<v t="peckj.20131218082219.4105"
+expanded="peckj.20131219081918.4218,"><vh>@file sglobals.py</vh></v>
 <v t="peckj.20131218082219.4117"><vh>@file mode.py</vh></v>
-<v t="peckj.20131218082219.4088"
-expanded="peckj.20131219081918.4168,peckj.20131219081918.4170,"><vh>@file note.py</vh></v>
+<v t="peckj.20131218082219.4088" a="E"
+expanded="peckj.20131218082219.4091,peckj.20131218082219.4135,peckj.20131219081918.4225,peckj.20131219081918.4228,peckj.20131219081918.4229,"><vh>@file note.py</vh></v>
 <v t="peckj.20130604112211.2150"><vh>@file runSilica.py</vh></v>
 <v t="peckj.20131218082219.4095"
 expanded="peckj.20131218082219.4098,peckj.20131218082219.4129,peckj.20131218082219.4130,"><vh>@file scale.py</vh></v>
