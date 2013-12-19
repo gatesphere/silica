@@ -18,6 +18,9 @@
 </v>
 </v>
 <v t="peckj.20130604112211.2164" a="E"><vh>Code (python)</vh>
+<v t="peckj.20131219081918.4264"><vh>toy code</vh>
+<v t="peckj.20131219081918.4262"><vh>@file ../toy_code/readlinetest.py</vh></v>
+</v>
 <v t="peckj.20130604112211.2165"><vh>Launcher</vh>
 <v t="peckj.20130604112211.2162"><vh>@file ../silica.py</vh></v>
 </v>
@@ -32,11 +35,15 @@
 <v t="peckj.20131218082219.4105"
 expanded="peckj.20131219081918.4218,"><vh>@file sglobals.py</vh></v>
 <v t="peckj.20131218082219.4117"><vh>@file mode.py</vh></v>
-<v t="peckj.20131218082219.4088" a="E"
-expanded="peckj.20131218082219.4091,peckj.20131218082219.4135,peckj.20131219081918.4225,peckj.20131219081918.4228,peckj.20131219081918.4229,"><vh>@file note.py</vh></v>
+<v t="peckj.20131218082219.4088"
+expanded="peckj.20131218082219.4091,peckj.20131218082219.4135,peckj.20131219081918.4225,peckj.20131219081918.4229,"><vh>@file note.py</vh></v>
 <v t="peckj.20130604112211.2150"><vh>@file runSilica.py</vh></v>
 <v t="peckj.20131218082219.4095"
 expanded="peckj.20131218082219.4098,peckj.20131218082219.4129,peckj.20131218082219.4130,"><vh>@file scale.py</vh></v>
+</v>
+<v t="peckj.20131219081918.4265" a="E"><vh>@path ui</vh>
+<v t="peckj.20131219081918.4267"><vh>@file __init__.py</vh></v>
+<v t="peckj.20131219081918.4268" a="E"><vh>@file repl.py</vh></v>
 </v>
 </v>
 </v>
@@ -59,6 +66,7 @@ expanded="peckj.20131218082219.4098,peckj.20131218082219.4129,peckj.201312180822
 </v>
 </v>
 <v t="peckj.20130604112211.2166"><vh>Docs</vh>
+<v t="peckj.20131219081918.4263"><vh>required libs</vh></v>
 <v t="peckj.20130604112211.2168"><vh>@file ../README.md</vh></v>
 </v>
 </vnodes>
@@ -87,5 +95,13 @@ c.testManager.runTimerOnNode(p,count=100)</t>
 c.testManager.runProfileOnNode(p,outputPath='../test/silicaProfile.txt')</t>
 <t tx="peckj.20131219081918.4173"></t>
 <t tx="peckj.20131219081918.4174"></t>
+<t tx="peckj.20131219081918.4263">Currently:
+  anyreadline
+
+Future:
+  mingus
+  fluidsynth.dll + TimGM6mb.sf2</t>
+<t tx="peckj.20131219081918.4264"></t>
+<t tx="peckj.20131219081918.4265"></t>
 </tnodes>
 </leo_file>
