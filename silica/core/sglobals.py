@@ -16,9 +16,27 @@ scaletable = {}
 instrumenttable = {}
 namespacetable = {}
 tokentable = {}
+
+note = None
 #@-<< declarations >>
 
 #@+others
+#@+node:peckj.20131219081918.4217: ** initialization
+#@+node:peckj.20131219081918.4218: *3* initialize
+def initialize():
+  init_create_note()
+#@+node:peckj.20131219081918.4219: *4* init_create_note
+def init_create_note():
+  global note
+  from silica.core.note import Note
+  ## temporary
+  # create C-MAJOR scale
+  new_mode('MAJOR', [2,2,1,2,2,2,1])
+  new_scale('C-MAJOR', get_mode('MAJOR'), 'C')
+
+  # create note and play around with it  
+  n = Note()
+  note = n
 #@+node:peckj.20131218082219.4108: ** lookup methods
 #@+node:peckj.20131218082219.4109: *3* get_mode
 def get_mode(name):

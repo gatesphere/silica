@@ -10,9 +10,9 @@
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="peckj.20130604112211.4466"><vh>Startup</vh>
+<v t="peckj.20130604112211.4466" a="E"><vh>Startup</vh>
 <v t="peckj.20130604112211.4467"><vh>@settings</vh></v>
-<v t="peckj.20130604112211.4468"><vh>Buttons</vh>
+<v t="peckj.20130604112211.4468" a="E"><vh>Buttons</vh>
 <v t="peckj.20130604112211.4469"><vh>@button timeit</vh></v>
 <v t="peckj.20130604112211.4470"><vh>@button profile</vh></v>
 </v>
@@ -30,7 +30,7 @@
 <v t="peckj.20130604112211.2147"><vh>@file __init__.py</vh></v>
 <v t="peckj.20131218082219.4099"><vh>@file entity.py</vh></v>
 <v t="peckj.20131218082219.4105" a="E"
-expanded="peckj.20131218082219.4108,peckj.20131219081918.4210,"><vh>@file sglobals.py</vh></v>
+expanded="peckj.20131219081918.4217,peckj.20131219081918.4218,"><vh>@file sglobals.py</vh></v>
 <v t="peckj.20131218082219.4117"><vh>@file mode.py</vh></v>
 <v t="peckj.20131218082219.4088"
 expanded="peckj.20131219081918.4168,peckj.20131219081918.4170,"><vh>@file note.py</vh></v>
@@ -84,7 +84,7 @@ run-all-unit-tests-locally = Alt-6
 <t tx="peckj.20130604112211.4469">@language python
 c.testManager.runTimerOnNode(p,count=100)</t>
 <t tx="peckj.20130604112211.4470">@language python
-c.testManager.runProfileOnNode(p,outputPath='test/silicaProfile.txt')</t>
+c.testManager.runProfileOnNode(p,outputPath='../test/silicaProfile.txt')</t>
 <t tx="peckj.20131219081918.4173"></t>
 <t tx="peckj.20131219081918.4174"></t>
 </tnodes>

@@ -6,21 +6,17 @@
 
 #@+<< imports >>
 #@+node:peckj.20131219081918.4176: ** << imports >>
-#import silica.core.sglobals as sglobals
-#sg = sglobals
 import silica.core.sglobals as sg
-from silica.core.note import Note
+
 #@-<< imports >>
 
 #@+others
 #@+node:peckj.20131219081918.4177: ** main
 def main():
-  # create C-MAJOR scale
-  sg.new_mode('MAJOR', [2,2,1,2,2,2,1])
-  sg.new_scale('C-MAJOR', sg.get_mode('MAJOR'), 'C')
-
-  # create note and play around with it  
-  n = Note()
+  # initialize sg
+  sg.initialize()
+  n = sg.note
+  
   print n.play()
   print n.rest()
   for i in range(20):
