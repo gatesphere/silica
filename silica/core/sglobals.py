@@ -18,6 +18,11 @@ namespacetable = {}
 tokentable = {}
 
 note = None
+parser = None
+repl = None
+
+exit = False
+silica_version = 'pre-alpha'
 #@-<< declarations >>
 
 #@+others
@@ -25,7 +30,10 @@ note = None
 #@+node:peckj.20131219081918.4218: *3* initialize
 def initialize():
   init_create_note()
-#@+node:peckj.20131219081918.4219: *4* init_create_note
+  init_create_parser()
+  init_create_repl()
+  
+#@+node:peckj.20131219081918.4219: *4* init_create_note # stub
 def init_create_note():
   global note
   from silica.core.note import Note
@@ -37,6 +45,16 @@ def init_create_note():
   # create note and play around with it  
   n = Note()
   note = n
+#@+node:peckj.20131219081918.4281: *4* init_create_parser
+def init_create_parser():
+  global parser
+  from silica.core.parser import Parser
+  parser = Parser()
+#@+node:peckj.20131219081918.4282: *4* init_create_repl
+def init_create_repl():
+  global repl
+  from silica.ui.repl import REPL
+  repl = REPL()
 #@+node:peckj.20131218082219.4108: ** lookup methods
 #@+node:peckj.20131218082219.4109: *3* get_mode
 def get_mode(name):
@@ -44,10 +62,10 @@ def get_mode(name):
 #@+node:peckj.20131218082219.4110: *3* get_scale
 def get_scale(name):
   return scaletable.get(name,None)
-#@+node:peckj.20131218082219.4111: *3* get_instrument
-#@+node:peckj.20131218082219.4112: *3* get_namespace
-#@+node:peckj.20131218082219.4113: *3* get_token
-#@+node:peckj.20131218082219.4114: *3* load_module
+#@+node:peckj.20131218082219.4111: *3* get_instrument # stub
+#@+node:peckj.20131218082219.4112: *3* get_namespace # stub
+#@+node:peckj.20131218082219.4113: *3* get_token # stub
+#@+node:peckj.20131218082219.4114: *3* load_module # stub
 #@+node:peckj.20131219081918.4210: ** creation methods
 #@+node:peckj.20131219081918.4211: *3* new_mode
 def new_mode(name, intervals):
@@ -62,8 +80,8 @@ def new_scale(name, mode, tonic):
   s = Scale(name, mode, tonic)
   scaletable[name] = s
   return s
-#@+node:peckj.20131219081918.4213: *3* new_instrument
-#@+node:peckj.20131219081918.4214: *3* new_namespace
-#@+node:peckj.20131219081918.4215: *3* new_token
+#@+node:peckj.20131219081918.4213: *3* new_instrument # stub
+#@+node:peckj.20131219081918.4214: *3* new_namespace # stub
+#@+node:peckj.20131219081918.4215: *3* new_token # stub
 #@-others
 #@-leo

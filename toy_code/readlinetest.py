@@ -48,7 +48,7 @@ def input_loop():
     readline.write_history_file(HISTORY_FILENAME)
 
 if __name__=='__main__':
-  #readline.set_completer(HistoryCompleter().complete)
+  readline.set_completer(HistoryCompleter().complete)
   readline.parse_and_bind('tab: complete')
   input_loop()
 #@-leo

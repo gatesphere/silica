@@ -5,7 +5,10 @@
 #@+node:peckj.20130604112211.4471: ** run
 # run silica
 def run():
-  # dummy code, for now
-  print "Hello, world, from silica."
+  import silica.core.sglobals as sg
+  sg.initialize()
+  print 'Welcome to silica'
+  print 'This is version: %s' % sg.silica_version
+  sg.repl.run()
 #@-others
 #@-leo

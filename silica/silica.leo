@@ -18,7 +18,7 @@
 </v>
 </v>
 <v t="peckj.20130604112211.2164" a="E"><vh>Code (python)</vh>
-<v t="peckj.20131219081918.4264"><vh>toy code</vh>
+<v t="peckj.20131219081918.4264" a="E"><vh>toy code</vh>
 <v t="peckj.20131219081918.4262"><vh>@file ../toy_code/readlinetest.py</vh></v>
 </v>
 <v t="peckj.20130604112211.2165"><vh>Launcher</vh>
@@ -31,19 +31,21 @@
 <v t="peckj.20130604112211.2146"><vh>@file __init__.py</vh></v>
 <v t="peckj.20130604112211.2149" a="E"><vh>@path core</vh>
 <v t="peckj.20130604112211.2147"><vh>@file __init__.py</vh></v>
-<v t="peckj.20131218082219.4099"><vh>@file entity.py</vh></v>
-<v t="peckj.20131218082219.4105"
-expanded="peckj.20131219081918.4218,"><vh>@file sglobals.py</vh></v>
+<v t="peckj.20131218082219.4099"
+expanded="peckj.20131218082219.4102,"><vh>@file entity.py</vh></v>
 <v t="peckj.20131218082219.4117"><vh>@file mode.py</vh></v>
-<v t="peckj.20131218082219.4088"
-expanded="peckj.20131218082219.4091,peckj.20131218082219.4135,peckj.20131219081918.4225,peckj.20131219081918.4229,"><vh>@file note.py</vh></v>
-<v t="peckj.20130604112211.2150"><vh>@file runSilica.py</vh></v>
+<v t="peckj.20131218082219.4088"><vh>@file note.py</vh></v>
+<v t="peckj.20131219081918.4285" a="E"><vh>@file parser.py</vh></v>
+<v t="peckj.20130604112211.2150" a="E"><vh>@file runSilica.py</vh></v>
 <v t="peckj.20131218082219.4095"
 expanded="peckj.20131218082219.4098,peckj.20131218082219.4129,peckj.20131218082219.4130,"><vh>@file scale.py</vh></v>
+<v t="peckj.20131218082219.4105" a="E"
+expanded="peckj.20131219081918.4217,peckj.20131219081918.4218,"><vh>@file sglobals.py</vh></v>
 </v>
 <v t="peckj.20131219081918.4265" a="E"><vh>@path ui</vh>
 <v t="peckj.20131219081918.4267"><vh>@file __init__.py</vh></v>
-<v t="peckj.20131219081918.4268" a="E"><vh>@file repl.py</vh></v>
+<v t="peckj.20131219081918.4268" a="E"
+expanded="peckj.20131219081918.4271,peckj.20131219081918.4289,peckj.20131219081918.4290,peckj.20131219081918.4273,"><vh>@file repl.py</vh></v>
 </v>
 </v>
 </v>
