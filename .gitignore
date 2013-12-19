@@ -38,4 +38,4 @@ nosetests.xml
 autoexec.silica
 
 # leo dev
-silica/test/silicaProfile.txt
+test/silicaProfile.txt
