@@ -1,11 +1,11 @@
 #@+leo-ver=5-thin
-#@+node:peckj.20131218082219.4117: * @file Mode.py
+#@+node:peckj.20131218082219.4117: * @file mode.py
 #@@language python
 
 #@+<< imports >>
 #@+node:peckj.20131218082219.4118: ** << imports >>
-from silica.core.Entity import Entity
-import silica.core.Globals as sg
+from silica.core.entity import Entity
+import silica.core.sglobals as sg
 #@-<< imports >>
 #@+<< declarations >>
 #@+node:peckj.20131218082219.4119: ** << declarations >>
@@ -23,7 +23,7 @@ class Mode(Entity):
     self.intervals = intervals
   #@+node:peckj.20131218082219.4124: *3* __str__
   def __str__(self):
-    '< MODE ' + self.name.upper() .. + ' >'
+    '< MODE ' + self.name.upper() + ' >'
   #@+node:peckj.20131218082219.4125: *3* __repr__
   def __repr__(self):
     return 'Mode(%s,%s)' % (self.name, self.intervals)

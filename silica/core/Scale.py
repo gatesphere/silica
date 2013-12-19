@@ -1,11 +1,11 @@
 #@+leo-ver=5-thin
-#@+node:peckj.20131218082219.4095: * @file Scale.py
+#@+node:peckj.20131218082219.4095: * @file scale.py
 #@@language python
 
 #@+<< imports >>
 #@+node:peckj.20131218082219.4096: ** << imports >>
-from silica.core.Entity import Entity
-import silica.core.Globals as sg
+from silica.core.entity import Entity
+import silica.core.sglobals as sg
 #@-<< imports >>
 #@+<< declarations >>
 #@+node:peckj.20131218082219.4097: ** << declarations >>
@@ -18,7 +18,7 @@ class Scale(Entity):
   #@+node:peckj.20131218082219.4129: *3* initializers
   #@+node:peckj.20131218082219.4103: *4* __init__
   def __init__(self, name, mode, tonic):
-    desc = '%s-%s Scale' % (mode, tonic)
+    desc = '%s-%s Scale' % (mode.name, tonic)
     super(self.__class__,self).__init__(name, desc)
     self.mode = mode
     self.tonic = tonic

@@ -17,40 +17,45 @@
 <v t="peckj.20130604112211.4470"><vh>@button profile</vh></v>
 </v>
 </v>
-<v t="peckj.20130604112211.2164"><vh>Code</vh>
-<v t="peckj.20130604112211.2170"><vh>autoexec</vh>
-<v t="peckj.20130604112211.2172"><vh>@file ../autoexec.silica</vh></v>
-</v>
+<v t="peckj.20130604112211.2164" a="E"><vh>Code (python)</vh>
 <v t="peckj.20130604112211.2165"><vh>Launcher</vh>
 <v t="peckj.20130604112211.2162"><vh>@file ../silica.py</vh></v>
 </v>
-<v t="peckj.20130604112211.2148"><vh>silica</vh>
+<v t="peckj.20131219081918.4174" a="E"><vh>Tester</vh>
+<v t="peckj.20131219081918.4175" a="E"><vh>@file ../silicaTester.py</vh></v>
+</v>
+<v t="peckj.20130604112211.2148" a="E"><vh>silica</vh>
 <v t="peckj.20130604112211.2146"><vh>@file __init__.py</vh></v>
-<v t="peckj.20130604112211.2149"><vh>@path core</vh>
+<v t="peckj.20130604112211.2149" a="E"><vh>@path core</vh>
 <v t="peckj.20130604112211.2147"><vh>@file __init__.py</vh></v>
-<v t="peckj.20131218082219.4099"><vh>@file Entity.py</vh></v>
-<v t="peckj.20131218082219.4105"
-expanded="peckj.20131218082219.4108,"><vh>@file Globals.py</vh></v>
-<v t="peckj.20131218082219.4117"><vh>@file Mode.py</vh></v>
+<v t="peckj.20131218082219.4099"><vh>@file entity.py</vh></v>
+<v t="peckj.20131218082219.4105" a="E"
+expanded="peckj.20131218082219.4108,peckj.20131219081918.4210,"><vh>@file sglobals.py</vh></v>
+<v t="peckj.20131218082219.4117"><vh>@file mode.py</vh></v>
 <v t="peckj.20131218082219.4088"
-expanded="peckj.20131218082219.4091,"><vh>@file Note.py</vh></v>
+expanded="peckj.20131219081918.4168,peckj.20131219081918.4170,"><vh>@file note.py</vh></v>
 <v t="peckj.20130604112211.2150"><vh>@file runSilica.py</vh></v>
 <v t="peckj.20131218082219.4095"
-expanded="peckj.20131218082219.4098,peckj.20131218082219.4129,"><vh>@file Scale.py</vh></v>
+expanded="peckj.20131218082219.4098,peckj.20131218082219.4129,peckj.20131218082219.4130,"><vh>@file scale.py</vh></v>
 </v>
-<v t="peckj.20130604112211.2151"><vh>examples</vh>
-<v t="peckj.20130604112211.2153"><vh>@edit examples/readme_example.silica</vh></v>
-<v t="peckj.20130604112211.2154"><vh>@edit examples/glass_twopages.silica</vh></v>
-<v t="peckj.20130604112211.2155"><vh>@edit examples/john.silica</vh></v>
-<v t="peckj.20130604112211.2156"><vh>@edit examples/moondog_pastoral.silica</vh></v>
-<v t="peckj.20130604112211.2157"><vh>@edit examples/quest_examples.silica</vh></v>
 </v>
-<v t="peckj.20130604112211.2152"><vh>test</vh>
-<v t="peckj.20130604112211.2158"><vh>@edit test/scale_test.silica</vh></v>
-<v t="peckj.20130604112211.2159"><vh>@edit test/concurrent_test.silica</vh></v>
-<v t="peckj.20130604112211.2160"><vh>@edit test/embed_voice_test.silica</vh></v>
-<v t="peckj.20130604112211.2161"><vh>@edit test/namespace_test.silica</vh></v>
 </v>
+<v t="peckj.20131219081918.4173"><vh>Code (silica)</vh>
+<v t="peckj.20130604112211.2170"><vh>autoexec</vh>
+<v t="peckj.20130604112211.2172"><vh>@file ../autoexec.silica</vh></v>
+</v>
+<v t="peckj.20130604112211.2151"><vh>@path ../examples</vh>
+<v t="peckj.20130604112211.2153"><vh>@edit readme_example.silica</vh></v>
+<v t="peckj.20130604112211.2154"><vh>@edit glass_twopages.silica</vh></v>
+<v t="peckj.20130604112211.2155"><vh>@edit john.silica</vh></v>
+<v t="peckj.20130604112211.2156"><vh>@edit moondog_pastoral.silica</vh></v>
+<v t="peckj.20130604112211.2157"><vh>@edit quest_examples.silica</vh></v>
+</v>
+<v t="peckj.20130604112211.2152"><vh>@path ../test</vh>
+<v t="peckj.20130604112211.2158"><vh>@edit scale_test.silica</vh></v>
+<v t="peckj.20130604112211.2159"><vh>@edit concurrent_test.silica</vh></v>
+<v t="peckj.20130604112211.2160"><vh>@edit embed_voice_test.silica</vh></v>
+<v t="peckj.20130604112211.2161"><vh>@edit namespace_test.silica</vh></v>
 </v>
 </v>
 <v t="peckj.20130604112211.2166"><vh>Docs</vh>
@@ -80,5 +85,7 @@ run-all-unit-tests-locally = Alt-6
 c.testManager.runTimerOnNode(p,count=100)</t>
 <t tx="peckj.20130604112211.4470">@language python
 c.testManager.runProfileOnNode(p,outputPath='test/silicaProfile.txt')</t>
+<t tx="peckj.20131219081918.4173"></t>
+<t tx="peckj.20131219081918.4174"></t>
 </tnodes>
 </leo_file>
