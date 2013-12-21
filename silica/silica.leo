@@ -34,8 +34,8 @@
 <v t="peckj.20131218082219.4099"
 expanded="peckj.20131218082219.4102,"><vh>@file entity.py</vh></v>
 <v t="peckj.20131218082219.4117"><vh>@file mode.py</vh></v>
-<v t="peckj.20131218082219.4088"
-expanded="peckj.20131218082219.4091,"><vh>@file note.py</vh></v>
+<v t="peckj.20131218082219.4088" a="E"
+expanded="peckj.20131218082219.4091,peckj.20131218082219.4135,peckj.20131219081918.4224,"><vh>@file note.py</vh></v>
 <v t="peckj.20131219081918.4285" a="E"
 expanded="peckj.20131219081918.4288,"><vh>@file parser.py</vh></v>
 <v t="peckj.20131221114825.4521" a="E"
@@ -73,8 +73,9 @@ expanded="peckj.20131219081918.4271,peckj.20131219081918.4289,peckj.201312190819
 </v>
 <v t="peckj.20130604112211.2166" a="E"><vh>Docs</vh>
 <v t="peckj.20131219081918.4263"><vh>required libs</vh></v>
-<v t="peckj.20131221114825.4538"><vh>To implement</vh>
+<v t="peckj.20131221114825.4538" a="E"><vh>To implement</vh>
 <v t="peckj.20131221114825.4539"><vh>parser</vh></v>
+<v t="peckj.20131221180451.4204"><vh>scale changers</vh></v>
 <v t="peckj.20131221114825.4540"><vh>metacommands</vh></v>
 <v t="peckj.20131221114825.4541"><vh>macros</vh></v>
 <v t="peckj.20131221114825.4542"><vh>commands</vh></v>
@@ -134,5 +135,6 @@ Future:
 <t tx="peckj.20131221114825.4547"></t>
 <t tx="peckj.20131221114825.4548"></t>
 <t tx="peckj.20131221114825.4549"></t>
+<t tx="peckj.20131221180451.4204"></t>
 </tnodes>
 </leo_file>

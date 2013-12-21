@@ -104,7 +104,7 @@ class Note(object):
     else:
       if value < 0: value = 0
       if value > 16000: value = 16000
-      self.volume(value)
+      self.volume = value
       return None
   #@+node:peckj.20131219081918.4227: *6* primitives
   def maxvol(self): self.set_vol(16000)
