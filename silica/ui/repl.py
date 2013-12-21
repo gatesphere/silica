@@ -50,7 +50,6 @@ class REPL(object):
       while True:
         ln = raw_input(self.prompt)
         out = self.interpret_line(ln)
-        print sg.exit
         if not self.silent:
           print out
         if sg.exit:
@@ -61,7 +60,9 @@ class REPL(object):
   #@+node:peckj.20131219081918.4279: *4* interpret_line
   def interpret_line(self, line):
     out = sg.parser.parse_line(line)
-    return '-->' + out.strip()
+    if out is None:
+      out = 'okay.'
+    return '--> ' + out.strip()
   #@+node:peckj.20131219081918.4280: *4* run_script
   def run_script(self, script):
     with open(script, 'r') as f:

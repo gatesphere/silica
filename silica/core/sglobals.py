@@ -33,6 +33,8 @@ def initialize():
   init_create_parser()
   init_create_repl()
   
+  # defaults
+  init_create_primitives()
 #@+node:peckj.20131219081918.4219: *4* init_create_note # stub
 def init_create_note():
   global note
@@ -55,6 +57,13 @@ def init_create_repl():
   global repl
   from silica.ui.repl import REPL
   repl = REPL()
+#@+node:peckj.20131221180451.4202: *4* init_create_primitives
+def init_create_primitives():
+  new_primitive('play', 'Plays the note with the current state.', lambda sg: sg.note.play())
+  new_primitive('rest', 'Rests the note for the current duration.', lambda sg: sg.note.rest())
+  new_primitive('rp', 'Raises the pitch of the note by one scale degree.', lambda sg: sg.note.rp())
+  new_primitive('lp', 'Lowers the pitch of the note by one scale degree.', lambda sg: sg.note.lp())
+  new_primitive('cp', 'Stochastically applies either RP or LP.', lambda sg: sg.note.cp())
 #@+node:peckj.20131218082219.4108: ** lookup methods
 #@+node:peckj.20131218082219.4109: *3* get_mode
 def get_mode(name):
@@ -80,6 +89,11 @@ def new_scale(name, mode, tonic):
   s = Scale(name, mode, tonic)
   scaletable[name] = s
   return s
+#@+node:peckj.20131221180451.4201: *3* new_primitive
+def new_primitive(name, desc, behavior):
+  from silica.core.primitive import Primitive
+  p = Primitive(name.upper(), desc, behavior)
+  tokentable[name.lower()] = p
 #@+node:peckj.20131219081918.4213: *3* new_instrument # stub
 #@+node:peckj.20131219081918.4214: *3* new_namespace # stub
 #@+node:peckj.20131219081918.4215: *3* new_token # stub

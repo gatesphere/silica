@@ -13,9 +13,15 @@ import silica.core.sglobals as sg
 #@+others
 #@+node:peckj.20131219081918.4288: ** class Parser
 class Parser(object):
+  #@+others
+  #@+node:peckj.20131221180451.4203: *3* parse_line # stub
   def parse_line(self, string):
     if '-exit' in string.lower():
       sg.exit = True
-    return 'parser received: %s' % string
+      out = 'Goodbye!'
+    else:
+      out = sg.tokentable[string.lower()].execute()
+    return out
+  #@-others
 #@-others
 #@-leo
