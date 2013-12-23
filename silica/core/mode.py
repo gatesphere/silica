@@ -7,9 +7,6 @@
 from silica.core.entity import Entity
 import silica.core.sglobals as sg
 #@-<< imports >>
-#@+<< declarations >>
-#@+node:peckj.20131218082219.4119: ** << declarations >>
-#@-<< declarations >>
 
 #@+others
 #@+node:peckj.20131218082219.4120: ** class Mode

@@ -7,9 +7,6 @@
 import silica.core.sglobals as sg
 import random
 #@-<< imports >>
-#@+<< declarations >>
-#@+node:peckj.20131218082219.4090: ** << declarations >>
-#@-<< declarations >>
 
 #@+others
 #@+node:peckj.20131218082219.4091: ** class Note
@@ -31,6 +28,22 @@ class Note(object):
     self.instrument = None # replace with PIANO
     self.deltadegree = 'same'
     self.statestack = None
+  #@+node:peckj.20131222154620.7093: *3* __str__
+  def __str__(self):
+    out = '''NOTE < 
+      scalestack = %s
+      degree = %s
+      register = %s
+      duration = %s
+      deltadegree = %s
+      volume = %s
+      tempo = %s
+      instrument = %s
+      prevregister = %s
+    >'''%([str(s) for s in self.scale], self.degree, self.register,
+          self.duration, self.deltadegree, self.volume,
+          self.tempo, self.instrument, self.prevregister)
+    return out
   #@+node:peckj.20131218082219.4135: *3* primitives
   #@+node:peckj.20131219081918.4168: *4* pitches
   #@+node:peckj.20131218082219.4094: *5* rp

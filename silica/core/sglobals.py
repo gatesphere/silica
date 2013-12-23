@@ -35,6 +35,7 @@ def initialize():
   
   # defaults
   init_create_primitives()
+  init_create_metacommands()
 #@+node:peckj.20131219081918.4219: *4* init_create_note # stub
 def init_create_note():
   global note
@@ -99,6 +100,21 @@ def init_create_primitives():
   #new_primitive('removestate', 'Removes the top state off the statestack without applying it to the note.', lambda sg: sg.note.removestate())
   #new_primitive('popalphabet', 'Attempts to relatively pop and plly the top alphabet from the scalestack.', lambda sg: sg.note.popalphabet(relative=True))
   #new_primitive('popalphabet$', 'Absolutely pops the top alphabet from the scalestack.', lambda sg: sg.note.popalhpabet())
+#@+node:peckj.20131222154620.7091: *4* init_create_metacommands
+def init_create_metacommands():
+  def exit(sg):
+    sg.exit = True
+    return 'Goodbye!'
+  new_metacommand('-exit', 'Exits silica.', exit)
+  
+  def state(sg):
+    return str(sg.note)
+  new_metacommand('-state', 'Prints the state of the note.', state)
+
+  def reset(sg):
+    sg.note.reset()
+    return 'Note state has been reset.'
+  new_metacommand('-reset', 'Resets the state of the note.', reset)
 #@+node:peckj.20131218082219.4108: ** lookup methods
 #@+node:peckj.20131218082219.4109: *3* get_mode
 def get_mode(name):
@@ -128,7 +144,12 @@ def new_scale(name, mode, tonic):
 def new_primitive(name, desc, behavior):
   from silica.core.primitive import Primitive
   p = Primitive(name.upper(), desc, behavior)
-  tokentable[name.lower()] = p
+  tokentable[name.lower()] = (p, 'primitive')
+#@+node:peckj.20131222154620.7088: *3* new_metacommand
+def new_metacommand(name, desc, behavior):
+  from silica.core.metacommand import MetaCommand
+  m = MetaCommand(name.upper(), desc, behavior)
+  tokentable[name.lower()] = (m, 'metacommand')
 #@+node:peckj.20131219081918.4213: *3* new_instrument # stub
 #@+node:peckj.20131219081918.4214: *3* new_namespace # stub
 #@+node:peckj.20131219081918.4215: *3* new_token # stub
