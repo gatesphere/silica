@@ -6,6 +6,7 @@
 #@+node:peckj.20131218082219.4089: ** << imports >>
 import silica.core.sglobals as sg
 import random
+import fractions
 #@-<< imports >>
 
 #@+others
@@ -20,7 +21,7 @@ class Note(object):
     ''' reset all ivars to default values '''
     self.scale = [sg.get_scale('C-MAJOR')]
     self.degree = 1
-    self.duration = 1.0
+    self.duration = fractions.Fraction(1,1)
     self.register = 5
     self.prevregister = 5
     self.volume = 12000
@@ -93,7 +94,7 @@ class Note(object):
   #@+node:peckj.20131219081918.4169: *4* durations
   #@+node:peckj.20131219081918.4220: *5* expand
   def expand(self, factor):
-    self.duration *= float(factor)
+    self.duration *= factor
     return None
   #@+node:peckj.20131219081918.4221: *6* xN
   def x2(self): self.expand(2)
@@ -102,7 +103,7 @@ class Note(object):
   def x7(self): self.expand(7)
   #@+node:peckj.20131219081918.4222: *5* shrink
   def shrink(self, factor):
-    self.duration /= float(factor)
+    self.duration /= factor
     return None
   #@+node:peckj.20131219081918.4223: *6* sN
   def s2(self): self.shrink(2)
