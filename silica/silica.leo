@@ -27,9 +27,9 @@
 <v t="peckj.20131219081918.4174"><vh>Tester</vh>
 <v t="peckj.20131219081918.4175"><vh>@file ../silicaTester.py</vh></v>
 </v>
-<v t="peckj.20130604112211.2148" a="E"><vh>silica</vh>
+<v t="peckj.20130604112211.2148"><vh>silica</vh>
 <v t="peckj.20130604112211.2146"><vh>@file __init__.py</vh></v>
-<v t="peckj.20130604112211.2149" a="E"><vh>@path core</vh>
+<v t="peckj.20130604112211.2149"><vh>@path core</vh>
 <v t="peckj.20130604112211.2147"><vh>@file __init__.py</vh></v>
 <v t="peckj.20131218082219.4099"><vh>@file entity.py</vh></v>
 <v t="peckj.20131222154620.7080"><vh>@file metacommand.py</vh></v>
@@ -38,9 +38,8 @@
 <v t="peckj.20131219081918.4285"><vh>@file parser.py</vh></v>
 <v t="peckj.20131221114825.4521"><vh>@file primitive.py</vh></v>
 <v t="peckj.20130604112211.2150"><vh>@file runSilica.py</vh></v>
-<v t="peckj.20131218082219.4095" a="E"><vh>@file scale.py</vh></v>
-<v t="peckj.20131218082219.4105" a="E"
-expanded="peckj.20131219081918.4217,peckj.20131219081918.4218,peckj.20131218082219.4108,"><vh>@file sglobals.py</vh></v>
+<v t="peckj.20131218082219.4095"><vh>@file scale.py</vh></v>
+<v t="peckj.20131218082219.4105"><vh>@file sglobals.py</vh></v>
 </v>
 <v t="peckj.20131219081918.4265"><vh>@path ui</vh>
 <v t="peckj.20131219081918.4267"><vh>@file __init__.py</vh></v>
@@ -75,6 +74,8 @@ expanded="peckj.20131219081918.4271,peckj.20131219081918.4289,peckj.201312190819
 <v t="peckj.20131219081918.4263"><vh>required libs</vh></v>
 <v t="peckj.20131221114825.4538" a="E"><vh>To implement</vh>
 <v t="peckj.20131221114825.4539"><vh>parser</vh></v>
+<v t="peckj.20131224101941.5058"><vh>metacommands</vh></v>
+<v t="peckj.20131224101941.5059"><vh>primitives</vh></v>
 <v t="peckj.20131221180451.4204"><vh>scale changers</vh></v>
 <v t="peckj.20131221114825.4541"><vh>macros</vh></v>
 <v t="peckj.20131221114825.4542"><vh>commands</vh></v>
@@ -135,5 +136,36 @@ Future:
 <t tx="peckj.20131221114825.4549"></t>
 <t tx="peckj.20131221180451.4204"></t>
 <t tx="peckj.20131224101941.5049"></t>
+<t tx="peckj.20131224101941.5058">-silent
+-@?
+-leave
+-home
+-enter
+-import
+-display
+-s?
+-s??
+-p?
+-p??
+-scales?
+-scales??
+-modes?
+-modes??
+-instruments?
+-instruments??
+-mc?
+-mc??
+-t?
+-t??
+-delete
+-invariant
+-about
+-require</t>
+<t tx="peckj.20131224101941.5059">pushstack
+popstack
+removestate
+popalphabet
+popalphabet$
+</t>
 </tnodes>
 </leo_file>
