@@ -29,23 +29,22 @@ silica_version = 'pre-alpha'
 #@+node:peckj.20131219081918.4217: ** initialization
 #@+node:peckj.20131219081918.4218: *3* initialize
 def initialize():
-  init_create_note()
-  init_create_parser()
-  init_create_repl()
-  
   # load the 'home' module, which contains
   # all of the language's base primitives,
   # metacommands, modes, scales, instruments, 
   # and transforms
   load_module('home') # located in ../modules/home.py
+
+  # next, initialize the proper values
+  init_create_note()
+  init_create_parser()
+  init_create_repl()
+  
+
 #@+node:peckj.20131219081918.4219: *4* init_create_note # stub
 def init_create_note():
   global note
   from silica.core.note import Note
-  ## temporary
-  # create C-MAJOR scale
-  new_mode('MAJOR', [2,2,1,2,2,2,1])
-  new_scale('C-MAJOR', get_mode('MAJOR'), 'C')
 
   # create note and play around with it  
   n = Note()
@@ -98,6 +97,11 @@ def new_primitive(name, desc, behavior):
   from silica.core.primitive import Primitive
   p = Primitive(name.upper(), desc, behavior)
   tokentable[name.lower()] = (p, 'primitive')
+#@+node:peckj.20140103121318.3963: *3* new_scalechanger
+def new_scalechanger(name, desc, behavior):
+  from silica.core.scalechanger import ScaleChanger
+  sc = ScaleChanger(name.upper(), desc, behavior)
+  tokentable[name.lower()] = (sc, 'primitive') # scale changers are executed just like primitives
 #@+node:peckj.20131222154620.7088: *3* new_metacommand
 def new_metacommand(name, desc, behavior):
   from silica.core.metacommand import MetaCommand
@@ -105,6 +109,5 @@ def new_metacommand(name, desc, behavior):
   tokentable[name.lower()] = (m, 'metacommand')
 #@+node:peckj.20131219081918.4213: *3* new_instrument # stub
 #@+node:peckj.20131219081918.4214: *3* new_namespace # stub
-#@+node:peckj.20131219081918.4215: *3* new_token # stub
 #@-others
 #@-leo

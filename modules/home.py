@@ -43,13 +43,13 @@ def primitives():
   sg.new_primitive('inctempo1', 'Increments the tempo by 1 bpm.', lambda sg: sg.note.inctempo1())
   sg.new_primitive('dectempo', 'Decrements the tempo by 10 bpm.', lambda sg: sg.note.dectempo())
   sg.new_primitive('dectempo1', 'Decrements the tempo by 1 bpm.', lambda sg: sg.note.dectempo1())
+  sg.new_primitive('popalphabet', 'Attempts to relatively pop and apply the top alphabet from the scalestack', lambda sg: sg.note.pop_alphabet(relative=True))
+  sg.new_primitive('popalphabet$', 'Absolutely pops the top alphabet from the scalestack.', lambda sg: sg.note.pop_alphabet())
   
   ## NOT YET IMPLEMENTED
   #new_primitive('pushstate', 'Pushes the current state of the note onto the statestack.', lambda sg: sg.note.pushstate())
   #new_primitive('popstate', 'Pops the top state off the statestack and applies it to the note.', lambda sg: sg.note.popstate())
   #new_primitive('removestate', 'Removes the top state off the statestack without applying it to the note.', lambda sg: sg.note.removestate())
-  #new_primitive('popalphabet', 'Attempts to relatively pop and plly the top alphabet from the scalestack.', lambda sg: sg.note.popalphabet(relative=True))
-  #new_primitive('popalphabet$', 'Absolutely pops the top alphabet from the scalestack.', lambda sg: sg.note.popalhpabet())
 #@+node:peckj.20131224101941.5056: ** metacommands
 def metacommands():
   def exit(sg):
@@ -65,10 +65,51 @@ def metacommands():
     sg.note.reset()
     return 'Note state has been reset.'
   sg.new_metacommand('-reset', 'Resets the state of the note.', reset)
+#@+node:peckj.20140103121318.3960: ** modes
+def modes():
+  sg.new_mode('CHROMATIC', [1,1,1,1,1,1,1,1,1,1,1,1])
+  sg.new_mode('DIMINISHED', [2,1,2,1,2,1,2,1])
+  sg.new_mode('HALFWHOLEDIMINISHED', [1,2,1,2,1,2,1,2])
+  sg.new_mode('MAJOR', [2,2,1,2,2,2,1])
+  sg.new_mode('MINOR', [2,1,2,2,1,2,2])
+  sg.new_mode('HARMONICMINOR', [2,1,2,2,1,3,1])
+  sg.new_mode('DORIAN', [2,1,2,2,2,1,2])
+  sg.new_mode('PHRYGIAN', [1,2,2,2,1,2,2])
+  sg.new_mode('LYDIAN', [2,2,2,1,2,2,1])
+  sg.new_mode('MIXOLYDIAN', [2,2,1,2,2,1,2])
+  sg.new_mode('LOCRIAN', [1,2,2,1,2,2,2])
+  sg.new_mode('WHOLETONE', [2,2,2,2,2,2])
+  sg.new_mode('BLUES', [3,2,1,1,3,2])
+  sg.new_mode('PENTAMAJOR', [2,2,3,2,3])
+  sg.new_mode('PENTAMINOR', [3,3,2,3,2])
+  sg.new_mode('MAJORTRIAD', [4,3,5])
+  sg.new_mode('MINORTRIAD', [3,4,5])
+  sg.new_mode('DIMINISHEDTRIAD', [3,3,6])
+  sg.new_mode('AUGMENTEDTRIAD', [4,4,4])
+#@+node:peckj.20140103121318.3961: ** scales
+def scales():
+  reldesc = 'Attempts to relatively push the scale %s onto the scalestack.'
+  absdesc = 'Absolutely pushes the scale %s onto the scalestack.'
+  
+  for m in sg.modetable.keys():
+    mode = sg.get_mode(m)
+    for tonic in sg.pitchnames:
+      n = '%s-%s' % (tonic, mode.name)
+      sg.new_scale(n, mode, tonic)
+  
+  def make_scalechanger_lambda(scale, relative): 
+    return lambda sg: sg.note.change_scale(scale, relative=relative)
+    
+  for s in sg.scaletable.keys():
+    scale = sg.get_scale(s)
+    sg.new_scalechanger(scale.name + '$', reldesc % scale.name, make_scalechanger_lambda(scale, True))
+    sg.new_scalechanger(scale.name, absdesc % scale.name, make_scalechanger_lambda(scale, False))
 #@+node:peckj.20131224101941.5057: ** run
 def run():
   primitives()
   metacommands()
+  modes()
+  scales()
   return True
 #@-others
 #@-leo

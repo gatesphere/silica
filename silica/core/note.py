@@ -152,6 +152,42 @@ class Note(object):
   def inctempo1(self): self.set_tempo(1, relative=True)
   def dectempo(self): self.set_tempo(-10, relative=True)
   def dectempo1(self): self.set_tempo(-1, relative=True)
+  #@+node:peckj.20140103121318.3965: *4* scales
+  #@+node:peckj.20140103121318.3964: *5* change_scale
+  def change_scale(self, new_scale, relative=False):
+    if relative:
+      pitch = self.scale[-1].get_name_for_degree(self.degree)
+      new_degree = new_scale.get_degree_for_name(pitch)
+      if new_degree is None:
+        # error -- find a better way to handle this
+        print '--> Cannot change to scale %s relatively: pitch %s not in scale.' % (new_scale.name, pitch)
+      else:
+        self.degree = new_degree
+        self.scale.append(new_scale)
+    else:
+      self.degree = 1
+      self.scale.append(new_scale)
+      self.deltadegree = 'same'
+    return None
+  #@+node:peckj.20140103121318.3966: *5* pop_alphabet
+  def pop_alphabet(self, relative=False):
+    if len(self.scale) == 1:
+      print '--> Cannot pop alphabet: must leave one in stack.' # find a better way to handle this
+      return None
+    if relative:
+      pitch = self.scale[-1].get_name_for_degree(self.degree)
+      new_scale = self.scale[-2]
+      new_degree = new_scale.get_degree_for_name(pitch)
+      if new_degree is None:
+        print '--> Cannot pop to scale %s relatively: pitch %s not in scale.' % (new_scale.name, pitch)
+        return None
+      self.scale.pop()
+      self.degree = new_degree
+    else:
+      self.scale.pop()
+      self.degree = 1
+      self.deltadegree = 'same'
+    return None
   #@-others
 #@-others
 #@-leo
