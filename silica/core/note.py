@@ -191,7 +191,7 @@ class Note(object):
   #@+node:peckj.20140106082417.4635: *4* state
   #@+node:peckj.20140106082417.4636: *5* pushstate
   def pushstate(self):
-    state = {'scale': self.scale[:], ## do I need to copy this?
+    state = {'scale': self.scale[:], # copy, not store-by-ref
              'degree': self.degree,
              'duration': self.duration,
              'register': self.register,
@@ -223,6 +223,11 @@ class Note(object):
     self.instrument = state['instrument']
     self.deltadegree = state['deltadegree']
     self.prevregister = state['prevregister']
+  #@+node:peckj.20140106082417.4659: *4* instruments
+  #@+node:peckj.20140106082417.4660: *5* change_instrument
+  def change_instrument(self, instrument):
+    self.instrument = instrument
+    return None
   #@-others
 #@-others
 #@-leo

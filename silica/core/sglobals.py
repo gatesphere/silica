@@ -106,7 +106,18 @@ def new_metacommand(name, desc, behavior):
   from silica.core.metacommand import MetaCommand
   m = MetaCommand(name.upper(), desc, behavior)
   tokentable[name.lower()] = (m, 'metacommand')
-#@+node:peckj.20131219081918.4213: *3* new_instrument # stub
+#@+node:peckj.20140106082417.4662: *3* new_instrument
+def new_instrument(name):
+  from silica.core.instrument import Instrument
+  i = Instrument(name)
+  instrumenttable[name] = i
+  return i
+#@+node:peckj.20131219081918.4213: *3* new_instrumentchanger
+def new_instrumentchanger(name, desc, instrument):
+  from silica.core.instrumentchanger import InstrumentChanger
+  behavior = lambda sg: sg.note.change_instrument(instrument)
+  ic = InstrumentChanger(name.upper(), desc, behavior)
+  tokentable[name.lower()] = (ic, 'primitive') # instrument changers are executed just like primitives
 #@+node:peckj.20131219081918.4214: *3* new_namespace # stub
 #@-others
 #@-leo

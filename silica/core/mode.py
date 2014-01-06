@@ -16,7 +16,6 @@ class Mode(Entity):
   def __init__(self, name, intervals):
     desc = '%s Mode' % name
     super(self.__class__,self).__init__(name, desc)
-    self.name = name
     self.intervals = intervals
   #@+node:peckj.20131218082219.4124: *3* __str__
   def __str__(self):
