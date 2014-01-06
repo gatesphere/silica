@@ -85,7 +85,6 @@ expanded="peckj.20140106082417.4661,"><vh>@file ../modules/home.py</vh></v>
 <v t="peckj.20131219081918.4263"><vh>required libs</vh></v>
 <v t="peckj.20131221114825.4538" a="E"><vh>To implement</vh>
 <v t="peckj.20131221114825.4539"><vh>parser</vh></v>
-<v t="peckj.20140106082417.4640"><vh>instruments</vh></v>
 <v t="peckj.20131224101941.5058"><vh>metacommands</vh></v>
 <v t="peckj.20131221114825.4541"><vh>macros</vh></v>
 <v t="peckj.20131221114825.4542"><vh>commands</vh></v>
@@ -170,6 +169,5 @@ Future:
 -invariant
 -about
 -require</t>
-<t tx="peckj.20140106082417.4640"></t>
 </tnodes>
 </leo_file>
