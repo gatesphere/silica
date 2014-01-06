@@ -36,7 +36,7 @@
 expanded="peckj.20131222154620.7082,"><vh>@file metacommand.py</vh></v>
 <v t="peckj.20131218082219.4117"><vh>@file mode.py</vh></v>
 <v t="peckj.20131218082219.4088" a="E"
-expanded="peckj.20131218082219.4091,peckj.20131218082219.4135,peckj.20140103121318.3965,"><vh>@file note.py</vh></v>
+expanded="peckj.20131218082219.4091,peckj.20131218082219.4135,peckj.20140106082417.4635,"><vh>@file note.py</vh></v>
 <v t="peckj.20131219081918.4285"><vh>@file parser.py</vh></v>
 <v t="peckj.20131221114825.4521"><vh>@file primitive.py</vh></v>
 <v t="peckj.20140103121318.3954"
@@ -44,8 +44,8 @@ expanded="peckj.20140103121318.3956,"><vh>@file scalechanger.py</vh></v>
 <v t="peckj.20130604112211.2150"><vh>@file runSilica.py</vh></v>
 <v t="peckj.20131218082219.4095"
 expanded="peckj.20131218082219.4098,peckj.20131218082219.4130,"><vh>@file scale.py</vh></v>
-<v t="peckj.20131218082219.4105"
-expanded="peckj.20131219081918.4218,"><vh>@file sglobals.py</vh></v>
+<v t="peckj.20131218082219.4105" a="E"
+expanded="peckj.20131219081918.4218,peckj.20131218082219.4108,"><vh>@file sglobals.py</vh></v>
 </v>
 <v t="peckj.20131219081918.4265"><vh>@path ui</vh>
 <v t="peckj.20131219081918.4267"><vh>@file __init__.py</vh></v>
@@ -81,7 +81,7 @@ expanded="peckj.20131219081918.4271,peckj.20131219081918.4289,peckj.201312190819
 <v t="peckj.20131221114825.4538" a="E"><vh>To implement</vh>
 <v t="peckj.20131221114825.4539"><vh>parser</vh></v>
 <v t="peckj.20131224101941.5058"><vh>metacommands</vh></v>
-<v t="peckj.20131224101941.5059"><vh>primitives</vh></v>
+<v t="peckj.20140106082417.4640"><vh>instruments</vh></v>
 <v t="peckj.20131221114825.4541"><vh>macros</vh></v>
 <v t="peckj.20131221114825.4542"><vh>commands</vh></v>
 <v t="peckj.20131221114825.4543"><vh>functions</vh></v>
@@ -165,9 +165,6 @@ Future:
 -invariant
 -about
 -require</t>
-<t tx="peckj.20131224101941.5059">pushstack
-popstack
-removestate
-</t>
+<t tx="peckj.20140106082417.4640"></t>
 </tnodes>
 </leo_file>

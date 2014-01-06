@@ -69,11 +69,10 @@ def get_scale(name):
 #@+node:peckj.20131218082219.4111: *3* get_instrument # stub
 #@+node:peckj.20131218082219.4112: *3* get_namespace # stub
 #@+node:peckj.20131218082219.4113: *3* get_token # stub
-#@+node:peckj.20131218082219.4114: *3* load_module # stub
+#@+node:peckj.20131218082219.4114: *3* load_module
 def load_module(name):
   import sys
   mod = 'modules.%s' % name
-  print 'attempting to load module: %s' % mod
   m = __import__(mod)
   m.__dict__[name].run()
   del m

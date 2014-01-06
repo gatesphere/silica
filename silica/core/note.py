@@ -28,7 +28,7 @@ class Note(object):
     self.tempo = 120
     self.instrument = None # replace with PIANO
     self.deltadegree = 'same'
-    self.statestack = None
+    self.statestack = []
   #@+node:peckj.20131222154620.7093: *3* __str__
   def __str__(self):
     out = '''NOTE < 
@@ -188,6 +188,41 @@ class Note(object):
       self.degree = 1
       self.deltadegree = 'same'
     return None
+  #@+node:peckj.20140106082417.4635: *4* state
+  #@+node:peckj.20140106082417.4636: *5* pushstate
+  def pushstate(self):
+    state = {'scale': self.scale[:], ## do I need to copy this?
+             'degree': self.degree,
+             'duration': self.duration,
+             'register': self.register,
+             'volume': self.volume,
+             'tempo': self.tempo,
+             'instrument': self.instrument,
+             'deltadegree': self.deltadegree,
+             'prevregister': self.prevregister}
+    self.statestack.append(state)
+    return None
+  #@+node:peckj.20140106082417.4637: *5* popstate
+  def popstate(self):
+    if len(self.statestack) > 0:
+      self.applystate(self.statestack.pop())
+    return None
+  #@+node:peckj.20140106082417.4638: *5* removestate
+  def removestate(self):
+    if len(self.statestack) > 0:
+      self.statestack.pop()
+    return None
+  #@+node:peckj.20140106082417.4639: *5* applystate
+  def applystate(self, state):
+    self.scale = state['scale']
+    self.degree = state['degree']
+    self.duration = state['duration']
+    self.register = state['register']
+    self.volume = state['volume']
+    self.tempo = state['tempo']
+    self.instrument = state['instrument']
+    self.deltadegree = state['deltadegree']
+    self.prevregister = state['prevregister']
   #@-others
 #@-others
 #@-leo

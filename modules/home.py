@@ -45,11 +45,9 @@ def primitives():
   sg.new_primitive('dectempo1', 'Decrements the tempo by 1 bpm.', lambda sg: sg.note.dectempo1())
   sg.new_primitive('popalphabet', 'Attempts to relatively pop and apply the top alphabet from the scalestack', lambda sg: sg.note.pop_alphabet(relative=True))
   sg.new_primitive('popalphabet$', 'Absolutely pops the top alphabet from the scalestack.', lambda sg: sg.note.pop_alphabet())
-  
-  ## NOT YET IMPLEMENTED
-  #new_primitive('pushstate', 'Pushes the current state of the note onto the statestack.', lambda sg: sg.note.pushstate())
-  #new_primitive('popstate', 'Pops the top state off the statestack and applies it to the note.', lambda sg: sg.note.popstate())
-  #new_primitive('removestate', 'Removes the top state off the statestack without applying it to the note.', lambda sg: sg.note.removestate())
+  sg.new_primitive('pushstate', 'Pushes the current state of the note onto the statestack.', lambda sg: sg.note.pushstate())
+  sg.new_primitive('popstate', 'Pops the top state off the statestack and applies it to the note.', lambda sg: sg.note.popstate())
+  sg.new_primitive('removestate', 'Removes the top state off the statestack without applying it to the note.', lambda sg: sg.note.removestate())
 #@+node:peckj.20131224101941.5056: ** metacommands
 def metacommands():
   def exit(sg):
