@@ -96,16 +96,19 @@ def new_primitive(name, desc, behavior):
   from silica.core.primitive import Primitive
   p = Primitive(name.upper(), desc, behavior)
   tokentable[name.lower()] = (p, 'primitive')
+  return p
 #@+node:peckj.20140103121318.3963: *3* new_scalechanger
 def new_scalechanger(name, desc, behavior):
   from silica.core.scalechanger import ScaleChanger
   sc = ScaleChanger(name.upper(), desc, behavior)
   tokentable[name.lower()] = (sc, 'primitive') # scale changers are executed just like primitives
+  return sc
 #@+node:peckj.20131222154620.7088: *3* new_metacommand
 def new_metacommand(name, desc, behavior):
   from silica.core.metacommand import MetaCommand
   m = MetaCommand(name.upper(), desc, behavior)
   tokentable[name.lower()] = (m, 'metacommand')
+  return m
 #@+node:peckj.20140106082417.4662: *3* new_instrument
 def new_instrument(name):
   from silica.core.instrument import Instrument
@@ -118,6 +121,13 @@ def new_instrumentchanger(name, desc, instrument):
   behavior = lambda sg: sg.note.change_instrument(instrument)
   ic = InstrumentChanger(name.upper(), desc, behavior)
   tokentable[name.lower()] = (ic, 'primitive') # instrument changers are executed just like primitives
+  return ic
+#@+node:peckj.20140106180202.4627: *3* new_macro
+def new_macro(name, value):
+  from silica.core.macro import Macro
+  m = Macro(name, value)
+  tokentable[name.lower()] = (m, 'macro')
+  return m
 #@+node:peckj.20131219081918.4214: *3* new_namespace # stub
 #@-others
 #@-leo

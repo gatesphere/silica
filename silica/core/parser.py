@@ -14,23 +14,27 @@ class Parser(object):
   #@+node:peckj.20131222154620.7072: *3* __init__
   def __init__(self):
     self.fn_table = {'primitive': self.run_primitive,
-                     'metacommand': self.run_metacommand}
+                     'metacommand': self.run_metacommand,
+                     'macro': self.run_macro}
     self.mcmode = False
   #@+node:peckj.20131222154620.7092: *3* reset_parsing_state
   def reset_parsing_state(self):
     self.mcmode = False
   #@+node:peckj.20131221180451.4203: *3* parse_line # stub
-  def parse_line(self, string):
-    self.reset_parsing_state()
+  def parse_line(self, string, reset=True):
+    if reset: self.reset_parsing_state()
     if string.startswith('-'):
       self.mcmode = True
     toks = string.split()
     out = []
     for tok in toks:
-      element, etype = sg.tokentable[tok.lower()]
-      v = self.fn_table[etype](element)
-      if v is not None:
-        out.append(v)
+      try:
+        element, etype = sg.tokentable[tok.lower()]
+        v = self.fn_table[etype](element)
+        if v is not None:
+          out.append(v)
+      except Exception as e:
+        continue # token doesn't exist -- ignore it
     out = ' '.join(out)
     return out
   #@+node:peckj.20131222154620.7073: *3* run_primitive
@@ -38,6 +42,11 @@ class Parser(object):
     if self.mcmode:
       return None
     return p.execute()
+  #@+node:peckj.20140106180202.4630: *3* run_macro
+  def run_macro(self, m):
+    if self.mcmode:
+      return None
+    return self.parse_line(m.expand(), reset=False)
   #@+node:peckj.20131222154620.7090: *3* run_metacommand
   def run_metacommand(self, m):
     if self.mcmode:

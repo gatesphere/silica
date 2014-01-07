@@ -279,6 +279,12 @@ def run():
   modes()
   scales()
   instruments()
+  
+  ## test macros
+  sg.new_macro('P', 'play')
+  sg.new_macro('R', 'rest')
+  sg.new_macro('HAT', 'p rp p lp p')
+  sg.new_macro('STAIRS3', 'p rp p rp p rp')
   return True
 #@-others
 #@-leo

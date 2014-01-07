@@ -33,17 +33,21 @@
 <v t="peckj.20130604112211.2147"><vh>@file __init__.py</vh></v>
 <v t="peckj.20131218082219.4099"
 expanded="peckj.20131218082219.4102,"><vh>@file entity.py</vh></v>
-<v t="peckj.20140106082417.4641" a="E"
+<v t="peckj.20140106082417.4641"
 expanded="peckj.20140106082417.4643,"><vh>@file instrument.py</vh></v>
 <v t="peckj.20140106082417.4653"><vh>@file instrumentchanger.py</vh></v>
+<v t="peckj.20140106180202.4620"
+expanded="peckj.20140106180202.4622,"><vh>@file macro.py</vh></v>
 <v t="peckj.20131222154620.7080"
 expanded="peckj.20131222154620.7082,"><vh>@file metacommand.py</vh></v>
 <v t="peckj.20131218082219.4117"
 expanded="peckj.20131218082219.4120,"><vh>@file mode.py</vh></v>
-<v t="peckj.20131218082219.4088" a="E"
+<v t="peckj.20131218082219.4088"
 expanded="peckj.20131218082219.4091,peckj.20131218082219.4135,peckj.20140106082417.4635,"><vh>@file note.py</vh></v>
-<v t="peckj.20131219081918.4285"><vh>@file parser.py</vh></v>
-<v t="peckj.20131221114825.4521"><vh>@file primitive.py</vh></v>
+<v t="peckj.20131219081918.4285" a="E"
+expanded="peckj.20131219081918.4288,"><vh>@file parser.py</vh></v>
+<v t="peckj.20131221114825.4521" a="E"
+expanded="peckj.20131221114825.4524,"><vh>@file primitive.py</vh></v>
 <v t="peckj.20130604112211.2150"><vh>@file runSilica.py</vh></v>
 <v t="peckj.20131218082219.4095"
 expanded="peckj.20131218082219.4098,peckj.20131218082219.4129,peckj.20131218082219.4130,"><vh>@file scale.py</vh></v>
@@ -58,8 +62,7 @@ expanded="peckj.20131219081918.4271,peckj.20131219081918.4289,peckj.201312190819
 </v>
 </v>
 <v t="peckj.20131224101941.5049" a="E"><vh>modules</vh>
-<v t="peckj.20131224101941.5050" a="E"
-expanded="peckj.20140106082417.4661,"><vh>@file ../modules/home.py</vh></v>
+<v t="peckj.20131224101941.5050" a="E"><vh>@file ../modules/home.py</vh></v>
 <v t="peckj.20131224101941.5051"><vh>@file ../modules/__init__.py</vh></v>
 </v>
 </v>
@@ -86,7 +89,6 @@ expanded="peckj.20140106082417.4661,"><vh>@file ../modules/home.py</vh></v>
 <v t="peckj.20131221114825.4538" a="E"><vh>To implement</vh>
 <v t="peckj.20131221114825.4539"><vh>parser</vh></v>
 <v t="peckj.20131224101941.5058"><vh>metacommands</vh></v>
-<v t="peckj.20131221114825.4541"><vh>macros</vh></v>
 <v t="peckj.20131221114825.4542"><vh>commands</vh></v>
 <v t="peckj.20131221114825.4543"><vh>functions</vh></v>
 <v t="peckj.20131221114825.4544"><vh>transforms</vh></v>
@@ -134,7 +136,6 @@ Future:
 <t tx="peckj.20131219081918.4265"></t>
 <t tx="peckj.20131221114825.4538"></t>
 <t tx="peckj.20131221114825.4539"></t>
-<t tx="peckj.20131221114825.4541"></t>
 <t tx="peckj.20131221114825.4542"></t>
 <t tx="peckj.20131221114825.4543"></t>
 <t tx="peckj.20131221114825.4544"></t>
