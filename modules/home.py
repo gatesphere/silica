@@ -48,6 +48,9 @@ def primitives():
   sg.new_primitive('pushstate', 'Pushes the current state of the note onto the statestack.', lambda sg: sg.note.pushstate())
   sg.new_primitive('popstate', 'Pops the top state off the statestack and applies it to the note.', lambda sg: sg.note.popstate())
   sg.new_primitive('removestate', 'Removes the top state off the statestack without applying it to the note.', lambda sg: sg.note.removestate())
+  # for now...
+  sg.new_primitive('begingroup', 'Used to mark the beginning of a group.', lambda sg: '{')
+  sg.new_primitive('endgroup', 'Used to mark the end of a group.', lambda sg: '}')
 #@+node:peckj.20131224101941.5056: ** metacommands
 def metacommands():
   def exit(sg):
@@ -285,6 +288,7 @@ def run():
   sg.new_macro('R', 'rest')
   sg.new_macro('HAT', 'p rp p lp p')
   sg.new_macro('STAIRS3', 'p rp p rp p rp')
+  sg.new_macro('HATCMD', 'begingroup p rp p lp p endgroup')
   return True
 #@-others
 #@-leo

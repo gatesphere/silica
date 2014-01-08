@@ -27,7 +27,7 @@
 <v t="peckj.20131219081918.4174"><vh>Tester</vh>
 <v t="peckj.20131219081918.4175"><vh>@file ../silicaTester.py</vh></v>
 </v>
-<v t="peckj.20130604112211.2148" a="E"><vh>silica</vh>
+<v t="peckj.20130604112211.2148"><vh>silica</vh>
 <v t="peckj.20130604112211.2146"><vh>@file __init__.py</vh></v>
 <v t="peckj.20130604112211.2149" a="E"><vh>@path core</vh>
 <v t="peckj.20130604112211.2147"><vh>@file __init__.py</vh></v>
@@ -42,10 +42,10 @@ expanded="peckj.20140106180202.4622,"><vh>@file macro.py</vh></v>
 expanded="peckj.20131222154620.7082,"><vh>@file metacommand.py</vh></v>
 <v t="peckj.20131218082219.4117"
 expanded="peckj.20131218082219.4120,"><vh>@file mode.py</vh></v>
-<v t="peckj.20131218082219.4088"
+<v t="peckj.20131218082219.4088" a="E"
 expanded="peckj.20131218082219.4091,peckj.20131218082219.4135,peckj.20140106082417.4635,"><vh>@file note.py</vh></v>
 <v t="peckj.20131219081918.4285" a="E"
-expanded="peckj.20131219081918.4288,"><vh>@file parser.py</vh></v>
+expanded="peckj.20131219081918.4288,peckj.20131221180451.4203,"><vh>@file parser.py</vh></v>
 <v t="peckj.20131221114825.4521" a="E"
 expanded="peckj.20131221114825.4524,"><vh>@file primitive.py</vh></v>
 <v t="peckj.20130604112211.2150"><vh>@file runSilica.py</vh></v>
@@ -61,16 +61,16 @@ expanded="peckj.20131219081918.4218,peckj.20131218082219.4108,peckj.201312190819
 expanded="peckj.20131219081918.4271,peckj.20131219081918.4289,peckj.20131219081918.4290,peckj.20131219081918.4273,"><vh>@file repl.py</vh></v>
 </v>
 </v>
-<v t="peckj.20131224101941.5049" a="E"><vh>modules</vh>
+<v t="peckj.20131224101941.5049"><vh>modules</vh>
 <v t="peckj.20131224101941.5050" a="E"><vh>@file ../modules/home.py</vh></v>
 <v t="peckj.20131224101941.5051"><vh>@file ../modules/__init__.py</vh></v>
 </v>
 </v>
-<v t="peckj.20131219081918.4173"><vh>Code (silica)</vh>
+<v t="peckj.20131219081918.4173" a="E"><vh>Code (silica)</vh>
 <v t="peckj.20130604112211.2170"><vh>autoexec</vh>
 <v t="peckj.20130604112211.2172"><vh>@file ../autoexec.silica</vh></v>
 </v>
-<v t="peckj.20130604112211.2151"><vh>@path ../examples</vh>
+<v t="peckj.20130604112211.2151" a="E"><vh>@path ../examples</vh>
 <v t="peckj.20130604112211.2153"><vh>@edit readme_example.silica</vh></v>
 <v t="peckj.20130604112211.2154"><vh>@edit glass_twopages.silica</vh></v>
 <v t="peckj.20130604112211.2155"><vh>@edit john.silica</vh></v>
@@ -86,11 +86,10 @@ expanded="peckj.20131219081918.4271,peckj.20131219081918.4289,peckj.201312190819
 </v>
 <v t="peckj.20130604112211.2166" a="E"><vh>Docs</vh>
 <v t="peckj.20131219081918.4263"><vh>required libs</vh></v>
-<v t="peckj.20131221114825.4538" a="E"><vh>To implement</vh>
+<v t="peckj.20131221114825.4538"><vh>To implement</vh>
 <v t="peckj.20131221114825.4539"><vh>parser</vh></v>
 <v t="peckj.20131224101941.5058"><vh>metacommands</vh></v>
-<v t="peckj.20131221114825.4542"><vh>commands</vh></v>
-<v t="peckj.20131221114825.4543"><vh>functions</vh></v>
+<v t="peckj.20131221114825.4543"><vh>functions (as a part of macros)</vh></v>
 <v t="peckj.20131221114825.4544"><vh>transforms</vh></v>
 <v t="peckj.20131221114825.4545"><vh>repetition factors</vh></v>
 <v t="peckj.20131221114825.4546"><vh>push+pop stack</vh></v>
@@ -136,7 +135,6 @@ Future:
 <t tx="peckj.20131219081918.4265"></t>
 <t tx="peckj.20131221114825.4538"></t>
 <t tx="peckj.20131221114825.4539"></t>
-<t tx="peckj.20131221114825.4542"></t>
 <t tx="peckj.20131221114825.4543"></t>
 <t tx="peckj.20131221114825.4544"></t>
 <t tx="peckj.20131221114825.4545"></t>

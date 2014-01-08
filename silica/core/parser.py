@@ -17,14 +17,17 @@ class Parser(object):
                      'metacommand': self.run_metacommand,
                      'macro': self.run_macro}
     self.mcmode = False
+    self.notestate = None
   #@+node:peckj.20131222154620.7092: *3* reset_parsing_state
   def reset_parsing_state(self):
     self.mcmode = False
+    self.notestate = None
   #@+node:peckj.20131221180451.4203: *3* parse_line # stub
   def parse_line(self, string, reset=True):
     if reset: self.reset_parsing_state()
     if string.startswith('-'):
       self.mcmode = True
+    self.notestate = sg.note.makestate() # to recover from errors without affecting note.statestack
     toks = string.split()
     out = []
     for tok in toks:
@@ -36,7 +39,20 @@ class Parser(object):
       except Exception as e:
         continue # token doesn't exist -- ignore it
     out = ' '.join(out)
-    return out
+    if self.groups_are_balanced(out):
+      return out
+    else:
+      sg.note.applystate(self.notestate)
+      return 'Error: groups not fully balanced.'
+  #@+node:peckj.20140108090613.4237: *4* groups_are_balanced
+  def groups_are_balanced(self, out):
+    pushchars = ['{']
+    popchars = ['}']
+    stack = []
+    for c in out:
+      if c in pushchars: stack.append(c)
+      if c in popchars and stack[-1] == pushchars[popchars.index(c)]: stack.pop()
+    return len(stack) == 0
   #@+node:peckj.20131222154620.7073: *3* run_primitive
   def run_primitive(self, p):
     if self.mcmode:

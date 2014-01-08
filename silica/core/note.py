@@ -191,6 +191,11 @@ class Note(object):
   #@+node:peckj.20140106082417.4635: *4* state
   #@+node:peckj.20140106082417.4636: *5* pushstate
   def pushstate(self):
+    state = self.makestate()
+    self.statestack.append(state)
+    return None
+  #@+node:peckj.20140108090613.4236: *5* makestate
+  def makestate(self):
     state = {'scale': self.scale[:], # copy, not store-by-ref
              'degree': self.degree,
              'duration': self.duration,
@@ -200,8 +205,7 @@ class Note(object):
              'instrument': self.instrument,
              'deltadegree': self.deltadegree,
              'prevregister': self.prevregister}
-    self.statestack.append(state)
-    return None
+    return state
   #@+node:peckj.20140106082417.4637: *5* popstate
   def popstate(self):
     if len(self.statestack) > 0:

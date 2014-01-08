@@ -28,11 +28,11 @@ pl >> x2 play s2
 pl
 
 ## let's define a command... a command is a macro with embedded structure... you'll see
-hat = play rp play lp play    
+hat >> begingroup play rp play lp play endgroup
 hat
 
 ## now let's make a longer piece using hat
-hat3 = hat rp hat lp hat
+hat3 >> begingroup hat rp hat lp hat endgroup
 hat3
 
 ## now, a function (notice, macros, commands, and functions all share a namespace)
