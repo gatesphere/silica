@@ -17,7 +17,7 @@
 <v t="peckj.20130604112211.4470"><vh>@button profile</vh></v>
 </v>
 </v>
-<v t="peckj.20130604112211.2164" a="E"><vh>Code (python)</vh>
+<v t="peckj.20130604112211.2164"><vh>Code (python)</vh>
 <v t="peckj.20131219081918.4264"><vh>toy code</vh>
 <v t="peckj.20131219081918.4262"><vh>@file ../toy_code/readlinetest.py</vh></v>
 </v>
@@ -27,32 +27,30 @@
 <v t="peckj.20131219081918.4174"><vh>Tester</vh>
 <v t="peckj.20131219081918.4175"><vh>@file ../silicaTester.py</vh></v>
 </v>
-<v t="peckj.20130604112211.2148" a="E"><vh>silica</vh>
+<v t="peckj.20130604112211.2148"><vh>silica</vh>
 <v t="peckj.20130604112211.2146"><vh>@file __init__.py</vh></v>
-<v t="peckj.20130604112211.2149" a="E"><vh>@path core</vh>
+<v t="peckj.20130604112211.2149"><vh>@path core</vh>
 <v t="peckj.20130604112211.2147"><vh>@file __init__.py</vh></v>
 <v t="peckj.20131218082219.4099"
 expanded="peckj.20131218082219.4102,"><vh>@file entity.py</vh></v>
 <v t="peckj.20140106082417.4641"
 expanded="peckj.20140106082417.4643,"><vh>@file instrument.py</vh></v>
 <v t="peckj.20140106082417.4653"><vh>@file instrumentchanger.py</vh></v>
-<v t="peckj.20140106180202.4620" a="E"
+<v t="peckj.20140106180202.4620"
 expanded="peckj.20140106180202.4622,"><vh>@file macro.py</vh></v>
 <v t="peckj.20131222154620.7080"
 expanded="peckj.20131222154620.7082,"><vh>@file metacommand.py</vh></v>
 <v t="peckj.20131218082219.4117"
 expanded="peckj.20131218082219.4120,"><vh>@file mode.py</vh></v>
-<v t="peckj.20131218082219.4088" a="E"
-expanded="peckj.20131218082219.4091,peckj.20131218082219.4135,peckj.20140106082417.4635,"><vh>@file note.py</vh></v>
-<v t="peckj.20131219081918.4285" a="E"
-expanded="peckj.20131219081918.4288,peckj.20131221180451.4203,"><vh>@file parser.py</vh></v>
-<v t="peckj.20131221114825.4521" a="E"
-expanded="peckj.20131221114825.4524,"><vh>@file primitive.py</vh></v>
+<v t="peckj.20131218082219.4088"><vh>@file note.py</vh></v>
+<v t="peckj.20131219081918.4285"
+expanded="peckj.20131221180451.4203,"><vh>@file parser.py</vh></v>
+<v t="peckj.20131221114825.4521"><vh>@file primitive.py</vh></v>
 <v t="peckj.20130604112211.2150"><vh>@file runSilica.py</vh></v>
 <v t="peckj.20131218082219.4095"
 expanded="peckj.20131218082219.4098,peckj.20131218082219.4129,peckj.20131218082219.4130,"><vh>@file scale.py</vh></v>
 <v t="peckj.20140103121318.3954"><vh>@file scalechanger.py</vh></v>
-<v t="peckj.20131218082219.4105" a="E"
+<v t="peckj.20131218082219.4105"
 expanded="peckj.20131219081918.4218,peckj.20131218082219.4108,peckj.20131219081918.4210,"><vh>@file sglobals.py</vh></v>
 </v>
 <v t="peckj.20131219081918.4265"><vh>@path ui</vh>
@@ -88,7 +86,7 @@ expanded="peckj.20131219081918.4271,peckj.20131219081918.4289,peckj.201312190819
 <v t="peckj.20131219081918.4263"><vh>required libs</vh></v>
 <v t="peckj.20131221114825.4538" a="E"><vh>To implement</vh>
 <v t="peckj.20131221114825.4539"><vh>parser</vh></v>
-<v t="peckj.20131224101941.5058"><vh>metacommands</vh></v>
+<v t="peckj.20131224101941.5058"><vh>metacommands (and arguments!)</vh></v>
 <v t="peckj.20131221114825.4543"><vh>functions (as a part of macros)</vh></v>
 <v t="peckj.20131221114825.4544"><vh>transforms</vh></v>
 <v t="peckj.20131221114825.4545"><vh>repetition factors</vh></v>
@@ -143,7 +141,9 @@ Future:
 <t tx="peckj.20131221114825.4548"></t>
 <t tx="peckj.20131221114825.4549"></t>
 <t tx="peckj.20131224101941.5049"></t>
-<t tx="peckj.20131224101941.5058">-silent
+<t tx="peckj.20131224101941.5058">Allow arguments!
+
+-silent
 -@?
 -leave
 -home
