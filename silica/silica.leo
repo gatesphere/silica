@@ -27,7 +27,7 @@
 <v t="peckj.20131219081918.4174"><vh>Tester</vh>
 <v t="peckj.20131219081918.4175"><vh>@file ../silicaTester.py</vh></v>
 </v>
-<v t="peckj.20130604112211.2148"><vh>silica</vh>
+<v t="peckj.20130604112211.2148" a="E"><vh>silica</vh>
 <v t="peckj.20130604112211.2146"><vh>@file __init__.py</vh></v>
 <v t="peckj.20130604112211.2149" a="E"><vh>@path core</vh>
 <v t="peckj.20130604112211.2147"><vh>@file __init__.py</vh></v>
@@ -36,7 +36,7 @@ expanded="peckj.20131218082219.4102,"><vh>@file entity.py</vh></v>
 <v t="peckj.20140106082417.4641"
 expanded="peckj.20140106082417.4643,"><vh>@file instrument.py</vh></v>
 <v t="peckj.20140106082417.4653"><vh>@file instrumentchanger.py</vh></v>
-<v t="peckj.20140106180202.4620"
+<v t="peckj.20140106180202.4620" a="E"
 expanded="peckj.20140106180202.4622,"><vh>@file macro.py</vh></v>
 <v t="peckj.20131222154620.7080"
 expanded="peckj.20131222154620.7082,"><vh>@file metacommand.py</vh></v>
@@ -66,11 +66,11 @@ expanded="peckj.20131219081918.4271,peckj.20131219081918.4289,peckj.201312190819
 <v t="peckj.20131224101941.5051"><vh>@file ../modules/__init__.py</vh></v>
 </v>
 </v>
-<v t="peckj.20131219081918.4173" a="E"><vh>Code (silica)</vh>
+<v t="peckj.20131219081918.4173"><vh>Code (silica)</vh>
 <v t="peckj.20130604112211.2170"><vh>autoexec</vh>
 <v t="peckj.20130604112211.2172"><vh>@file ../autoexec.silica</vh></v>
 </v>
-<v t="peckj.20130604112211.2151" a="E"><vh>@path ../examples</vh>
+<v t="peckj.20130604112211.2151"><vh>@path ../examples</vh>
 <v t="peckj.20130604112211.2153"><vh>@edit readme_example.silica</vh></v>
 <v t="peckj.20130604112211.2154"><vh>@edit glass_twopages.silica</vh></v>
 <v t="peckj.20130604112211.2155"><vh>@edit john.silica</vh></v>
@@ -86,7 +86,7 @@ expanded="peckj.20131219081918.4271,peckj.20131219081918.4289,peckj.201312190819
 </v>
 <v t="peckj.20130604112211.2166" a="E"><vh>Docs</vh>
 <v t="peckj.20131219081918.4263"><vh>required libs</vh></v>
-<v t="peckj.20131221114825.4538"><vh>To implement</vh>
+<v t="peckj.20131221114825.4538" a="E"><vh>To implement</vh>
 <v t="peckj.20131221114825.4539"><vh>parser</vh></v>
 <v t="peckj.20131224101941.5058"><vh>metacommands</vh></v>
 <v t="peckj.20131221114825.4543"><vh>functions (as a part of macros)</vh></v>
