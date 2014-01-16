@@ -61,8 +61,8 @@ expanded="peckj.20140116082214.3853,"><vh>@file silicaevent.py</vh></v>
 expanded="peckj.20131219081918.4271,peckj.20131219081918.4289,peckj.20131219081918.4290,peckj.20131219081918.4273,"><vh>@file repl.py</vh></v>
 </v>
 </v>
-<v t="peckj.20131224101941.5049" a="E"><vh>modules</vh>
-<v t="peckj.20131224101941.5050" a="E"><vh>@file ../modules/home.py</vh></v>
+<v t="peckj.20131224101941.5049"><vh>modules</vh>
+<v t="peckj.20131224101941.5050"><vh>@file ../modules/home.py</vh></v>
 <v t="peckj.20131224101941.5051"><vh>@file ../modules/__init__.py</vh></v>
 </v>
 </v>
@@ -88,7 +88,6 @@ expanded="peckj.20131219081918.4271,peckj.20131219081918.4289,peckj.201312190819
 <v t="peckj.20131219081918.4263"><vh>required libs</vh></v>
 <v t="peckj.20131221114825.4538" a="E"><vh>To implement</vh>
 <v t="peckj.20131221114825.4539"><vh>parser</vh></v>
-<v t="peckj.20140115185110.3676"><vh>music representation objects</vh></v>
 <v t="peckj.20140115185110.3675"><vh>error reporting system</vh></v>
 <v t="peckj.20131224101941.5058"><vh>metacommands (and arguments!)</vh></v>
 <v t="peckj.20131221114825.4543"><vh>functions (as a part of macros)</vh></v>
@@ -173,15 +172,5 @@ Future:
 -about
 -require</t>
 <t tx="peckj.20140115185110.3675">A series of different Exception types</t>
-<t tx="peckj.20140115185110.3676" annotate="7d71002855087072696f7269747971014b14550a707269736574646174657102550a323031342d30312d31357103752e" lineYOffset="4b032e" icons="5d71007d71012855026f6e71025505766e6f64657103550577686572657104550e6265666f7265486561646c696e6571055507796f666673657471064b005507786f666673657471074b02550466696c6571085843000000433a5c63796777696e5c686f6d655c5065636b4a5c7265706f735c6c656f5c6c656f2d656469746f725c6c656f5c49636f6e735c636c656f5c626e67626c6b2e706e677109550478706164710a4b01550474797065710b68085508636c656f49636f6e710c550131710d550772656c50617468710e580f000000636c656f5c626e67626c6b2e706e67710f75612e">Music info objects returned by note primitves, rather than flat strings.
-
-SilicaEvent perhaps?
-
-class SilicaEvent:
-  def __init__(self, ...):
-    self.type (one of 'begingroup', 'endgroup', 'play', 'rest', etc.)
-    self.notestate (the note state)
-
-This way, the same intermediate representation objects can be individually parsed (with full note-state info!) by mingus, the cli, or any other interface.</t>
 </tnodes>
 </leo_file>
