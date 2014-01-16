@@ -60,9 +60,51 @@ class REPL(object):
   #@+node:peckj.20131219081918.4279: *4* interpret_line
   def interpret_line(self, line):
     out = sg.parser.parse_line(line)
+    return self.interpret_events(out)
+
+  #@+node:peckj.20140116082214.4160: *5* interpret_events
+  def interpret_events(self, events):
+    event_map = {'play': self.interpret_play_event,
+                 'rest': self.interpret_rest_event}
+                 
+    out = []
+    for event in events:
+      if event.eventtype in event_map.keys():
+        out.append(event_map[event.eventtype](event))
+         
     if out is None or len(out) == 0:
       out = 'okay.'
-    return ['--> '] + out
+    else:
+      out = ' '.join(out)
+    return '--> ' + out
+  #@+node:peckj.20140116082214.4161: *6* interpret_play_event
+  def interpret_play_event(self, event):
+    es = event.notestate
+    deltadegree = es['deltadegree']
+    prevregister = es['prevregister']
+    register = es['register']
+    scale = es['scale'][-1]
+    duration = es['duration']
+    degree = es['degree']
+    
+    out = ''
+    if deltadegree == 'lower': out = out + '\\'
+    if deltadegree == 'raise': out = out + '/'
+    deltaRegister = prevregister - register
+    while deltaRegister < -1:
+      deltaRegister += 1
+      out = out + '/'
+    while deltaRegister > 1:
+      deltaRegister -= 1
+      out = out + '\\'
+    pitch = scale.get_name_for_degree(degree)
+    out = out + ' ' + pitch + str(duration)
+    return out
+  #@+node:peckj.20140116082214.4162: *6* interpret_rest_event
+  def interpret_rest_event(self, event):
+    es = event.notestate
+    d = es['duration']
+    return 'S%s' % d
   #@+node:peckj.20131219081918.4280: *4* run_script
   def run_script(self, script):
     with open(script, 'r') as f:

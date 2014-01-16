@@ -28,6 +28,7 @@ class Parser(object):
     if string.startswith('-'):
       self.mcmode = True
     self.notestate = sg.note.makestate() # to recover from errors without affecting note.statestack
+    #print 'parse_line: %s' % string
     toks = string.split()
     out = []
     for tok in toks:
@@ -35,7 +36,11 @@ class Parser(object):
         element, etype = sg.tokentable[tok.lower()]
         v = self.fn_table[etype](element)
         if v is not None:
-          out.append(v)
+          #print 'v(%s): %s' % (string,v)
+          # v may be a list, in which case, append them all separately
+          if hasattr(v, '__iter__') and not isinstance(v, basestring):
+            for e in v: out.append(e)
+          else: out.append(v)
       except Exception as e:
         continue # token doesn't exist -- ignore it
     return out
