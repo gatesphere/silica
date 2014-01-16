@@ -38,12 +38,14 @@ class Parser(object):
           out.append(v)
       except Exception as e:
         continue # token doesn't exist -- ignore it
-    out = ' '.join(out)
-    if self.groups_are_balanced(out):
-      return out
-    else:
-      sg.note.applystate(self.notestate)
-      return 'Error: groups not fully balanced.'
+    return out
+  #@+at
+  #   out = ' '.join(out)
+  #   if self.groups_are_balanced(out):
+  #     return out
+  #   else:
+  #     sg.note.applystate(self.notestate)
+  #     return 'Error: groups not fully balanced.'
   #@+node:peckj.20140108090613.4237: *4* groups_are_balanced
   def groups_are_balanced(self, out):
     pushchars = ['{']

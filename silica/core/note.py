@@ -5,6 +5,7 @@
 #@+<< imports >>
 #@+node:peckj.20131218082219.4089: ** << imports >>
 import silica.core.sglobals as sg
+from silica.core.silicaevent import SilicaEvent
 import random
 import fractions
 #@-<< imports >>
@@ -56,7 +57,8 @@ class Note(object):
         self.register = self.register + 1
     self.degree = new
     self.deltadegree = 'raise'
-    return None
+    return SilicaEvent('pitch', self.makestate())
+    #return None
   #@+node:peckj.20131218082219.4136: *5* lp
   def lp(self):
     new = self.degree - 1
@@ -66,28 +68,33 @@ class Note(object):
         self.register = self.register - 1
     self.degree = new
     self.deltadegree = 'lower'
-    return None
+    return SilicaEvent('pitch', self.makestate())
+    #return None
   #@+node:peckj.20131218082219.4137: *5* cp
   def cp(self):
     return random.choice([self.lp,self.rp])() ## tricksy tricksy
   #@+node:peckj.20131219081918.4170: *4* play/rest
   #@+node:peckj.20131219081918.4171: *5* play
   def play(self):
-    out = ''
-    if self.deltadegree == 'lower': out = out + '\\'
-    if self.deltadegree == 'raise': out = out + '/'
-    deltaRegister = self.prevregister - self.register
-    while deltaRegister < -1:
-      deltaRegister += 1
-      out = out + '/'
-    while deltaRegister > 1:
-      deltaRegister -= 1
-      out = out + '\\'
-    self.prevregister = self.register # important!
+    self.prevregister = self.register
     self.deltadegree = 'same'
-    pitch = self.scale[-1].get_name_for_degree(self.degree)
-    out = out + ' ' + pitch + str(self.duration)
-    return out
+    return SilicaEvent('play', self.makestate())
+  #@+at  
+  #   out = ''
+  #   if self.deltadegree == 'lower': out = out + '\\'
+  #   if self.deltadegree == 'raise': out = out + '/'
+  #   deltaRegister = self.prevregister - self.register
+  #   while deltaRegister < -1:
+  #     deltaRegister += 1
+  #     out = out + '/'
+  #   while deltaRegister > 1:
+  #     deltaRegister -= 1
+  #     out = out + '\\'
+  #   self.prevregister = self.register # important!
+  #   self.deltadegree = 'same'
+  #   pitch = self.scale[-1].get_name_for_degree(self.degree)
+  #   out = out + ' ' + pitch + str(self.duration)
+  #   return out
   #@+node:peckj.20131219081918.4172: *5* rest
   def rest(self):
     return 'S%s' % self.duration

@@ -60,9 +60,9 @@ class REPL(object):
   #@+node:peckj.20131219081918.4279: *4* interpret_line
   def interpret_line(self, line):
     out = sg.parser.parse_line(line)
-    if out is None or len(out.strip()) == 0:
+    if out is None or len(out) == 0:
       out = 'okay.'
-    return '--> ' + out.strip()
+    return ['--> '] + out
   #@+node:peckj.20131219081918.4280: *4* run_script
   def run_script(self, script):
     with open(script, 'r') as f:
