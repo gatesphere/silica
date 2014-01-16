@@ -11,9 +11,13 @@
 class SilicaEvent(object):
   #@+others
   #@+node:peckj.20140116082214.3854: *3* __init__ # stub
-  def __init__(self, eventtype, notestate):
-    self.eventtype = eventtype # one of play, rest, pitch, tempo, instrument, volume, etc.
+  def __init__(self, eventtype, notestate=None, message=None):
+    # one of play, rest, pitch, tempo, instrument, volume, etc.
+    self.eventtype = eventtype
+    # a copy of the note state, if necessary
     self.notestate = notestate
+    # a string message, if necessary
+    self.message = message
   #@-others
 #@-others
 #@-leo

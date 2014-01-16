@@ -53,18 +53,19 @@ def primitives():
   sg.new_primitive('endgroup', 'Used to mark the end of a group.', lambda sg: '}')
 #@+node:peckj.20131224101941.5056: ** metacommands
 def metacommands():
+  from silica.core.silicaevent import SilicaEvent
   def exit(sg):
     sg.exit = True
-    return 'Goodbye!'
+    return SilicaEvent('meta',message='Goodbye!')
   sg.new_metacommand('-exit', 'Exits silica.', exit)
   
   def state(sg):
-    return str(sg.note)
+    return SilicaEvent('meta', message=str(sg.note))
   sg.new_metacommand('-state', 'Prints the state of the note.', state)
 
   def reset(sg):
     sg.note.reset()
-    return 'Note state has been reset.'
+    return SilicaEvent('meta', message='Note state has been reset.')
   sg.new_metacommand('-reset', 'Resets the state of the note.', reset)
 #@+node:peckj.20140103121318.3960: ** modes
 def modes():
