@@ -1,5 +1,5 @@
 <!--@+leo-ver=5-thin-->
-<!--@+node:peckj.20130604112211.2168: * @file ../README.md-->
+<!--@+node:peckj.20130604112211.2168: * @file README.md-->
 <!--@@language md-->
 # silica Programming Language
 Copyright 2012-2013 Jacob M. Peck, all rights reserved.

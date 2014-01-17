@@ -1,5 +1,5 @@
 #@+leo-ver=5-thin
-#@+node:peckj.20131224101941.5050: * @file ../modules/home.py
+#@+node:peckj.20131224101941.5050: * @file modules/home.py
 #@@language python
 
 #@+<< imports >>

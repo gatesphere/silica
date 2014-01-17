@@ -1,0 +1,17 @@
+#@+leo-ver=5-thin
+#@+node:peckj.20140117095507.5636: * @file errors.py
+#@@language python
+
+#@+<< imports >>
+#@+node:peckj.20140117095507.5637: ** << imports >>
+#@-<< imports >>
+
+#@+others
+#@+node:peckj.20140117095507.5638: ** class SilicaSyntaxError
+class SilicaSyntaxError(Exception):
+  pass
+#@+node:peckj.20140117095507.5639: ** class SilicaAlphabetError
+class SilicaAlphabetError(Exception):
+  pass
+#@-others
+#@-leo

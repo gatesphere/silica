@@ -1,5 +1,5 @@
 #@+leo-ver=5-thin
-#@+node:peckj.20131219081918.4262: * @file ../toy_code/readlinetest.py
+#@+node:peckj.20131219081918.4262: * @file toy_code/readlinetest.py
 #@@language python
 
 ''' test readline on windows '''

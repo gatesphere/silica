@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #@+leo-ver=5-thin
-#@+node:peckj.20131219081918.4175: * @file ../silicaTester.py
+#@+node:peckj.20131219081918.4175: * @file silicaTester.py
 #@@first
 #@@language python
 
