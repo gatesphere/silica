@@ -67,7 +67,7 @@ class REPL(object):
     event_map = {'play': self.interpret_play_event,
                  'rest': self.interpret_rest_event,
                  'meta': self.interpret_meta_event,
-                 'exception': self.interpret_exeption_event}
+                 'exception': self.interpret_exception_event}
                  
     out = []
     for event in events:
@@ -112,7 +112,7 @@ class REPL(object):
     return event.message
   #@+node:peckj.20140117095507.5635: *6* interpret_exception_event
   def interpret_exception_event(self, event):
-    return event.message
+    return event.exception.message
   #@+node:peckj.20131219081918.4280: *4* run_script
   def run_script(self, script):
     with open(script, 'r') as f:

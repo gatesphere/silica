@@ -5,6 +5,7 @@
 #@+<< imports >>
 #@+node:peckj.20131219081918.4286: ** << imports >>
 import silica.core.sglobals as sg
+from silica.core.silicaevent import SilicaEvent
 #@-<< imports >>
 
 #@+others
@@ -42,7 +43,8 @@ class Parser(object):
             for e in v: out.append(e)
           else: out.append(v)
       except Exception as e:
-        continue # token doesn't exist -- ignore it
+        sg.note.applystate(self.notestate) # exception occurred, the notestate must be reset
+        return [SilicaEvent('exception', exception=e)] # only return the exception!
     return out
   #@+at
   #   out = ' '.join(out)

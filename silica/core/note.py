@@ -6,6 +6,7 @@
 #@+node:peckj.20131218082219.4089: ** << imports >>
 import silica.core.sglobals as sg
 from silica.core.silicaevent import SilicaEvent
+from silica.core.errors import SilicaAlphabetError
 import random
 import fractions
 #@-<< imports >>
@@ -151,8 +152,10 @@ class Note(object):
       pitch = self.scale[-1].get_name_for_degree(self.degree)
       new_degree = new_scale.get_degree_for_name(pitch)
       if new_degree is None:
-        # error -- find a better way to handle this
-        print '--> Cannot change to scale %s relatively: pitch %s not in scale.' % (new_scale.name, pitch)
+        # error!
+        msg = 'Cannot change to scale %s relatively: pitch %s not in scale.' % (new_scale.name, pitch)
+        error = SilicaAlphabetError(msg)
+        raise error
       else:
         self.degree = new_degree
         self.scale.append(new_scale)
@@ -164,15 +167,17 @@ class Note(object):
   #@+node:peckj.20140103121318.3966: *5* pop_alphabet
   def pop_alphabet(self, relative=False):
     if len(self.scale) == 1:
-      print '--> Cannot pop alphabet: must leave one in stack.' # find a better way to handle this
-      return None
+      msg = 'Cannot pop alphabet: must leave one in stack.'
+      error = SilicaAlphabetError(msg)
+      raise error
     if relative:
       pitch = self.scale[-1].get_name_for_degree(self.degree)
       new_scale = self.scale[-2]
       new_degree = new_scale.get_degree_for_name(pitch)
       if new_degree is None:
-        print '--> Cannot pop to scale %s relatively: pitch %s not in scale.' % (new_scale.name, pitch)
-        return None
+        msg = 'Cannot pop to scale %s relatively: pitch %s not in scale.' % (new_scale.name, pitch)
+        error = SilicaAlphabetError(msg)
+        raise error
       self.scale.pop()
       self.degree = new_degree
     else:
