@@ -11,11 +11,12 @@
 <find_panel_settings/>
 <vnodes>
 <v t="peckj.20130604112211.4466" a="E"><vh>Startup</vh>
-<v t="peckj.20130604112211.4467"><vh>@settings</vh></v>
+<v t="peckj.20130604112211.4467" a="E"><vh>@settings</vh>
 <v t="peckj.20130604112211.4468"><vh>Buttons</vh>
 <v t="peckj.20130604112211.4469"><vh>@@button timeit</vh></v>
 <v t="peckj.20130604112211.4470"><vh>@@button profile</vh></v>
 <v t="peckj.20140117095507.3736"><vh>@button launch-silica @color=burlywood1</vh></v>
+</v>
 </v>
 </v>
 <v t="peckj.20130604112211.2164" a="E"><vh>Code (python)</vh>
@@ -110,14 +111,7 @@ expanded="peckj.20131219081918.4271,peckj.20131219081918.4290,peckj.201312190819
 <t tx="peckj.20130604112211.2166"></t>
 <t tx="peckj.20130604112211.2170"></t>
 <t tx="peckj.20130604112211.4466"></t>
-<t tx="peckj.20130604112211.4467">@ 
-  keybindings - for unit-testing
-@c
-
-run-selected-unit-tests-locally = Alt-4
-run-marked-unit-tests-locally = Alt-5
-run-all-unit-tests-locally = Alt-6
-</t>
+<t tx="peckj.20130604112211.4467"></t>
 <t tx="peckj.20130604112211.4468">@language python</t>
 <t tx="peckj.20130604112211.4469">@language python
 c.testManager.runTimerOnNode(p,count=100)</t>
