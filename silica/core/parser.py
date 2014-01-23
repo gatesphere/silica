@@ -6,6 +6,7 @@
 #@+node:peckj.20131219081918.4286: ** << imports >>
 import silica.core.sglobals as sg
 from silica.core.silicaevent import SilicaEvent
+from silica.core.errors import SilicaNameError
 #@-<< imports >>
 
 #@+others
@@ -31,6 +32,10 @@ class Parser(object):
     self.notestate = sg.note.makestate() # to recover from errors without affecting note.statestack
     #print 'parse_line: %s' % string
     toks = string.split()
+    if len(toks) > 1 and toks[1] == '>>':
+      # define macro!
+      event = self.define_macro(toks)
+      return [event]
     out = []
     for tok in toks:
       try:
@@ -46,6 +51,7 @@ class Parser(object):
         sg.note.applystate(self.notestate) # exception occurred, the notestate must be reset
         return [SilicaEvent('exception', exception=e)] # only return the exception!
     return out
+
   #@+at
   #   out = ' '.join(out)
   #   if self.groups_are_balanced(out):
@@ -78,6 +84,19 @@ class Parser(object):
       return m.execute()
     else:
       return None
+  #@+node:peckj.20140123152153.4522: *3* define_macro
+  def define_macro(self, toks):
+    name = toks[0].upper()
+    if self.valid_name(name):
+      contents = " ".join(toks[2:])
+      sg.new_macro(name, contents)
+      return SilicaEvent('macro_def', message='Macro %s defined.' % name)
+    else:
+      ex = SilicaNameError('The name %s is invalid in this context.' % name)
+      return SilicaEvent('exception', exception=ex)
+  #@+node:peckj.20140123152153.4523: *4* valid_name # stub
+  def valid_name(self, name):
+    return True
   #@-others
 #@-others
 #@-leo

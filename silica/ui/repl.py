@@ -67,7 +67,8 @@ class REPL(object):
     event_map = {'play': self.interpret_play_event,
                  'rest': self.interpret_rest_event,
                  'meta': self.interpret_meta_event,
-                 'exception': self.interpret_exception_event}
+                 'exception': self.interpret_exception_event,
+                 'macro_def': self.interpret_macro_def_event}
                  
     out = []
     for event in events:
@@ -109,6 +110,9 @@ class REPL(object):
     return 'S%s' % d
   #@+node:peckj.20140116082214.4163: *6* interpret_meta_event
   def interpret_meta_event(self, event):
+    return event.message
+  #@+node:peckj.20140123152153.4527: *6* interpret_macro_def_event
+  def interpret_macro_def_event(self, event):
     return event.message
   #@+node:peckj.20140117095507.5635: *6* interpret_exception_event
   def interpret_exception_event(self, event):
