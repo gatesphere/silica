@@ -98,5 +98,12 @@ class Parser(object):
   def valid_name(self, name):
     return True
   #@-others
+#@+node:peckj.20140124085532.3988: ** class ParserNew # stub
+class ParserNew(object):
+  #@+others
+  #@+node:peckj.20140124085532.3989: *3* __init__
+  def __init__(self):
+    pass
+  #@-others
 #@-others
 #@-leo
