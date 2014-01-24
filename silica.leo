@@ -186,7 +186,7 @@ os.chdir(olddir)</t>
 
     s -&gt; instr | meta
     instr -&gt; expr | defn
-    meta -&gt; '-' token
+    meta -&gt; '-' token | '-' token '(' params ')'
     expr -&gt; token | token expr
     
     defn -&gt; macrodefn | modedefn
@@ -198,8 +198,6 @@ os.chdir(olddir)</t>
     intervals -&gt; number | number intervals
     
     params -&gt; token | token ',' params
-    
-    tonic -&gt; 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'V' | 'W' | 'X' | 'Y' | 'Z'
 
     token -&gt; 'A'..'z' | number | 'A'..'z' token | number token
     number -&gt; '0'..'9' | '0'..'9' number
