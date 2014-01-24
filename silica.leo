@@ -84,9 +84,9 @@ expanded="peckj.20131219081918.4271,peckj.20131219081918.4290,peckj.201312190819
 <v t="peckj.20130604112211.2161"><vh>@edit namespace_test.silica</vh></v>
 </v>
 </v>
-<v t="peckj.20130604112211.2166"><vh>Docs</vh>
+<v t="peckj.20130604112211.2166" a="E"><vh>Docs</vh>
 <v t="peckj.20131219081918.4263"><vh>required libs</vh></v>
-<v t="peckj.20131221114825.4538" a="E"><vh>To implement</vh>
+<v t="peckj.20131221114825.4538"><vh>To implement</vh>
 <v t="peckj.20131221114825.4539"><vh>parser</vh></v>
 <v t="peckj.20140115185110.3675"><vh>error reporting system</vh></v>
 <v t="peckj.20131224101941.5058"><vh>metacommands (and arguments!)</vh></v>
@@ -98,6 +98,7 @@ expanded="peckj.20131219081918.4271,peckj.20131219081918.4290,peckj.201312190819
 <v t="peckj.20131221114825.4548"><vh>embedded python</vh></v>
 <v t="peckj.20131221114825.4549"><vh>siren's functionality</vh></v>
 </v>
+<v t="peckj.20140123175528.3868"><vh>Grammar (or, a stab at one)</vh></v>
 <v t="peckj.20130604112211.2168"><vh>@file README.md</vh></v>
 </v>
 </vnodes>
@@ -181,5 +182,28 @@ else:
 
 os.chdir(olddir)</t>
 <t tx="peckj.20140117095507.3895"></t>
+<t tx="peckj.20140123175528.3868">## silica programming language - grammar
+
+    s -&gt; instr | meta
+    instr -&gt; expr | defn
+    meta -&gt; '-' token
+    expr -&gt; token | token expr
+    
+    defn -&gt; macrodefn | modedefn
+    macrodefn -&gt; macroname '&gt;&gt;' expr
+    macroname -&gt; token | token '(' params ')'
+
+    modename -&gt; token
+    modedefn -&gt; modename '!!' intervals
+    intervals -&gt; number | number intervals
+    
+    params -&gt; token | token ',' params
+    
+    tonic -&gt; 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'V' | 'W' | 'X' | 'Y' | 'Z'
+
+    token -&gt; 'A'..'z' | number | 'A'..'z' token | number token
+    number -&gt; '0'..'9' | '0'..'9' number
+    
+The above grammar does not account for transformations or comments.</t>
 </tnodes>
 </leo_file>
