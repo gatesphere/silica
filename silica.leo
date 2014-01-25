@@ -86,7 +86,7 @@ expanded="peckj.20131219081918.4271,peckj.20131219081918.4290,peckj.201312190819
 <v t="peckj.20130604112211.2161"><vh>@edit namespace_test.silica</vh></v>
 </v>
 </v>
-<v t="peckj.20130604112211.2166"><vh>Docs</vh>
+<v t="peckj.20130604112211.2166" a="E"><vh>Docs</vh>
 <v t="peckj.20131219081918.4263"><vh>required libs</vh></v>
 <v t="peckj.20131221114825.4538"><vh>To implement</vh>
 <v t="peckj.20131221114825.4539"><vh>parser</vh></v>
@@ -205,6 +205,12 @@ os.chdir(olddir)</t>
     token -&gt; 'A'..'z' | number | 'A'..'z' token | number token
     number -&gt; '0'..'9' | '0'..'9' number
     
-The above grammar does not account for transformations or comments.</t>
+The above grammar does not account for:
+  transformations
+  comments
+  repetition factors
+  concurrent voices
+  begingroup/endgroup
+  the 'glom' operator '+' (i.e. lp+p)</t>
 </tnodes>
 </leo_file>
