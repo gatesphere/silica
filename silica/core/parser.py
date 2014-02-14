@@ -6,7 +6,7 @@
 #@+node:peckj.20131219081918.4286: ** << imports >>
 import silica.core.sglobals as sg
 from silica.core.silicaevent import SilicaEvent
-from silica.core.errors import SilicaNameError
+from silica.core.errors import SilicaNameError, SilicaGroupError
 #@-<< imports >>
 
 #@+others
@@ -50,23 +50,26 @@ class Parser(object):
       except Exception as e:
         sg.note.applystate(self.notestate) # exception occurred, the notestate must be reset
         return [SilicaEvent('exception', exception=e)] # only return the exception!
+    if self.groups_are_balanced(out):
+      return out
+    else:
+      e = SilicaGroupError('Groups are unbalanced.')
+      sg.note.applystate(self.notestate)
+      return [SilicaEvent('exception', exception=e)]
     return out
-
-  #@+at
-  #   out = ' '.join(out)
-  #   if self.groups_are_balanced(out):
-  #     return out
-  #   else:
-  #     sg.note.applystate(self.notestate)
-  #     return 'Error: groups not fully balanced.'
   #@+node:peckj.20140108090613.4237: *4* groups_are_balanced
   def groups_are_balanced(self, out):
-    pushchars = ['{']
-    popchars = ['}']
+    pushtypes = ['begingroup']
+    poptypes = ['endgroup']
+    
     stack = []
-    for c in out:
-      if c in pushchars: stack.append(c)
-      if c in popchars and stack[-1] == pushchars[popchars.index(c)]: stack.pop()
+    for event in out:
+      if event.eventtype in pushtypes: stack.append(event.eventtype)
+      if event.eventtype in poptypes:
+        if len(stack) > 0 and stack[-1] == pushtypes[poptypes.index(event.eventtype)]: 
+          stack.pop()
+        else: # trying to pop before a push!
+          return False 
     return len(stack) == 0
   #@+node:peckj.20131222154620.7073: *3* run_primitive
   def run_primitive(self, p):
@@ -96,9 +99,17 @@ class Parser(object):
       return SilicaEvent('exception', exception=ex)
   #@+node:peckj.20140123152153.4523: *4* valid_name # stub
   def valid_name(self, name):
+    forbidden_chars = ['(', ')', ':', '=', '+', '-', ',', '>>']
+    for c in forbidden_chars:
+      if c in name:
+        return False
+    element, etype = sg.tokentable.get(name.lower(), (None, None))
+    if element and etype in ['primitive', 'metacommand', 'transform']:
+      return False
     return True
   #@-others
 #@+node:peckj.20140124085532.3988: ** class ParserNew # stub
+# this class will eventually be a proper parser, if the original parser is too slow
 class ParserNew(object):
   #@+others
   #@+node:peckj.20140124085532.3989: *3* __init__

@@ -229,6 +229,13 @@ class Note(object):
     self.instrument = state['instrument']
     self.deltadegree = state['deltadegree']
     self.prevregister = state['prevregister']
+  #@+node:peckj.20140214082311.4228: *4* grouping
+  #@+node:peckj.20140214082311.4229: *5* begingroup
+  def begingroup(self):
+    return SilicaEvent('begingroup', notestate=self.makestate())
+  #@+node:peckj.20140214082311.4231: *5* endgroup
+  def endgroup(self):
+    return SilicaEvent('endgroup', notestate=self.makestate())
   #@-others
 #@-others
 #@-leo
