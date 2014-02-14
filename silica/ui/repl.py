@@ -48,6 +48,7 @@ class REPL(object):
     # handle interactive mode
     else:
       while True:
+        self.prompt = 'silica(' + '::'.join(sg.current_namespace) + ')> '
         ln = raw_input(self.prompt)
         out = self.interpret_line(ln)
         if not self.silent:
@@ -68,7 +69,9 @@ class REPL(object):
                  'rest': self.interpret_rest_event,
                  'meta': self.interpret_meta_event,
                  'exception': self.interpret_exception_event,
-                 'macro_def': self.interpret_macro_def_event}
+                 'macro_def': self.interpret_macro_def_event,
+                 'begingroup': self.interpret_begingroup_event,
+                 'endgroup': self.interpret_endgroup_event}
                  
     out = []
     for event in events:
@@ -100,8 +103,10 @@ class REPL(object):
     while deltaRegister > 1:
       deltaRegister -= 1
       out = out + '\\'
+    if len(out) > 0:
+      out = out + ' '
     pitch = scale.get_name_for_degree(degree)
-    out = out + ' ' + pitch + str(duration)
+    out = out + pitch + str(duration)
     return out
   #@+node:peckj.20140116082214.4162: *6* interpret_rest_event
   def interpret_rest_event(self, event):
@@ -116,7 +121,13 @@ class REPL(object):
     return event.message
   #@+node:peckj.20140117095507.5635: *6* interpret_exception_event
   def interpret_exception_event(self, event):
-    return event.exception.message
+    return str(event.exception)
+  #@+node:peckj.20140214082311.4232: *6* interpret_begingroup_event
+  def interpret_begingroup_event(self, event):
+    return '{'
+  #@+node:peckj.20140214082311.4233: *6* interpret_endgroup_event
+  def interpret_endgroup_event(self, event):
+    return '}'
   #@+node:peckj.20131219081918.4280: *4* run_script
   def run_script(self, script):
     with open(script, 'r') as f:

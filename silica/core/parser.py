@@ -6,7 +6,7 @@
 #@+node:peckj.20131219081918.4286: ** << imports >>
 import silica.core.sglobals as sg
 from silica.core.silicaevent import SilicaEvent
-from silica.core.errors import SilicaNameError, SilicaGroupError
+from silica.core.errors import SilicaNameError, SilicaGroupError, SilicaInternalError
 #@-<< imports >>
 
 #@+others
@@ -27,31 +27,42 @@ class Parser(object):
   #@+node:peckj.20131221180451.4203: *3* parse_line # stub
   def parse_line(self, string, reset=True):
     if reset: self.reset_parsing_state()
+    
     if string.startswith('-'):
       self.mcmode = True
+    
     self.notestate = sg.note.makestate() # to recover from errors without affecting note.statestack
+    
     #print 'parse_line: %s' % string
     toks = string.split()
     if len(toks) > 1 and toks[1] == '>>':
       # define macro!
       event = self.define_macro(toks)
       return [event]
+      
     out = []
     for tok in toks:
       try:
-        element, etype = sg.tokentable[tok.lower()]
-        v = self.fn_table[etype](element)
-        if v is not None:
-          #print 'v(%s): %s' % (string,v)
-          # v may be a list, in which case, append them all separately
-          if hasattr(v, '__iter__') and not isinstance(v, basestring):
-            for e in v: out.append(e)
-          else: out.append(v)
+        element, etype = sg.get_token(tok)
+        if element is not None and etype is not None:
+          v = self.fn_table[etype](element)
+          if v is not None:
+            #print 'v(%s): %s' % (string,v)
+            # v may be a list, in which case, append them all separately
+            if hasattr(v, '__iter__') and not isinstance(v, basestring):
+              for e in v: out.append(e)
+            else: out.append(v)
+          else:
+            raise SilicaInternalError('No fn_table type defined in parser for type %s' % etype)
+        else:
+          raise SilicaNameError('No token named %s exists in the current namespace' % tok)
       except Exception as e:
         sg.note.applystate(self.notestate) # exception occurred, the notestate must be reset
         return [SilicaEvent('exception', exception=e)] # only return the exception!
+    
     if self.groups_are_balanced(out):
       return out
+    
     else:
       e = SilicaGroupError('Groups are unbalanced.')
       sg.note.applystate(self.notestate)
@@ -103,7 +114,7 @@ class Parser(object):
     for c in forbidden_chars:
       if c in name:
         return False
-    element, etype = sg.tokentable.get(name.lower(), (None, None))
+    element, etype = sg.get_token(name)
     if element and etype in ['primitive', 'metacommand', 'transform']:
       return False
     return True

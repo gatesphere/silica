@@ -19,5 +19,8 @@ class SilicaNameError(Exception):
 #@+node:peckj.20140214082311.4227: ** class SilicaGroupError
 class SilicaGroupError(Exception):
   pass
+#@+node:peckj.20140214082311.4236: ** class SilicaInternalError
+class SilicaInternalError(Exception):
+  pass
 #@-others
 #@-leo

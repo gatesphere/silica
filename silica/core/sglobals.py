@@ -17,6 +17,8 @@ instrumenttable = {}
 namespacetable = {}
 tokentable = {}
 
+current_namespace = []
+
 note = None
 parser = None
 repl = None
@@ -33,13 +35,18 @@ def initialize():
   # all of the language's base primitives,
   # metacommands, modes, scales, instruments, 
   # and transforms
+  
+  # create the 'home' namespace
+  new_namespace('home') # default
+  
+  # load the 'home' module
   load_module('home') # located in ../modules/home.py
 
   # next, initialize the proper values
   init_create_note()
   init_create_parser()
   init_create_repl()
-  
+
 
 #@+node:peckj.20131219081918.4219: *4* init_create_note # stub
 def init_create_note():
@@ -67,8 +74,18 @@ def get_mode(name):
 def get_scale(name):
   return scaletable.get(name,None)
 #@+node:peckj.20131218082219.4111: *3* get_instrument # stub
-#@+node:peckj.20131218082219.4112: *3* get_namespace # stub
-#@+node:peckj.20131218082219.4113: *3* get_token # stub
+#@+node:peckj.20131218082219.4113: *3* get_token
+def get_token(token):
+  # gets a token in the current namespace, recursing back if it can't find it
+  ns_stack = current_namespace[:] # copy
+  while len(ns_stack) > 0:
+    ns_name = '::'.join(ns_stack)
+    ns = tokentable[ns_name]
+    tok = ns.get(token.lower(), None)
+    if tok is not None:
+      return tok
+    ns_stack = ns_stack[:-1]
+  return (None, None) # cannot find it in the current namespace chain, so it doesn't exist
 #@+node:peckj.20131218082219.4114: *3* load_module
 def load_module(name):
   import sys
@@ -95,19 +112,19 @@ def new_scale(name, mode, tonic):
 def new_primitive(name, desc, behavior):
   from silica.core.primitive import Primitive
   p = Primitive(name.upper(), desc, behavior)
-  tokentable[name.lower()] = (p, 'primitive')
+  new_token(name, p, 'primitive')
   return p
 #@+node:peckj.20140103121318.3963: *3* new_scalechanger
 def new_scalechanger(name, desc, behavior):
   from silica.core.scalechanger import ScaleChanger
   sc = ScaleChanger(name.upper(), desc, behavior)
-  tokentable[name.lower()] = (sc, 'primitive') # scale changers are executed just like primitives
+  new_token(name, sc, 'primitive')
   return sc
 #@+node:peckj.20131222154620.7088: *3* new_metacommand
 def new_metacommand(name, desc, behavior):
   from silica.core.metacommand import MetaCommand
   m = MetaCommand(name.upper(), desc, behavior)
-  tokentable[name.lower()] = (m, 'metacommand')
+  new_token(name, m, 'metacommand')
   return m
 #@+node:peckj.20140106082417.4662: *3* new_instrument
 def new_instrument(name):
@@ -120,14 +137,26 @@ def new_instrumentchanger(name, desc, instrument):
   from silica.core.instrumentchanger import InstrumentChanger
   behavior = lambda sg: sg.note.change_instrument(instrument)
   ic = InstrumentChanger(name.upper(), desc, behavior)
-  tokentable[name.lower()] = (ic, 'primitive') # instrument changers are executed just like primitives
+  new_token(name, ic, 'primitive')
   return ic
 #@+node:peckj.20140106180202.4627: *3* new_macro
 def new_macro(name, value):
   from silica.core.macro import Macro
   m = Macro(name, value)
-  tokentable[name.lower()] = (m, 'macro')
+  new_token(name, m, 'macro')
   return m
-#@+node:peckj.20131219081918.4214: *3* new_namespace # stub
+#@+node:peckj.20140214082311.4234: *3* new_token
+def new_token(token, value, t_type):
+  ns = '::'.join(current_namespace)
+  tokentable[ns][token.lower()] = (value, t_type)
+#@+node:peckj.20131219081918.4214: *3* new_namespace
+def new_namespace(name):
+  new_namespace_name = '::'.join(current_namespace + [name])
+  ns = tokentable.get(new_namespace_name, None)
+  if ns is None:
+    # namespace doesn't exist, so create it
+    ns = {}
+    tokentable[new_namespace_name] = ns
+  current_namespace.append(name)
 #@-others
 #@-leo
