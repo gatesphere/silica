@@ -6,6 +6,8 @@
 #@+node:peckj.20131218082219.4106: ** << imports >>
 ## important note:
 ## any modules that import sg must use deferred imports
+import os
+import sys
 #@-<< imports >>
 #@+<< declarations >>
 #@+node:peckj.20131218082219.4107: ** << declarations >>
@@ -25,12 +27,16 @@ repl = None
 
 exit = False
 silica_version = 'pre-alpha'
+debug = False
 #@-<< declarations >>
 
 #@+others
 #@+node:peckj.20131219081918.4217: ** initialization
 #@+node:peckj.20131219081918.4218: *3* initialize
-def initialize():
+def initialize(debugmode=False):
+  # debug?
+  set_debug(debugmode)
+  
   # load the 'home' module, which contains
   # all of the language's base primitives,
   # metacommands, modes, scales, instruments, 
@@ -66,34 +72,6 @@ def init_create_repl():
   global repl
   from silica.ui.repl import REPL
   repl = REPL()
-#@+node:peckj.20131218082219.4108: ** lookup methods
-#@+node:peckj.20131218082219.4109: *3* get_mode
-def get_mode(name):
-  return modetable.get(name,None)
-#@+node:peckj.20131218082219.4110: *3* get_scale
-def get_scale(name):
-  return scaletable.get(name,None)
-#@+node:peckj.20131218082219.4111: *3* get_instrument # stub
-#@+node:peckj.20131218082219.4113: *3* get_token
-def get_token(token):
-  # gets a token in the current namespace, recursing back if it can't find it
-  ns_stack = current_namespace[:] # copy
-  while len(ns_stack) > 0:
-    ns_name = '::'.join(ns_stack)
-    ns = tokentable[ns_name]
-    tok = ns.get(token.lower(), None)
-    if tok is not None:
-      return tok
-    ns_stack = ns_stack[:-1]
-  return (None, None) # cannot find it in the current namespace chain, so it doesn't exist
-#@+node:peckj.20131218082219.4114: *3* load_module
-def load_module(name):
-  import sys
-  mod = 'modules.%s' % name
-  m = __import__(mod)
-  m.__dict__[name].run()
-  del m
-  del sys.modules[mod]
 #@+node:peckj.20131219081918.4210: ** creation methods
 #@+node:peckj.20131219081918.4211: *3* new_mode
 def new_mode(name, intervals):
@@ -158,5 +136,54 @@ def new_namespace(name):
     ns = {}
     tokentable[new_namespace_name] = ns
   current_namespace.append(name)
+#@+node:peckj.20131218082219.4108: ** lookup methods
+#@+node:peckj.20131218082219.4109: *3* get_mode
+def get_mode(name):
+  return modetable.get(name,None)
+#@+node:peckj.20131218082219.4110: *3* get_scale
+def get_scale(name):
+  return scaletable.get(name,None)
+#@+node:peckj.20131218082219.4111: *3* get_instrument # stub
+#@+node:peckj.20131218082219.4113: *3* get_token
+def get_token(token):
+  # gets a token in the current namespace, recursing back if it can't find it
+  ns_stack = current_namespace[:] # copy
+  while len(ns_stack) > 0:
+    ns_name = '::'.join(ns_stack)
+    ns = tokentable[ns_name]
+    tok = ns.get(token.lower(), None)
+    if tok is not None:
+      return tok
+    ns_stack = ns_stack[:-1]
+  return (None, None) # cannot find it in the current namespace chain, so it doesn't exist
+#@+node:peckj.20131218082219.4114: *3* load_module
+def load_module(name):
+  import sys
+  mod = 'modules.%s' % name
+  m = __import__(mod)
+  m.__dict__[name].run()
+  del m
+  del sys.modules[mod]
+#@+node:peckj.20140307080519.11094: ** internals
+#@+node:peckj.20140307080519.11095: *3* get_autoexec
+def get_autoexec():
+  homedir = os.path.expanduser('~')
+  autoexec = os.path.join(homedir, '.silicarc')
+  if os.path.isfile(autoexec): return autoexec
+  return None
+#@+node:peckj.20140307080519.11099: *3* set_debug
+def set_debug(v):
+  global debug
+  debug = v
+#@+node:peckj.20140307080519.11100: *3* toggle_debug
+def toggle_debug():
+  global debug
+  debug = not debug
+#@+node:peckj.20140307080519.11097: *3* trace
+def trace(s):
+  # print s to stderr
+  s = s + '\n'
+  sys.stderr.write(s)
+  sys.stderr.flush()
 #@-others
 #@-leo

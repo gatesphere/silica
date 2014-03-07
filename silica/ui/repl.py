@@ -36,14 +36,25 @@ class REPL(object):
   #@+node:peckj.20131219081918.4290: *3* running
   #@+node:peckj.20131219081918.4278: *4* run
   def run(self, autoexec=None, script=None):
+    # signon
+    if not self.silent:
+      print 'Welcome to silica'
+      print 'This is version: %s' % sg.silica_version
+    
     # handle autoexec
+    ## need to check for existence
     if autoexec is not None:
       self.run_script(autoexec)
     
     # handle script
-    if script is not None:    
-      self.run_script(script)
-      sg.exit = True # exit after script, not after autoexec
+    ## need to check for existence
+    if script is not None: 
+      if not os.path.isfile(script):
+        sg.trace("Script file '%s' does not exist.  Exiting." % script)
+        sg.exit = True
+      else:   
+        self.run_script(script)
+        sg.exit = True # exit after script, not after autoexec
     
     # handle interactive mode
     else:
@@ -51,7 +62,7 @@ class REPL(object):
         self.prompt = 'silica(' + '::'.join(sg.current_namespace) + ')> '
         ln = raw_input(self.prompt)
         out = self.interpret_line(ln)
-        if not self.silent:
+        if not self.silent and len(out) > 0:
           print out
         if sg.exit:
           self.save_history()
@@ -60,9 +71,11 @@ class REPL(object):
         
   #@+node:peckj.20131219081918.4279: *4* interpret_line
   def interpret_line(self, line):
-    out = sg.parser.parse_line(line)
-    return self.interpret_events(out)
-
+    line = line.split('#')[0].strip()
+    if len(line) > 0:
+      out = sg.parser.parse_line(line)
+      return self.interpret_events(out)
+    return ''
   #@+node:peckj.20140116082214.4160: *5* interpret_events
   def interpret_events(self, events):
     event_map = {'play': self.interpret_play_event,
@@ -132,7 +145,10 @@ class REPL(object):
   def run_script(self, script):
     with open(script, 'r') as f:
       for line in f:
-        self.interpret_line(line)
+        out = self.interpret_line(line)
+        if not self.silent and len(out) > 0:
+          print out
+          
   #@-others
 #@+node:peckj.20131219081918.4273: ** class HistoryCompleter
 class HistoryCompleter(object):

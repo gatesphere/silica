@@ -11,7 +11,7 @@
 <find_panel_settings/>
 <vnodes>
 <v t="peckj.20130604112211.4466"><vh>Startup</vh>
-<v t="peckj.20130604112211.4467" a="E"><vh>@settings</vh>
+<v t="peckj.20130604112211.4467"><vh>@settings</vh>
 <v t="peckj.20130604112211.4468"><vh>Buttons</vh>
 <v t="peckj.20130604112211.4469"><vh>@@button timeit</vh></v>
 <v t="peckj.20130604112211.4470"><vh>@@button profile</vh></v>
@@ -19,27 +19,27 @@
 </v>
 </v>
 </v>
-<v t="peckj.20130604112211.2164" a="E"><vh>Code (python)</vh>
-<v t="peckj.20131219081918.4264" a="E"><vh>toy code</vh>
+<v t="peckj.20130604112211.2164"><vh>Code (python)</vh>
+<v t="peckj.20131219081918.4264"><vh>toy code</vh>
 <v t="peckj.20131219081918.4262"><vh>@file toy_code/readlinetest.py</vh></v>
 <v t="peckj.20140124085532.3990"
 expanded="peckj.20140124085532.4002,peckj.20140124085532.4004,"><vh>@file toy_code/funcparserlibtest.py</vh></v>
 </v>
-<v t="peckj.20130604112211.2165"><vh>Launcher</vh>
+<v t="peckj.20130604112211.2165" a="E"><vh>Launcher</vh>
 <v t="peckj.20130604112211.2162"><vh>@file silica.py</vh></v>
 <v t="peckj.20140117095507.3737"><vh>@edit silica.bat</vh></v>
 </v>
 <v t="peckj.20131219081918.4174"><vh>Tester</vh>
 <v t="peckj.20131219081918.4175"><vh>@file silicaTester.py</vh></v>
 </v>
-<v t="peckj.20130604112211.2148" a="E"><vh>silica</vh>
+<v t="peckj.20130604112211.2148"><vh>silica</vh>
 <v t="peckj.20140117095507.3895" a="E"><vh>@path silica</vh>
 <v t="peckj.20130604112211.2146"><vh>@file __init__.py</vh></v>
-<v t="peckj.20130604112211.2149" a="E"><vh>@path core</vh>
+<v t="peckj.20130604112211.2149"><vh>@path core</vh>
 <v t="peckj.20130604112211.2147"><vh>@file __init__.py</vh></v>
 <v t="peckj.20131218082219.4099"
 expanded="peckj.20131218082219.4102,"><vh>@file entity.py</vh></v>
-<v t="peckj.20140117095507.5636" a="E"><vh>@file errors.py</vh></v>
+<v t="peckj.20140117095507.5636"><vh>@file errors.py</vh></v>
 <v t="peckj.20140106082417.4641"><vh>@file instrument.py</vh></v>
 <v t="peckj.20140106082417.4653"><vh>@file instrumentchanger.py</vh></v>
 <v t="peckj.20140106180202.4620"><vh>@file macro.py</vh></v>
@@ -47,24 +47,24 @@ expanded="peckj.20131218082219.4102,"><vh>@file entity.py</vh></v>
 <v t="peckj.20131218082219.4117"><vh>@file mode.py</vh></v>
 <v t="peckj.20131218082219.4088"
 expanded="peckj.20131218082219.4135,peckj.20131219081918.4168,peckj.20140214082311.4228,"><vh>@file note.py</vh></v>
-<v t="peckj.20131219081918.4285" a="E"
+<v t="peckj.20131219081918.4285"
 expanded="peckj.20131219081918.4288,peckj.20140123152153.4522,"><vh>@file parser.py</vh></v>
 <v t="peckj.20131221114825.4521"><vh>@file primitive.py</vh></v>
 <v t="peckj.20130604112211.2150"><vh>@file runSilica.py</vh></v>
 <v t="peckj.20131218082219.4095"><vh>@file scale.py</vh></v>
 <v t="peckj.20140103121318.3954"><vh>@file scalechanger.py</vh></v>
-<v t="peckj.20131218082219.4105" a="E"><vh>@file sglobals.py</vh></v>
+<v t="peckj.20131218082219.4105"><vh>@file sglobals.py</vh></v>
 <v t="peckj.20140116082214.3851"
 expanded="peckj.20140116082214.3853,"><vh>@file silicaevent.py</vh></v>
 </v>
-<v t="peckj.20131219081918.4265" a="E"><vh>@path ui</vh>
+<v t="peckj.20131219081918.4265"><vh>@path ui</vh>
 <v t="peckj.20131219081918.4267"><vh>@file __init__.py</vh></v>
 <v t="peckj.20131219081918.4268" a="E"
 expanded="peckj.20131219081918.4271,peckj.20131219081918.4290,peckj.20131219081918.4279,peckj.20140116082214.4160,"><vh>@file repl.py</vh></v>
 </v>
 </v>
 </v>
-<v t="peckj.20131224101941.5049" a="E"><vh>modules</vh>
+<v t="peckj.20131224101941.5049"><vh>modules</vh>
 <v t="peckj.20131224101941.5051"><vh>@file modules/__init__.py</vh></v>
 <v t="peckj.20131224101941.5050" a="E"><vh>@file modules/home.py</vh></v>
 </v>
@@ -90,8 +90,8 @@ expanded="peckj.20131219081918.4271,peckj.20131219081918.4290,peckj.201312190819
 <v t="peckj.20130604112211.2166" a="E"><vh>Docs</vh>
 <v t="peckj.20131219081918.4263"><vh>required libs</vh></v>
 <v t="peckj.20131221114825.4538" a="E"><vh>To implement</vh>
+<v t="peckj.20140307080519.11098"><vh>handle --debug command-line switch</vh></v>
 <v t="peckj.20131221114825.4539"><vh>parser</vh></v>
-<v t="peckj.20140115185110.3675"><vh>error reporting system</vh></v>
 <v t="peckj.20131224101941.5058"><vh>metacommands (and arguments!)</vh></v>
 <v t="peckj.20131221114825.4543"><vh>functions (as a part of macros)</vh></v>
 <v t="peckj.20131221114825.4544"><vh>transforms</vh></v>
@@ -169,7 +169,6 @@ Future:
 -invariant
 -about
 -require</t>
-<t tx="peckj.20140115185110.3675">A series of different Exception types</t>
 <t tx="peckj.20140117095507.3736">@language python
 
 import sys, os
@@ -212,5 +211,6 @@ os.chdir(olddir)</t>
 The above grammar does not account for:
   comments -- not terribly important
   begingroup/endgroup  -- handle with semantics</t>
+<t tx="peckj.20140307080519.11098"></t>
 </tnodes>
 </leo_file>
