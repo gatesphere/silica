@@ -118,9 +118,14 @@ def new_instrumentchanger(name, desc, instrument):
   new_token(name, ic, 'primitive')
   return ic
 #@+node:peckj.20140106180202.4627: *3* new_macro
-def new_macro(name, value):
+def new_macro(name, value, args=None):
   from silica.core.macro import Macro
-  m = Macro(name, value)
+  # if debug:
+    # trace('MACRO DEFINITION')
+    # trace('name: %s' % name)
+    # trace('value: %s' % value)
+    # trace('args: %s' % args)
+  m = Macro(name, value, args)
   new_token(name, m, 'macro')
   return m
 #@+node:peckj.20140214082311.4234: *3* new_token

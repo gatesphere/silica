@@ -6,7 +6,7 @@
 #@+node:peckj.20131219081918.4286: ** << imports >>
 import silica.core.sglobals as sg
 from silica.core.silicaevent import SilicaEvent
-from silica.core.errors import SilicaNameError, SilicaGroupError, SilicaInternalError
+from silica.core.errors import SilicaNameError, SilicaGroupError, SilicaInternalError, SilicaSyntaxError
 #@-<< imports >>
 
 #@+others
@@ -34,12 +34,12 @@ class Parser(object):
     self.notestate = sg.note.makestate() # to recover from errors without affecting note.statestack
     
     #print 'parse_line: %s' % string
-    toks = string.split()
-    if len(toks) > 1 and toks[1] == '>>':
+    if '>>' in string:
       # define macro!
-      event = self.define_macro(toks)
+      event = self.define_macro(string)
       return [event]
-      
+    
+    toks = string.split()
     out = []
     for tok in toks:
       try:
@@ -47,7 +47,6 @@ class Parser(object):
         if element is not None and etype is not None:
           v = self.fn_table[etype](element)
           if v is not None:
-            #print 'v(%s): %s' % (string,v)
             # v may be a list, in which case, append them all separately
             if hasattr(v, '__iter__') and not isinstance(v, basestring):
               for e in v: out.append(e)
@@ -99,15 +98,59 @@ class Parser(object):
     else:
       return None
   #@+node:peckj.20140123152153.4522: *3* define_macro
-  def define_macro(self, toks):
-    name = toks[0].upper()
-    if self.valid_name(name):
-      contents = " ".join(toks[2:])
-      sg.new_macro(name, contents)
-      return SilicaEvent('macro_def', message='Macro %s defined.' % name)
-    else:
+  def define_macro(self, string):
+    
+    vals = string.split('>>', 1)
+    signature = vals[0].strip()
+    if len(vals) == 2:
+      body = vals[1].strip()
+
+    if len(body) == 0:
+      ex = SilicaSyntaxError('Syntax error in macro definition: macro has no body.')
+      return SilicaEvent('exception', exception=ex)
+
+    vals = signature.split('(',1)
+    name = vals[0].strip().upper()
+    
+    if not self.valid_name(name):
       ex = SilicaNameError('The name %s is invalid in this context.' % name)
       return SilicaEvent('exception', exception=ex)
+    
+    args = None
+    if len(vals) == 2:
+      arglist = vals[1].strip()
+      if len(arglist) > 0:
+        if arglist[-1] != ')':
+            ex = SilicaSyntaxError('Syntax error in macro definition: unbounded arglist.')
+            return SilicaEvent('exception', exception=ex)
+        else:
+          arglist = arglist[:-1]
+          arglist = arglist.split(',')
+          args = [a.strip() for a in arglist]
+    
+    sg.new_macro(name, body, args)
+    return SilicaEvent('macro_def', message='Macro %s defined.' % name)
+
+  #@+at
+  # def define_macro(self, toks):
+  #   name = toks[0].upper()
+  #   args = []
+  #   pos = 2
+  #   if toks[1] == '(': # args
+  #     while toks[pos] != ')':
+  #       try:
+  #         args.append(toks[pos])
+  #         pos += 1
+  #       except:
+  #         ex = SilicaSyntaxError('Syntax error in macro definition: unbounded arglist.')
+  #         return SilicaEvent('exception', exception=ex)
+  #   if self.valid_name(name):
+  #     contents = " ".join(toks[2:])
+  #     sg.new_macro(name, contents)
+  #     return SilicaEvent('macro_def', message='Macro %s defined.' % name)
+  #   else:
+  #     ex = SilicaNameError('The name %s is invalid in this context.' % name)
+  #     return SilicaEvent('exception', exception=ex)
   #@+node:peckj.20140123152153.4523: *4* valid_name # stub
   def valid_name(self, name):
     forbidden_chars = ['(', ')', ':', '=', '+', '-', ',', '>>']
