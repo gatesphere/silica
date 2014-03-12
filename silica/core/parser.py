@@ -130,27 +130,6 @@ class Parser(object):
     
     sg.new_macro(name, body, args)
     return SilicaEvent('macro_def', message='Macro %s defined.' % name)
-
-  #@+at
-  # def define_macro(self, toks):
-  #   name = toks[0].upper()
-  #   args = []
-  #   pos = 2
-  #   if toks[1] == '(': # args
-  #     while toks[pos] != ')':
-  #       try:
-  #         args.append(toks[pos])
-  #         pos += 1
-  #       except:
-  #         ex = SilicaSyntaxError('Syntax error in macro definition: unbounded arglist.')
-  #         return SilicaEvent('exception', exception=ex)
-  #   if self.valid_name(name):
-  #     contents = " ".join(toks[2:])
-  #     sg.new_macro(name, contents)
-  #     return SilicaEvent('macro_def', message='Macro %s defined.' % name)
-  #   else:
-  #     ex = SilicaNameError('The name %s is invalid in this context.' % name)
-  #     return SilicaEvent('exception', exception=ex)
   #@+node:peckj.20140123152153.4523: *4* valid_name # stub
   def valid_name(self, name):
     forbidden_chars = ['(', ')', ':', '=', '+', '-', ',', '>>']
