@@ -90,19 +90,19 @@ class Note(object):
     self.duration *= factor
     return SilicaEvent('duration', notestate=self.makestate())
   #@+node:peckj.20131219081918.4221: *6* xN
-  def x2(self): self.expand(2)
-  def x3(self): self.expand(3)
-  def x5(self): self.expand(5)
-  def x7(self): self.expand(7)
+  def x2(self): return self.expand(2)
+  def x3(self): return self.expand(3)
+  def x5(self): return self.expand(5)
+  def x7(self): return self.expand(7)
   #@+node:peckj.20131219081918.4222: *5* shrink
   def shrink(self, factor):
     self.duration /= factor
     return SilicaEvent('duration', notestate=self.makestate())
   #@+node:peckj.20131219081918.4223: *6* sN
-  def s2(self): self.shrink(2)
-  def s3(self): self.shrink(3)
-  def s5(self): self.shrink(5)
-  def s7(self): self.shrink(7)
+  def s2(self): return self.shrink(2)
+  def s3(self): return self.shrink(3)
+  def s5(self): return self.shrink(5)
+  def s7(self): return self.shrink(7)
   #@+node:peckj.20131219081918.4224: *4* volume
   #@+node:peckj.20131219081918.4225: *5* set_vol
   def set_vol(self, value, relative=False):
@@ -112,16 +112,16 @@ class Note(object):
       if value < 0: value = 0
       if value > 16000: value = 16000
       self.volume = value
-      return SilicaEvent('volume', notestate=self.makestate())
+    return SilicaEvent('volume', notestate=self.makestate())
   #@+node:peckj.20131219081918.4227: *6* primitives
-  def maxvol(self): self.set_vol(16000)
-  def minvol(self): self.set_vol(0)
-  def midvol(self): self.set_vol(8000)
-  def startvol(self): self.set_vol(12000)
-  def incvol(self): self.set_vol(1000, relative=True)
-  def incvol1(self): self.set_vol(100, relative=True)
-  def decvol(self): self.set_vol(-1000, relative=True)
-  def decvol1(self): self.set_vol(-100, relative=True)
+  def maxvol(self): return self.set_vol(16000)
+  def minvol(self): return self.set_vol(0)
+  def midvol(self): return self.set_vol(8000)
+  def startvol(self): return self.set_vol(12000)
+  def incvol(self): return self.set_vol(1000, relative=True)
+  def incvol1(self): return self.set_vol(100, relative=True)
+  def decvol(self): return self.set_vol(-1000, relative=True)
+  def decvol1(self): return self.set_vol(-100, relative=True)
   #@+node:peckj.20131219081918.4228: *4* tempo
   #@+node:peckj.20131219081918.4229: *5* set_tempo
   def set_tempo(self, value, relative=False):
@@ -131,20 +131,20 @@ class Note(object):
       if value < 20: value = 20
       if value > 400: value = 400
       self.tempo = value
-      return SilicaEvent('tempo', notestate=self.makestate())
-  #@+node:peckj.20131219081918.4230: *6* primatives
-  def doubletempo(self): self.set_tempo(self.tempo * 2)
-  def tripletempo(self): self.set_tempo(self.tempo * 3)
-  def halftempo(self): self.set_tempo(self.tempo / 2)
-  def thirdtempo(self): self.set_tempo(self.tempo / 3)
-  def mintempo(self): self.set_tempo(20)
-  def maxtempo(self): self.set_tempo(400)
-  def midtempo(self): self.set_tempo(190)
-  def starttempo(self): self.set_tempo(120)
-  def inctempo(self): self.set_tempo(10, relative=True)
-  def inctempo1(self): self.set_tempo(1, relative=True)
-  def dectempo(self): self.set_tempo(-10, relative=True)
-  def dectempo1(self): self.set_tempo(-1, relative=True)
+    return SilicaEvent('tempo', notestate=self.makestate())
+  #@+node:peckj.20131219081918.4230: *6* primitives
+  def doubletempo(self): return self.set_tempo(self.tempo * 2)
+  def tripletempo(self): return self.set_tempo(self.tempo * 3)
+  def halftempo(self): return self.set_tempo(self.tempo / 2)
+  def thirdtempo(self): return self.set_tempo(self.tempo / 3)
+  def mintempo(self): return self.set_tempo(20)
+  def maxtempo(self): return self.set_tempo(400)
+  def midtempo(self): return self.set_tempo(190)
+  def starttempo(self): return self.set_tempo(120)
+  def inctempo(self): return self.set_tempo(10, relative=True)
+  def inctempo1(self): return self.set_tempo(1, relative=True)
+  def dectempo(self): return self.set_tempo(-10, relative=True)
+  def dectempo1(self): return self.set_tempo(-1, relative=True)
   #@+node:peckj.20140103121318.3965: *4* scales
   #@+node:peckj.20140103121318.3964: *5* change_scale
   def change_scale(self, new_scale, relative=False):
@@ -190,12 +190,12 @@ class Note(object):
   def change_instrument(self, instrument):
     self.instrument = instrument
     return SilicaEvent('instrument', notestate=self.makestate())
-  #@+node:peckj.20140106082417.4635: *4* state (do not return SilicaEvents)
+  #@+node:peckj.20140106082417.4635: *4* state
   #@+node:peckj.20140106082417.4636: *5* pushstate
   def pushstate(self):
     state = self.makestate()
     self.statestack.append(state)
-    return None
+    return SilicaEvent('pushstate', notestate=state)
   #@+node:peckj.20140108090613.4236: *5* makestate
   def makestate(self):
     state = {'scale': self.scale[:], # copy, not store-by-ref
@@ -212,7 +212,7 @@ class Note(object):
   def popstate(self):
     if len(self.statestack) > 0:
       self.applystate(self.statestack.pop())
-    return None
+    return SilicaEvent('pushstate', notestate=self.makestate())
   #@+node:peckj.20140106082417.4638: *5* removestate
   def removestate(self):
     if len(self.statestack) > 0:

@@ -24,24 +24,42 @@ class Parser(object):
   def reset_parsing_state(self):
     self.mcmode = False
     self.notestate = None
-  #@+node:peckj.20131221180451.4203: *3* parse_line # stub
+  #@+node:peckj.20131221180451.4203: *3* parse_line
   def parse_line(self, string, reset=True):
     if reset: self.reset_parsing_state()
-    
+    #@+<< metacommand mode >>
+    #@+node:peckj.20140318084140.4613: *4* << metacommand mode >>
     if string.startswith('-'):
       self.mcmode = True
-    
+    #@-<< metacommand mode >>
     self.notestate = sg.note.makestate() # to recover from errors without affecting note.statestack
-    
-    #print 'parse_line: %s' % string
+    #@+<< macro definition >>
+    #@+node:peckj.20140318084140.4611: *4* << macro definition >>
     if '>>' in string:
       # define macro!
       event = self.define_macro(string)
       return [event]
+    #@-<< macro definition >>
+    #@+<< mode definition >>
+    #@+node:peckj.20140318084140.4612: *4* << mode definition >>
+    if '!!' in string: ## STUB
+      # define mode!
+      return []
+    #@-<< mode definition >>
+    #@+<< auto invariance mode >>
+    #@+node:peckj.20140318084140.4614: *4* << auto invariance mode >>
+    if sg.auto_invariance:
+      string = ' '.join(['pushstate', string, 'popstate'])
+    #@-<< auto invariance mode >>
     
-    toks = string.split()
+    toks = self.simplify_line(string)
+    if len(toks) == 1 and type(toks[0]) is SilicaEvent:
+      return toks
     out = []
+    #@+<< interpret tokens >>
+    #@+node:peckj.20140318084140.4615: *4* << interpret tokens >>
     for tok in toks:
+      # should all be primitives + metacommands by now...
       try:
         element, etype = sg.get_token(tok)
         if element is not None and etype is not None:
@@ -58,14 +76,17 @@ class Parser(object):
       except Exception as e:
         sg.note.applystate(self.notestate) # exception occurred, the notestate must be reset
         return [SilicaEvent('exception', exception=e)] # only return the exception!
-    
+    #@-<< interpret tokens >>
+    #@+<< groups balanced >>
+    #@+node:peckj.20140318084140.4616: *4* << groups balanced >>
     if self.groups_are_balanced(out):
       return out
-    
+
     else:
       e = SilicaGroupError('Groups are unbalanced.')
       sg.note.applystate(self.notestate)
       return [SilicaEvent('exception', exception=e)]
+    #@-<< groups balanced >>
     return out
   #@+node:peckj.20140108090613.4237: *4* groups_are_balanced
   def groups_are_balanced(self, out):
@@ -81,6 +102,70 @@ class Parser(object):
         else: # trying to pop before a push!
           return False 
     return len(stack) == 0
+  #@+node:peckj.20140318084140.4608: *4* simplify_line
+  def simplify_line(self, line):
+    ''' line: string
+        returns: list
+    '''
+    changed = True
+    depth = 0
+    
+    toks = line.split()
+    
+    while changed and depth < sg.max_recursive_depth:
+      changed = False
+      depth += 1
+      toks,changed = self.simplify_factors(toks,changed)
+      toks,changed = self.simplify_expansions(toks,changed)
+      #if sg.debug: sg.trace('changed = %s (toks = %s)' % (changed, toks))
+      
+    if depth >= sg.max_recursive_depth:
+      e = SilicaInternalError('Infinite loop detected, bailing out.')
+      return [SilicaEvent('exception', exception=e)]
+    
+    return toks
+  #@+node:peckj.20140318084140.4609: *5* simplify_factors
+  def simplify_factors(self, toks, changed):
+    toks2 = []
+    changed = changed
+    #if sg.debug: sg.trace('simplify_factors: %s' % toks)
+    for tok in toks:
+      if tok[0].isdigit():
+        ## ugly as shit, and hacky as hell
+        ## (perhaps the one time Io is better than python...)
+        num = ''
+        token = ''
+        for i in range(len(tok)):
+          if tok[i].isdigit():
+            num = num + tok[i]
+          else:
+            token = tok[i:]
+            break
+        num = int(num)
+        for i in range(num):
+          toks2.append(token)
+        changed = True
+      elif '+' in tok:
+        before,after = tok.split('+',1)
+        toks2.append(before)
+        toks2.append(after)
+        changed = True  
+      else:
+        toks2.append(tok)
+    return toks2,changed
+  #@+node:peckj.20140318084140.4610: *5* simplify_expansions
+  def simplify_expansions(self, toks, changed):
+    toks2 = []
+    changed = changed
+    for tok in toks:
+      element, etype = sg.get_token(tok)
+      if element is not None and etype == 'macro':
+        v = self.run_macro(element).split()
+        for e in v: toks2.append(e)
+        changed = True
+      else:
+        toks2.append(tok)
+    return toks2,changed
   #@+node:peckj.20131222154620.7073: *3* run_primitive
   def run_primitive(self, p):
     if self.mcmode:
@@ -90,7 +175,8 @@ class Parser(object):
   def run_macro(self, m):
     if self.mcmode:
       return None
-    return self.parse_line(m.expand(), reset=False)
+    #return self.parse_line(m.expand(), reset=False)
+    return m.expand()
   #@+node:peckj.20131222154620.7090: *3* run_metacommand
   def run_metacommand(self, m):
     if self.mcmode:
@@ -140,14 +226,6 @@ class Parser(object):
     if element and etype in ['primitive', 'metacommand', 'transform']:
       return False
     return True
-  #@-others
-#@+node:peckj.20140124085532.3988: ** class ParserNew # stub
-# this class will eventually be a proper parser, if the original parser is too slow
-class ParserNew(object):
-  #@+others
-  #@+node:peckj.20140124085532.3989: *3* __init__
-  def __init__(self):
-    pass
   #@-others
 #@-others
 #@-leo

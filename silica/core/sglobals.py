@@ -28,6 +28,8 @@ repl = None
 exit = False
 silica_version = 'pre-alpha'
 debug = False
+auto_invariance = False
+max_recursive_depth = 2000
 #@-<< declarations >>
 
 #@+others
