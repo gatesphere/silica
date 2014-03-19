@@ -35,7 +35,7 @@ class Parser(object):
     self.notestate = sg.note.makestate() # to recover from errors without affecting note.statestack
     #@+<< macro definition >>
     #@+node:peckj.20140318084140.4611: *4* << macro definition >>
-    if '>>' in string:
+    if '>>' in string or '=' in string:
       # define macro!
       event = self.define_macro(string)
       return [event]
@@ -239,8 +239,11 @@ class Parser(object):
       return None
   #@+node:peckj.20140123152153.4522: *3* define_macro
   def define_macro(self, string):
-    
-    vals = string.split('>>', 1)
+    # = is syntactic sugar for >> begingroup ... endgroup
+    splitter = '>>'
+    if '=' in string:
+      splitter = '='
+    vals = string.split(splitter, 1)
     signature = vals[0].strip()
     if len(vals) == 2:
       body = vals[1].strip()
@@ -268,6 +271,8 @@ class Parser(object):
           arglist = arglist.split(',')
           args = [a.strip() for a in arglist]
     
+    if splitter == '=':
+      body = 'begingroup ' + body + ' endgroup'
     sg.new_macro(name, body, args)
     return SilicaEvent('macro_def', message='Macro %s defined.' % name)
   #@+node:peckj.20140123152153.4523: *4* valid_name # stub
