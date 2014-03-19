@@ -16,14 +16,23 @@ class Macro(Entity):
   def __init__(self, name, value, args=None):
     desc = "Macro %s" % name
     super(self.__class__,self).__init__(name, desc)
-    self.value = value
-    self.args = args
+    v = ' ' + value + ' '
+    a = args
+    if args is not None:
+      a = []
+      for arg in args:
+        a.append('{{'+arg+'}}')
+        v = v.replace(' '+arg+' ', ' {{'+arg+'}} ')
+    self.value = v
+    self.args = a
   #@+node:peckj.20140106180202.4626: *3* expand
   def expand(self, callargs=None):
+    #if sg.debug: sg.trace('macro expansion: %s %s' % (callargs, self.value))
     out = self.value
     if callargs is not None:
       for arg,callarg in zip(self.args,callargs):
-        out = out.replace(arg,callarg)
+        #if sg.debug: sg.trace('replacing %s with %s' % (arg, callarg))
+        out = out.replace(' '+arg+' ',' '+callarg+' ')
     return out
   #@+node:peckj.20140106180202.4625: *3* __str__
   def __str__(self):

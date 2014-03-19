@@ -111,13 +111,16 @@ class Parser(object):
     depth = 0
     
     toks = line.split()
-    
-    while changed and depth < sg.max_recursive_depth:
-      changed = False
-      depth += 1
-      toks,changed = self.simplify_factors(toks,changed)
-      toks,changed = self.simplify_expansions(toks,changed)
-      #if sg.debug: sg.trace('changed = %s (toks = %s)' % (changed, toks))
+    try:
+      while changed and depth < sg.max_recursive_depth:
+        changed = False
+        depth += 1
+        toks,changed = self.group_args(toks,changed)
+        toks,changed = self.simplify_factors(toks,changed)
+        toks,changed = self.simplify_expansions(toks,changed)
+        #if sg.debug: sg.trace('changed = %s (toks = %s)' % (changed, toks))
+    except Exception as e:
+      return [SilicaEvent('exception', exception=e)]
       
     if depth >= sg.max_recursive_depth:
       e = SilicaInternalError('Infinite loop detected, bailing out.')
@@ -153,32 +156,83 @@ class Parser(object):
       else:
         toks2.append(tok)
     return toks2,changed
+  #@+node:peckj.20140319080806.4519: *5* group_args
+  def group_args(self, toks, changed):
+    toks2 = []
+    changed = changed
+    
+    ## still unhandled:
+    ## ensuring , delimited arguments
+    
+    curtok = ''
+    level = 0
+    for tok in toks:
+      #if sg.debug: sg.trace("group_args: curtok = %s   level = %s" % (curtok, level))
+      if '(' in tok or level > 0:
+        curtok = curtok + tok
+        level += tok.count('(')
+        level -= tok.count(')')
+        if level == 0:
+          toks2.append(curtok)
+          curtok = ''
+        continue
+      toks2.append(tok)
+    
+    if level != 0:
+      e = SilicaSyntaxError('Syntax error in macro call: unbounded arglist.')
+      raise e
+    
+    return toks2,changed
   #@+node:peckj.20140318084140.4610: *5* simplify_expansions
   def simplify_expansions(self, toks, changed):
     toks2 = []
     changed = changed
     for tok in toks:
-      element, etype = sg.get_token(tok)
+      n = tok
+      arglist = None
+      if '(' in tok:
+        n,args = tok.split('(',1)
+        args = args[:-1]
+        level = 0
+        curarg = ''
+        arglist = []
+        for ch in args:
+          if ch == ',' and level == 0:
+            arglist.append(curarg.strip())
+            curarg = ''
+            continue
+          curarg = curarg + ch
+          if ch == '(':
+            level += 1
+            continue
+          if ch == ')':
+            level -= 1
+            continue
+        arglist.append(curarg.strip())
+        #if sg.debug: sg.trace('arglist: %s' % arglist)
+      
+      element, etype = sg.get_token(n)
       if element is not None and etype == 'macro':
-        v = self.run_macro(element).split()
+        v = self.run_macro(element, arglist).split()
         for e in v: toks2.append(e)
         changed = True
       else:
         toks2.append(tok)
+      #if sg.debug: sg.trace('toks2: %s' % toks2)
     return toks2,changed
   #@+node:peckj.20131222154620.7073: *3* run_primitive
-  def run_primitive(self, p):
+  def run_primitive(self, p, arglist=None):
     if self.mcmode:
       return None
     return p.execute()
   #@+node:peckj.20140106180202.4630: *3* run_macro
-  def run_macro(self, m):
+  def run_macro(self, m, arglist):
     if self.mcmode:
       return None
     #return self.parse_line(m.expand(), reset=False)
-    return m.expand()
+    return m.expand(arglist)
   #@+node:peckj.20131222154620.7090: *3* run_metacommand
-  def run_metacommand(self, m):
+  def run_metacommand(self, m, arglist=None):
     if self.mcmode:
       return m.execute()
     else:

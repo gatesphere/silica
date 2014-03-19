@@ -19,7 +19,7 @@
 </v>
 </v>
 </v>
-<v t="peckj.20130604112211.2164"><vh>Code (python)</vh>
+<v t="peckj.20130604112211.2164" a="E"><vh>Code (python)</vh>
 <v t="peckj.20131219081918.4264"><vh>toy code</vh>
 <v t="peckj.20131219081918.4262"><vh>@file toy_code/readlinetest.py</vh></v>
 <v t="peckj.20140124085532.3990"
@@ -32,24 +32,24 @@ expanded="peckj.20140124085532.4002,peckj.20140124085532.4004,"><vh>@file toy_co
 <v t="peckj.20131219081918.4174"><vh>Tester</vh>
 <v t="peckj.20131219081918.4175"><vh>@file silicaTester.py</vh></v>
 </v>
-<v t="peckj.20130604112211.2148"><vh>silica</vh>
-<v t="peckj.20140117095507.3895"><vh>@path silica</vh>
+<v t="peckj.20130604112211.2148" a="E"><vh>silica</vh>
+<v t="peckj.20140117095507.3895" a="E"><vh>@path silica</vh>
 <v t="peckj.20130604112211.2146"><vh>@file __init__.py</vh></v>
-<v t="peckj.20130604112211.2149"><vh>@path core</vh>
+<v t="peckj.20130604112211.2149" a="E"><vh>@path core</vh>
 <v t="peckj.20130604112211.2147"><vh>@file __init__.py</vh></v>
 <v t="peckj.20131218082219.4099"
 expanded="peckj.20131218082219.4102,"><vh>@file entity.py</vh></v>
 <v t="peckj.20140117095507.5636"><vh>@file errors.py</vh></v>
 <v t="peckj.20140106082417.4641"><vh>@file instrument.py</vh></v>
 <v t="peckj.20140106082417.4653"><vh>@file instrumentchanger.py</vh></v>
-<v t="peckj.20140106180202.4620"
-expanded="peckj.20140106180202.4622,"><vh>@file macro.py</vh></v>
-<v t="peckj.20131222154620.7080"><vh>@file metacommand.py</vh></v>
+<v t="peckj.20140106180202.4620" a="E"><vh>@file macro.py</vh></v>
+<v t="peckj.20131222154620.7080" a="E"
+expanded="peckj.20131222154620.7082,"><vh>@file metacommand.py</vh></v>
 <v t="peckj.20131218082219.4117"><vh>@file mode.py</vh></v>
 <v t="peckj.20131218082219.4088"
 expanded="peckj.20131218082219.4091,peckj.20131218082219.4135,peckj.20131219081918.4225,peckj.20131219081918.4229,"><vh>@file note.py</vh></v>
-<v t="peckj.20131219081918.4285"
-expanded="peckj.20131219081918.4288,"><vh>@file parser.py</vh></v>
+<v t="peckj.20131219081918.4285" a="E"
+expanded="peckj.20131219081918.4288,peckj.20131221180451.4203,peckj.20140318084140.4608,peckj.20140123152153.4522,"><vh>@file parser.py</vh></v>
 <v t="peckj.20131221114825.4521"><vh>@file primitive.py</vh></v>
 <v t="peckj.20130604112211.2150"><vh>@file runSilica.py</vh></v>
 <v t="peckj.20131218082219.4095"><vh>@file scale.py</vh></v>
@@ -70,7 +70,7 @@ expanded="peckj.20131219081918.4271,peckj.20131219081918.4290,peckj.201312190819
 <v t="peckj.20131224101941.5050"><vh>@file modules/home.py</vh></v>
 </v>
 </v>
-<v t="peckj.20131219081918.4173" a="E"><vh>Code (silica)</vh>
+<v t="peckj.20131219081918.4173"><vh>Code (silica)</vh>
 <v t="peckj.20130604112211.2170"><vh>autoexec</vh>
 <v t="peckj.20130604112211.2172"><vh>@file autoexec.silica</vh></v>
 </v>
@@ -136,7 +136,7 @@ Future:
 <t tx="peckj.20131221114825.4538"></t>
 <t tx="peckj.20131221114825.4539">Supported:
 
-macros (without arguments)
+macros (with and without arguments)
 metacommands (without arguments)
 repetition factors
 glomming (3p+rp, for ex.)
@@ -144,7 +144,7 @@ namespaces
 
 Not supported:
 
-macros + metacommands with arguments
+metacommands with arguments
 preventing metacommands and primitives in the same command line (currently ignores whatever comes second)
 transforms
 concurrent voices
