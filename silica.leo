@@ -35,15 +35,15 @@ expanded="peckj.20140124085532.4002,peckj.20140124085532.4004,"><vh>@file toy_co
 <v t="peckj.20130604112211.2148" a="E"><vh>silica</vh>
 <v t="peckj.20140117095507.3895" a="E"><vh>@path silica</vh>
 <v t="peckj.20130604112211.2146"><vh>@file __init__.py</vh></v>
-<v t="peckj.20130604112211.2149" a="E"><vh>@path core</vh>
+<v t="peckj.20130604112211.2149"><vh>@path core</vh>
 <v t="peckj.20130604112211.2147"><vh>@file __init__.py</vh></v>
 <v t="peckj.20131218082219.4099"
 expanded="peckj.20131218082219.4102,"><vh>@file entity.py</vh></v>
 <v t="peckj.20140117095507.5636"><vh>@file errors.py</vh></v>
 <v t="peckj.20140106082417.4641"><vh>@file instrument.py</vh></v>
 <v t="peckj.20140106082417.4653"><vh>@file instrumentchanger.py</vh></v>
-<v t="peckj.20140106180202.4620" a="E"><vh>@file macro.py</vh></v>
-<v t="peckj.20131222154620.7080" a="E"
+<v t="peckj.20140106180202.4620"><vh>@file macro.py</vh></v>
+<v t="peckj.20131222154620.7080"
 expanded="peckj.20131222154620.7082,"><vh>@file metacommand.py</vh></v>
 <v t="peckj.20131218082219.4117"><vh>@file mode.py</vh></v>
 <v t="peckj.20131218082219.4088"
@@ -70,7 +70,7 @@ expanded="peckj.20131219081918.4271,peckj.20131219081918.4290,peckj.201312190819
 <v t="peckj.20131224101941.5050"><vh>@file modules/home.py</vh></v>
 </v>
 </v>
-<v t="peckj.20131219081918.4173"><vh>Code (silica)</vh>
+<v t="peckj.20131219081918.4173" a="E"><vh>Code (silica)</vh>
 <v t="peckj.20130604112211.2170"><vh>autoexec</vh>
 <v t="peckj.20130604112211.2172"><vh>@file autoexec.silica</vh></v>
 </v>
