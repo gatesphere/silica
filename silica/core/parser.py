@@ -126,6 +126,7 @@ class Parser(object):
       e = SilicaInternalError('Infinite loop detected, bailing out.')
       return [SilicaEvent('exception', exception=e)]
     
+    #if sg.debug: sg.trace('line: %s' % toks)
     return toks
   #@+node:peckj.20140318084140.4609: *5* simplify_factors
   def simplify_factors(self, toks, changed):
@@ -179,7 +180,7 @@ class Parser(object):
       toks2.append(tok)
     
     if level != 0:
-      e = SilicaSyntaxError('Syntax error in macro call: unbounded arglist.')
+      e = SilicaSyntaxError('Syntax error in call: unbounded arglist.')
       raise e
     
     return toks2,changed
@@ -216,6 +217,10 @@ class Parser(object):
         v = self.run_macro(element, arglist).split()
         for e in v: toks2.append(e)
         changed = True
+      elif etype == 'metacommand':
+        v = [self.run_metacommand(element, arglist)]
+        #if sg.debug: sg.trace('meta: %s' % v)
+        return v,False # short circut
       else:
         toks2.append(tok)
       #if sg.debug: sg.trace('toks2: %s' % toks2)
@@ -226,7 +231,7 @@ class Parser(object):
       return None
     return p.execute()
   #@+node:peckj.20140106180202.4630: *3* run_macro
-  def run_macro(self, m, arglist):
+  def run_macro(self, m, arglist=None):
     if self.mcmode:
       return None
     #return self.parse_line(m.expand(), reset=False)
@@ -234,7 +239,7 @@ class Parser(object):
   #@+node:peckj.20131222154620.7090: *3* run_metacommand
   def run_metacommand(self, m, arglist=None):
     if self.mcmode:
-      return m.execute()
+      return m.execute(arglist)
     else:
       return None
   #@+node:peckj.20140123152153.4522: *3* define_macro

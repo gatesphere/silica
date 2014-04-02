@@ -17,8 +17,8 @@ class MetaCommand(Entity):
     super(self.__class__,self).__init__(name, desc)
     self.behavior = behavior
   #@+node:peckj.20131222154620.7084: *3* execute
-  def execute(self):
-    return self.behavior(sg)
+  def execute(self,arglist):
+    return self.behavior(sg,arglist)
   #@+node:peckj.20131222154620.7085: *3* __str__
   def __str__(self):
     return "< METACOMMAND " + self.name + " >"

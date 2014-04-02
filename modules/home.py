@@ -53,19 +53,63 @@ def primitives():
 #@+node:peckj.20131224101941.5056: ** metacommands
 def metacommands():
   from silica.core.silicaevent import SilicaEvent
-  def exit(sg):
-    sg.exit = True
-    return SilicaEvent('meta',message='Goodbye!')
-  sg.new_metacommand('-exit', 'Exits silica.', exit)
-  
-  def state(sg):
+  from silica.core.errors import SilicaSyntaxError
+  #@+others
+  #@+node:peckj.20140402084328.4762: *3* query + control (note)
+  #@+node:peckj.20140402084328.4755: *4* -state
+  def state(sg,arglist):
     return SilicaEvent('meta', message=str(sg.note))
   sg.new_metacommand('-state', 'Prints the state of the note.', state)
-
-  def reset(sg):
+  #@+node:peckj.20140402084328.4756: *4* -reset
+  def reset(sg,arglist):
     sg.note.reset()
     return SilicaEvent('meta', message='Note state has been reset.')
   sg.new_metacommand('-reset', 'Resets the state of the note.', reset)
+  #@+node:peckj.20140402084328.4761: *3* system control
+  #@+node:peckj.20140402084328.4754: *4* -exit
+  def exit(sg,arglist):
+    sg.exit = True
+    return SilicaEvent('meta',message='Goodbye!')
+  sg.new_metacommand('-exit', 'Exits silica.', exit)
+  #@+node:peckj.20140402084328.4757: *4* -silent
+  def silent(sg,arglist):
+    sg.repl.silent = not sg.repl.silent
+    return SilicaEvent('meta', message='Silent mode toggled.')
+  sg.new_metacommand('-silent', 'Toggle all textual output.', silent)
+  #@+node:peckj.20140402084328.4764: *4* -about
+  def about(sg, arglist):
+    import datetime
+    current_year = datetime.date.today().year
+    msg = '\nsilica, copyright 2012-%s Jacob M. Peck\n' % current_year
+    msg = msg + 'This is version: %s\n' % sg.silica_version
+    msg = msg + 'For more information, please visit http://github.com/gatesphere/silica'
+    return SilicaEvent('meta', message=msg)
+  sg.new_metacommand('-about', 'Display information about silica.', about)
+  #@+node:peckj.20140402084328.4760: *3* namespaces
+  #@+node:peckj.20140402084328.4758: *4* -enter
+  def enter(sg,arglist):
+    if len(arglist) != 1:
+      e = SilicaSyntaxError('Syntax error in metacommand call: -enter requires 1 argument')
+      return SilcaEvent('exception', exception=e)
+    ns = arglist[0]
+    sg.new_namespace(ns)
+    return SilicaEvent('meta', message='Entered namespace %s.' % '::'.join(sg.current_namespace))
+  sg.new_metacommand('-enter', 'Enter the given namespace, automatically created if absent.', enter)
+  #@+node:peckj.20140402084328.4759: *4* -leave
+  def leave(sg,arglist):
+    if len(sg.current_namespace) > 1:
+      sg.current_namespace.pop()
+      return SilicaEvent('meta', message='Now in namespace %s.' % '::'.join(sg.current_namespace))
+    else:
+      return SilicaEvent('meta', message='Nowhere to go.  Staying in namespace %s.' % '::'.join(sg.current_namespace))
+  sg.new_metacommand('-leave', 'Leave the current namespace, retreating one level up.', leave)
+  #@+node:peckj.20140402084328.4763: *4* -home
+  def home(sg,arglist):
+    sg.current_namespace = sg.current_namespace[0:1]
+    return SilicaEvent('meta', message='Entered namespace home.')
+  sg.new_metacommand('-home', 'Return to the home namespace.', home)
+  #@-others
+  
 #@+node:peckj.20140103121318.3960: ** modes
 def modes():
   sg.new_mode('CHROMATIC', [1,1,1,1,1,1,1,1,1,1,1,1])
