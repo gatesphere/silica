@@ -10,7 +10,7 @@ import os
 #@-<< imports >>
 #@+<< declarations >>
 #@+node:peckj.20131219081918.4270: ** << declarations >>
-HISTORY_FILE = '.silica_history'
+HISTORY_FILE = sg.get_replhistory()
 #@-<< declarations >>
 
 #@+others

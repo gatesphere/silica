@@ -172,12 +172,22 @@ def load_module(name):
   del m
   del sys.modules[mod]
 #@+node:peckj.20140307080519.11094: ** internals
+#@+node:peckj.20140402084328.4750: *3* get_homedir
+def get_homedir():
+  return os.path.expanduser('~')
 #@+node:peckj.20140307080519.11095: *3* get_autoexec
 def get_autoexec():
-  homedir = os.path.expanduser('~')
+  homedir = get_homedir()
   autoexec = os.path.join(homedir, '.silicarc')
   if os.path.isfile(autoexec): return autoexec
   return None
+#@+node:peckj.20140402084328.4751: *3* get_replhistory
+def get_replhistory():
+  ''' return the path to the .silica_history file, whether it exists or not '''
+  homedir = get_homedir()
+  replhistory = os.path.join(homedir, '.silica_history')
+  return replhistory
+  
 #@+node:peckj.20140307080519.11099: *3* set_debug
 def set_debug(v):
   global debug
