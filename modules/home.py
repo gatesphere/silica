@@ -85,12 +85,22 @@ def metacommands():
     msg = msg + 'For more information, please visit http://github.com/gatesphere/silica'
     return SilicaEvent('meta', message=msg)
   sg.new_metacommand('-about', 'Display information about silica.', about)
+  #@+node:peckj.20140819145303.4094: *4* -require
+  def require(sg, arglist):
+    if len(arglist) != 1:
+      e = SilicaSyntaxError('Syntax error in metacommand call: -require requires 1 argument')
+      return SilicaEvent('exception', exception=e)
+    modname = arglist[0]
+    sg.load_module(modname)
+    msg = 'Module \"%s\" loaded.' % modname
+    return SilicaEvent('meta', message=msg)
+  sg.new_metacommand('-require', 'Load a module with a given name.', require)
   #@+node:peckj.20140402084328.4760: *3* namespaces
   #@+node:peckj.20140402084328.4758: *4* -enter
   def enter(sg,arglist):
     if len(arglist) != 1:
       e = SilicaSyntaxError('Syntax error in metacommand call: -enter requires 1 argument')
-      return SilcaEvent('exception', exception=e)
+      return SilicaEvent('exception', exception=e)
     ns = arglist[0]
     sg.new_namespace(ns)
     return SilicaEvent('meta', message='Entered namespace %s.' % '::'.join(sg.current_namespace))

@@ -49,6 +49,8 @@ def initialize(debugmode=False):
   
   # load the 'home' module
   load_module('home') # located in ../modules/home.py
+  if debugmode:
+    load_module('debug')
 
   # next, initialize the proper values
   init_create_note()

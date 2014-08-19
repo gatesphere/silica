@@ -25,7 +25,7 @@
 <v t="peckj.20140124085532.3990"
 expanded="peckj.20140124085532.4002,peckj.20140124085532.4004,"><vh>@file toy_code/funcparserlibtest.py</vh></v>
 </v>
-<v t="peckj.20130604112211.2165" a="E"><vh>Launcher</vh>
+<v t="peckj.20130604112211.2165"><vh>Launcher</vh>
 <v t="peckj.20130604112211.2162"><vh>@file silica.py</vh></v>
 <v t="peckj.20140117095507.3737"><vh>@edit silica.bat</vh></v>
 </v>
@@ -45,33 +45,34 @@ expanded="peckj.20131218082219.4102,"><vh>@file entity.py</vh></v>
 <v t="peckj.20140106180202.4620"><vh>@file macro.py</vh></v>
 <v t="peckj.20131222154620.7080"><vh>@file metacommand.py</vh></v>
 <v t="peckj.20131218082219.4117"><vh>@file mode.py</vh></v>
-<v t="peckj.20131218082219.4088" a="E"
-expanded="peckj.20131218082219.4091,peckj.20131218082219.4135,peckj.20131219081918.4168,peckj.20131219081918.4225,peckj.20131219081918.4229,"><vh>@file note.py</vh></v>
-<v t="peckj.20131219081918.4285" a="E"
-expanded="peckj.20131219081918.4288,peckj.20131221180451.4203,peckj.20140318084140.4608,peckj.20140123152153.4522,"><vh>@file parser.py</vh></v>
+<v t="peckj.20131218082219.4088"
+expanded="peckj.20131218082219.4091,peckj.20131219081918.4168,peckj.20131219081918.4225,peckj.20131219081918.4229,"><vh>@file note.py</vh></v>
+<v t="peckj.20131219081918.4285"
+expanded="peckj.20131221180451.4203,peckj.20140318084140.4608,peckj.20140123152153.4522,"><vh>@file parser.py</vh></v>
 <v t="peckj.20131221114825.4521"
 expanded="peckj.20131221114825.4524,"><vh>@file primitive.py</vh></v>
-<v t="peckj.20130604112211.2150" a="E"
+<v t="peckj.20130604112211.2150"
 expanded="peckj.20130604112211.4471,"><vh>@file runSilica.py</vh></v>
-<v t="peckj.20131218082219.4095" a="E"
+<v t="peckj.20131218082219.4095"
 expanded="peckj.20131218082219.4098,peckj.20131218082219.4130,"><vh>@file scale.py</vh></v>
 <v t="peckj.20140103121318.3954"><vh>@file scalechanger.py</vh></v>
-<v t="peckj.20131218082219.4105" a="E"
-expanded="peckj.20131219081918.4218,peckj.20131219081918.4210,peckj.20140307080519.11094,"><vh>@file sglobals.py</vh></v>
+<v t="peckj.20131218082219.4105"
+expanded="peckj.20131219081918.4218,"><vh>@file sglobals.py</vh></v>
 <v t="peckj.20140116082214.3851"
 expanded="peckj.20140116082214.3853,"><vh>@file silicaevent.py</vh></v>
 </v>
-<v t="peckj.20131219081918.4265" a="E"><vh>@path ui</vh>
+<v t="peckj.20131219081918.4265"><vh>@path ui</vh>
 <v t="peckj.20131219081918.4267"><vh>@file __init__.py</vh></v>
-<v t="peckj.20131219081918.4268" a="E"
+<v t="peckj.20131219081918.4268"
 expanded="peckj.20131219081918.4271,peckj.20131219081918.4289,peckj.20131219081918.4290,peckj.20131219081918.4279,peckj.20140116082214.4160,"><vh>@file repl.py</vh></v>
 </v>
 </v>
 </v>
-<v t="peckj.20131224101941.5049"><vh>modules</vh>
+<v t="peckj.20131224101941.5049" a="E"><vh>modules</vh>
 <v t="peckj.20131224101941.5051"><vh>@file modules/__init__.py</vh></v>
-<v t="peckj.20131224101941.5050" a="E"
-expanded="peckj.20131224101941.5056,peckj.20140402084328.4761,peckj.20140402084328.4760,"><vh>@file modules/home.py</vh></v>
+<v t="peckj.20131224101941.5050"
+expanded="peckj.20131224101941.5056,"><vh>@file modules/home.py</vh></v>
+<v t="peckj.20140819145303.4095"><vh>@file modules/debug.py</vh></v>
 </v>
 </v>
 <v t="peckj.20131219081918.4173"><vh>Code (silica)</vh>
@@ -97,7 +98,6 @@ expanded="peckj.20131224101941.5056,peckj.20140402084328.4761,peckj.201404020843
 <v t="peckj.20131219081918.4263"><vh>required libs</vh></v>
 <v t="peckj.20131221114825.4538" a="E"><vh>To implement</vh>
 <v t="peckj.20131224101941.5058"><vh>metacommands</vh></v>
-<v t="peckj.20140307080519.11098"><vh>handle --debug command-line switch</vh></v>
 <v t="peckj.20140318084140.4621"><vh>mode creation</vh></v>
 <v t="peckj.20131221114825.4539"><vh>parser</vh></v>
 <v t="peckj.20131221114825.4544"><vh>transforms</vh></v>
@@ -175,8 +175,7 @@ embedded python</t>
 -t?
 -t??
 -delete
--invariant
--require</t>
+-invariant</t>
 <t tx="peckj.20140117095507.3736">@language python
 
 import sys, os
@@ -219,7 +218,6 @@ os.chdir(olddir)</t>
 The above grammar does not account for:
   comments -- not terribly important
   begingroup/endgroup  -- handle with semantics</t>
-<t tx="peckj.20140307080519.11098"></t>
 <t tx="peckj.20140318084140.4621"></t>
 </tnodes>
 </leo_file>

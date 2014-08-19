@@ -40,7 +40,7 @@ class REPL(object):
     if not self.silent:
       print 'Welcome to silica'
       print 'This is version: %s' % sg.silica_version
-      if sg.debug: print 'DEBUGGING ACTIVE'
+      #if sg.debug: print 'DEBUGGING ACTIVE'
     
     # handle autoexec
     ## need to check for existence
