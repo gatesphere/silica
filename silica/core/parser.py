@@ -53,15 +53,18 @@ class Parser(object):
     #@-<< auto invariance mode >>
     
     toks = self.simplify_line(string)
+    
     if len(toks) == 1 and type(toks[0]) is SilicaEvent:
       return toks
     out = []
     #@+<< interpret tokens >>
     #@+node:peckj.20140318084140.4615: *4* << interpret tokens >>
     for tok in toks:
+      #if sg.debug: print tok
       # should all be primitives + metacommands by now...
       try:
         element, etype = sg.get_token(tok)
+        #if sg.debug: print (element, etype)
         if element is not None and etype is not None:
           v = self.fn_table[etype](element)
           if v is not None:
@@ -116,7 +119,9 @@ class Parser(object):
         changed = False
         depth += 1
         toks,changed = self.group_args(toks,changed)
+        #if sg.debug: sg.trace('changed = %s (toks = %s)' % (changed, toks))
         toks,changed = self.simplify_factors(toks,changed)
+        #if sg.debug: sg.trace('changed = %s (toks = %s)' % (changed, toks))
         toks,changed = self.simplify_expansions(toks,changed)
         #if sg.debug: sg.trace('changed = %s (toks = %s)' % (changed, toks))
     except Exception as e:
@@ -213,13 +218,13 @@ class Parser(object):
         #if sg.debug: sg.trace('arglist: %s' % arglist)
       
       element, etype = sg.get_token(n)
-      if element is not None and etype == 'macro':
+      if element is not None and etype == 'macro' and not self.mcmode:
         v = self.run_macro(element, arglist).split()
         for e in v: toks2.append(e)
         changed = True
-      elif etype == 'metacommand':
+      elif etype == 'metacommand' and self.mcmode:
         v = [self.run_metacommand(element, arglist)]
-        #if sg.debug: sg.trace('meta: %s' % v)
+        # if sg.debug: sg.trace('meta: %s' % v)
         return v,False # short circut
       else:
         toks2.append(tok)

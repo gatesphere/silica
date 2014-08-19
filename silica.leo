@@ -10,9 +10,9 @@
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="peckj.20130604112211.4466"><vh>Startup</vh>
-<v t="peckj.20130604112211.4467"><vh>@settings</vh>
-<v t="peckj.20130604112211.4468"><vh>Buttons</vh>
+<v t="peckj.20130604112211.4466" a="E"><vh>Startup</vh>
+<v t="peckj.20130604112211.4467" a="E"><vh>@settings</vh>
+<v t="peckj.20130604112211.4468" a="E"><vh>Buttons</vh>
 <v t="peckj.20130604112211.4469"><vh>@@button timeit</vh></v>
 <v t="peckj.20130604112211.4470"><vh>@@button profile</vh></v>
 <v t="peckj.20140117095507.3736"><vh>@button launch-silica @color=burlywood1</vh></v>
@@ -25,7 +25,7 @@
 <v t="peckj.20140124085532.3990"
 expanded="peckj.20140124085532.4002,peckj.20140124085532.4004,"><vh>@file toy_code/funcparserlibtest.py</vh></v>
 </v>
-<v t="peckj.20130604112211.2165"><vh>Launcher</vh>
+<v t="peckj.20130604112211.2165" a="E"><vh>Launcher</vh>
 <v t="peckj.20130604112211.2162"><vh>@file silica.py</vh></v>
 <v t="peckj.20140117095507.3737"><vh>@edit silica.bat</vh></v>
 </v>
@@ -39,34 +39,36 @@ expanded="peckj.20140124085532.4002,peckj.20140124085532.4004,"><vh>@file toy_co
 <v t="peckj.20130604112211.2147"><vh>@file __init__.py</vh></v>
 <v t="peckj.20131218082219.4099"
 expanded="peckj.20131218082219.4102,"><vh>@file entity.py</vh></v>
-<v t="peckj.20140117095507.5636" a="E"><vh>@file errors.py</vh></v>
+<v t="peckj.20140117095507.5636"><vh>@file errors.py</vh></v>
 <v t="peckj.20140106082417.4641"><vh>@file instrument.py</vh></v>
 <v t="peckj.20140106082417.4653"><vh>@file instrumentchanger.py</vh></v>
 <v t="peckj.20140106180202.4620"><vh>@file macro.py</vh></v>
 <v t="peckj.20131222154620.7080"><vh>@file metacommand.py</vh></v>
 <v t="peckj.20131218082219.4117"><vh>@file mode.py</vh></v>
-<v t="peckj.20131218082219.4088"
-expanded="peckj.20131218082219.4091,peckj.20131218082219.4135,peckj.20131219081918.4225,peckj.20131219081918.4229,"><vh>@file note.py</vh></v>
-<v t="peckj.20131219081918.4285"
+<v t="peckj.20131218082219.4088" a="E"
+expanded="peckj.20131218082219.4091,peckj.20131218082219.4135,peckj.20131219081918.4168,peckj.20131219081918.4225,peckj.20131219081918.4229,"><vh>@file note.py</vh></v>
+<v t="peckj.20131219081918.4285" a="E"
 expanded="peckj.20131219081918.4288,peckj.20131221180451.4203,peckj.20140318084140.4608,peckj.20140123152153.4522,"><vh>@file parser.py</vh></v>
 <v t="peckj.20131221114825.4521"
 expanded="peckj.20131221114825.4524,"><vh>@file primitive.py</vh></v>
-<v t="peckj.20130604112211.2150" a="E"><vh>@file runSilica.py</vh></v>
-<v t="peckj.20131218082219.4095"><vh>@file scale.py</vh></v>
+<v t="peckj.20130604112211.2150" a="E"
+expanded="peckj.20130604112211.4471,"><vh>@file runSilica.py</vh></v>
+<v t="peckj.20131218082219.4095" a="E"
+expanded="peckj.20131218082219.4098,peckj.20131218082219.4130,"><vh>@file scale.py</vh></v>
 <v t="peckj.20140103121318.3954"><vh>@file scalechanger.py</vh></v>
 <v t="peckj.20131218082219.4105" a="E"
-expanded="peckj.20131219081918.4217,peckj.20131219081918.4218,peckj.20131219081918.4210,peckj.20140307080519.11094,"><vh>@file sglobals.py</vh></v>
+expanded="peckj.20131219081918.4218,peckj.20131219081918.4210,peckj.20140307080519.11094,"><vh>@file sglobals.py</vh></v>
 <v t="peckj.20140116082214.3851"
 expanded="peckj.20140116082214.3853,"><vh>@file silicaevent.py</vh></v>
 </v>
-<v t="peckj.20131219081918.4265"><vh>@path ui</vh>
+<v t="peckj.20131219081918.4265" a="E"><vh>@path ui</vh>
 <v t="peckj.20131219081918.4267"><vh>@file __init__.py</vh></v>
 <v t="peckj.20131219081918.4268" a="E"
 expanded="peckj.20131219081918.4271,peckj.20131219081918.4289,peckj.20131219081918.4290,peckj.20131219081918.4279,peckj.20140116082214.4160,"><vh>@file repl.py</vh></v>
 </v>
 </v>
 </v>
-<v t="peckj.20131224101941.5049" a="E"><vh>modules</vh>
+<v t="peckj.20131224101941.5049"><vh>modules</vh>
 <v t="peckj.20131224101941.5051"><vh>@file modules/__init__.py</vh></v>
 <v t="peckj.20131224101941.5050" a="E"
 expanded="peckj.20131224101941.5056,peckj.20140402084328.4761,peckj.20140402084328.4760,"><vh>@file modules/home.py</vh></v>
@@ -145,7 +147,6 @@ namespaces
 
 Not supported:
 
-metacommands with arguments
 preventing metacommands and primitives in the same command line (currently ignores whatever comes second)
 transforms
 concurrent voices
