@@ -69,7 +69,7 @@ expanded="peckj.20131219081918.4271,peckj.20131219081918.4289,peckj.201312190819
 <v t="peckj.20131224101941.5049" a="E"><vh>modules</vh>
 <v t="peckj.20131224101941.5051"><vh>@file modules/__init__.py</vh></v>
 <v t="peckj.20131224101941.5050" a="E"
-expanded="peckj.20131224101941.5056,peckj.20140402084328.4761,"><vh>@file modules/home.py</vh></v>
+expanded="peckj.20131224101941.5056,peckj.20140402084328.4761,peckj.20140402084328.4760,"><vh>@file modules/home.py</vh></v>
 </v>
 </v>
 <v t="peckj.20131219081918.4173"><vh>Code (silica)</vh>

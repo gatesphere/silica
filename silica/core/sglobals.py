@@ -136,13 +136,18 @@ def new_token(token, value, t_type):
   tokentable[ns][token.lower()] = (value, t_type)
 #@+node:peckj.20131219081918.4214: *3* new_namespace
 def new_namespace(name):
-  new_namespace_name = '::'.join(current_namespace + [name])
-  ns = tokentable.get(new_namespace_name, None)
-  if ns is None:
-    # namespace doesn't exist, so create it
-    ns = {}
-    tokentable[new_namespace_name] = ns
-  current_namespace.append(name)
+  if '::' in name:
+    components = name.split('::')
+  else:
+    components = [name]
+  for namespace in components: 
+    new_namespace_name = '::'.join(current_namespace + [namespace])
+    ns = tokentable.get(new_namespace_name, None)
+    if ns is None:
+      # namespace doesn't exist, so create it
+      ns = {}
+      tokentable[new_namespace_name] = ns
+    current_namespace.append(namespace)
 #@+node:peckj.20131218082219.4108: ** lookup methods
 #@+node:peckj.20131218082219.4109: *3* get_mode
 def get_mode(name):
