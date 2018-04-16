@@ -136,7 +136,7 @@ def modes():
   sg.new_mode('WHOLETONE', [2,2,2,2,2,2])
   sg.new_mode('BLUES', [3,2,1,1,3,2])
   sg.new_mode('PENTAMAJOR', [2,2,3,2,3])
-  sg.new_mode('PENTAMINOR', [3,3,2,3,2])
+  sg.new_mode('PENTAMINOR', [3,2,2,3,2])
   sg.new_mode('MAJORTRIAD', [4,3,5])
   sg.new_mode('MINORTRIAD', [3,4,5])
   sg.new_mode('DIMINISHEDTRIAD', [3,3,6])
